@@ -51,6 +51,13 @@ public class Application {
 
                 if (isFirstLogin() && !activeUser.isRoot()) {
                     // first-time users need to change their passwords from the default provided
+                	
+                	System.out.print("Please change your password: ");
+                    String newPassword = Utils.getHash(in.next());
+                    
+                    //activeUer.setPassword(newPassword);
+                    
+                    updateDatabase();
                 }
 
                 // create and show the user interface
@@ -61,6 +68,10 @@ public class Application {
                 System.out.println("\nInvalid username and/or password.");
             }
         }
+    }
+    
+    private void updateDatabase() {
+    	
     }
 
     /**
