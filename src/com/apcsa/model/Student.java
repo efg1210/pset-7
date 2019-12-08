@@ -15,6 +15,12 @@ public class Student extends User {
     private String firstName;
     private String lastName;
     
+    /**
+     * Creates an instance of the Student class.
+     *
+     * @param rs a ResultSet of Student information
+     */
+    
     public Student (User user, ResultSet rs) throws SQLException {
     	this(rs.getInt("student_id"),
     		 rs.getInt("class_rank"),
@@ -27,7 +33,20 @@ public class Student extends User {
     	);
     }
 
-	public Student(int studentId, int classRank, int gradeLevel, int graduationYear, double gpa, String firstName, String lastName,
+    /**
+     * Creates an instance of the Teacher class.
+     *
+     * @param studentId the student's ID
+     * @param classRank the student's class rank
+     * @param gradeLevel the student's grade level
+     * @param graduationYear the year the student will graduate
+     * @param gpa the student's gpa
+     * @param firstName the student's first name
+     * @param lastName the student's last name
+     * @param rs a ResultSet of Student information
+     */
+    
+    public Student(int studentId, int classRank, int gradeLevel, int graduationYear, double gpa, String firstName, String lastName,
 			ResultSet rs) throws SQLException {
 		super(rs);
 		this.studentId = studentId;
