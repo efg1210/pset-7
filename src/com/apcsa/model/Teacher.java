@@ -44,5 +44,37 @@ public class Teacher extends User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
+    
+    /**
+     * @return teacherId
+     */
+    
+    public int getTeacherId() {
+        return teacherId;
+    }
+    
+    /**
+     * @return departmentId
+     */
+    
+    public int getDepartmentId() {
+        return departmentId;
+    }
+    
+    /**
+     * @return firstName
+     */
+    
+    public String getFirstName() {
+        return firstName;
+    }
+    
+    /**
+     * @return lastName
+     */
+    
+    public String getLastName() {
+        return lastName;
+    }
 
 }

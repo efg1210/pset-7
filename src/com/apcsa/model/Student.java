@@ -59,4 +59,60 @@ public class Student extends User {
 		
 	}
     
+    /**
+     * @return studentId
+     */
+    
+    public int getStudentId() {
+        return studentId;
+    }
+    
+    /**
+     * @return classRank
+     */
+    
+    public int getClassRank() {
+        return classRank;
+    }
+    
+    /**
+     * @return gradeLevel
+     */
+    
+    public int getGradeLevel() {
+        return gradeLevel;
+    }
+    
+    /**
+     * @return graduationYear
+     */
+    
+    public int getGraduationYear() {
+        return graduationYear;
+    }
+    
+    /**
+     * @return gpa
+     */
+    
+    public double getGPA() {
+        return gpa;
+    }
+    
+    /**
+     * @return firstName
+     */
+    
+    public String getFirstName() {
+        return firstName;
+    }
+    
+    /**
+     * @return lastName
+     */
+    
+    public String getLastName() {
+        return lastName;
+    }
+    
 }
