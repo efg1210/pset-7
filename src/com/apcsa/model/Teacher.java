@@ -22,8 +22,8 @@ public class Teacher extends User {
     public Teacher (User user, ResultSet rs) throws SQLException {
     	this(rs.getInt("teacher_id"),
              rs.getInt("department_id"),
-             rs.getString("firstName"),
-             rs.getString("lastName"),
+             rs.getString("first_name"),
+             rs.getString("last_name"),
              user
         );
     }

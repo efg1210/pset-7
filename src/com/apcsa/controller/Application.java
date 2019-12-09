@@ -18,7 +18,7 @@ public class Application {
         this.in = new Scanner(System.in);
 
         try {
-        	PowerSchool.initialize(true);
+        	PowerSchool.initialize(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,7 +50,6 @@ public class Application {
                     ? activeUser : null;
                     
                 if (isFirstLogin() && !activeUser.isRoot()) {
-                    // System.out.println(activeUser.getLastLogin());
                 	// first-time users need to change their passwords from the default provided
                 	
                 	System.out.print("\nPlease change your password: ");
@@ -86,20 +85,20 @@ public class Application {
     }
     
     private void admin(User activeUser) {
-    	
+    	System.out.println("admin");
     }
 
     private void teacher(User activeUser) {
-    	
+    	System.out.println("teacher");
     }
 
     
     private void student(User activeUser) {
-    	
+    	System.out.println("student");
     }
     
     private void root(User activeUser) {
-    	
+    	System.out.println("root");
     }
 
     /**
