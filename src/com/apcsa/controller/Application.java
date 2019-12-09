@@ -18,7 +18,7 @@ public class Application {
         this.in = new Scanner(System.in);
 
         try {
-            PowerSchool.initialize(false);
+        	PowerSchool.initialize(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,7 +63,16 @@ public class Application {
                         PowerSchool.updatePassword(username, activeUser.getPassword());
                     }
                                         
-                    //updateDatabase();
+                }
+                
+                if (activeUser.isAdministrator()) {
+                	admin(activeUser);
+                } else if (activeUser.isTeacher()) {
+                	teacher(activeUser);
+                } else if (activeUser.isStudent()) {
+                	student(activeUser);
+                } else if (activeUser.isRoot()) {
+                	root(activeUser);
                 }
 
                 // create and show the user interface
@@ -76,7 +85,20 @@ public class Application {
         }
     }
     
-    private void updateDatabase() {
+    private void admin(User activeUser) {
+    	
+    }
+
+    private void teacher(User activeUser) {
+    	
+    }
+
+    
+    private void student(User activeUser) {
+    	
+    }
+    
+    private void root(User activeUser) {
     	
     }
 

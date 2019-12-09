@@ -29,7 +29,7 @@ public class Administrator extends User {
     }
 
     /**
-     * Creates an instance of the Teacher class.
+     * Creates an instance of the Administrator class.
      *
      * @param administratorId the administrator's ID
      * @param firstName the administrator's first name
