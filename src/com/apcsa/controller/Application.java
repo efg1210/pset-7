@@ -43,21 +43,27 @@ public class Application {
             // if login is successful, update generic user to administrator, teacher, or student
 
             if (login(username, password)) {
-            	//System.out.println(PowerSchool.getStudent(activeUser));
                 activeUser = activeUser.isAdministrator()
                     ? PowerSchool.getAdministrator(activeUser) : activeUser.isTeacher()
                     ? PowerSchool.getTeacher(activeUser) : activeUser.isStudent()
                     ? PowerSchool.getStudent(activeUser) : activeUser.isRoot()
                     ? activeUser : null;
-
+                    
                 if (isFirstLogin() && !activeUser.isRoot()) {
-                    // first-time users need to change their passwords from the default provided
+                    // System.out.println(activeUser.getLastLogin());
+                	// first-time users need to change their passwords from the default provided
                 	
-                	System.out.print("Please change your password: ");
+                	System.out.print("\nPlease change your password: ");
                     String newPassword = Utils.getHash(in.next());
-                    activeUser.setPassword(newPassword);
+                    String oldPassword = activeUser.getPassword();
+                    
+                    if(!newPassword.equals(oldPassword)) {
+                    	System.out.println("Password updated.");
+                        activeUser.setPassword(newPassword);
+                        PowerSchool.updatePassword(username, activeUser.getPassword());
+                    }
                                         
-                    updateDatabase();
+                    //updateDatabase();
                 }
 
                 // create and show the user interface
