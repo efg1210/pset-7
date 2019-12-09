@@ -18,6 +18,7 @@ public class Student extends User {
     /**
      * Creates an instance of the Student class.
      *
+     * @param user the User
      * @param rs a ResultSet of Student information
      */
     
@@ -31,6 +32,7 @@ public class Student extends User {
     		 rs.getString("last_name"),
     		 rs
     	);
+    	System.out.println(rs);
     }
 
     /**

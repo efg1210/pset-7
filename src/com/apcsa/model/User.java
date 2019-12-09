@@ -92,6 +92,11 @@ public class User {
     public String getFirstName() {
         return "Root";
     }
+    
+    
+    public void setPassword(String newPassword) {
+    	this.password = newPassword;
+    }
 
     /**
      * @return true if the user is a root user; false otherwise

@@ -15,6 +15,7 @@ public class Administrator extends User {
     /**
      * Creates an instance of the Administrator class.
      *
+     * @param user the User
      * @param rs a ResultSet of Administrator information
      */
     

@@ -43,6 +43,7 @@ public class Application {
             // if login is successful, update generic user to administrator, teacher, or student
 
             if (login(username, password)) {
+            	//System.out.println(PowerSchool.getStudent(activeUser));
                 activeUser = activeUser.isAdministrator()
                     ? PowerSchool.getAdministrator(activeUser) : activeUser.isTeacher()
                     ? PowerSchool.getTeacher(activeUser) : activeUser.isStudent()
@@ -54,9 +55,8 @@ public class Application {
                 	
                 	System.out.print("Please change your password: ");
                     String newPassword = Utils.getHash(in.next());
-                    
-                    //activeUer.setPassword(newPassword);
-                    
+                    activeUser.setPassword(newPassword);
+                                        
                     updateDatabase();
                 }
 

@@ -15,6 +15,7 @@ public class Teacher extends User {
     /**
      * Creates an instance of the Teacher class.
      *
+     * @param user the User
      * @param rs a ResultSet of Teacher information
      */
     
