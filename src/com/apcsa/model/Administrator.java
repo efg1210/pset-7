@@ -24,7 +24,7 @@ public class Administrator extends User {
     		 rs.getString("first_name"),
     		 rs.getString("last_name"),
     		 rs.getString("job_title"),
-    		 rs
+    		 user
     	);
     }
 
@@ -38,8 +38,8 @@ public class Administrator extends User {
      * @param rs a ResultSet of Administrator information
      */
     
-    public Administrator(int administratorId, String firstName, String lastName, String jobTitle, ResultSet rs) throws SQLException {
-		super(rs);
+    public Administrator(int administratorId, String firstName, String lastName, String jobTitle, User user) {
+    	super(user.getUserId(), user.getAccountType(), user.getUsername(), user.getPassword(), user.getLastLogin());
 		this.administratorId = administratorId;
 		this.firstName = firstName;
 		this.lastName = lastName;

@@ -24,7 +24,7 @@ public class Teacher extends User {
              rs.getInt("department_id"),
              rs.getString("firstName"),
              rs.getString("lastName"),
-             rs
+             user
         );
     }
 
@@ -38,8 +38,8 @@ public class Teacher extends User {
      * @param rs a ResultSet of Teacher information
      */
     
-    public Teacher(int teacherId, int departmentId, String firstName, String lastName,  ResultSet rs) throws SQLException {
-    	super(rs);
+    public Teacher(int teacherId, int departmentId, String firstName, String lastName,  User user) {
+    	super(user.getUserId(), user.getAccountType(), user.getUsername(), user.getPassword(), user.getLastLogin());
 		this.teacherId = teacherId;
 		this.departmentId = departmentId;
 		this.firstName = firstName;

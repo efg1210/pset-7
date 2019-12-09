@@ -30,9 +30,8 @@ public class Student extends User {
     		 rs.getDouble("gpa"),
     		 rs.getString("first_name"),
     		 rs.getString("last_name"),
-    		 rs
+    		 user
     	);
-    	System.out.println(rs);
     }
 
     /**
@@ -49,8 +48,8 @@ public class Student extends User {
      */
     
     public Student(int studentId, int classRank, int gradeLevel, int graduationYear, double gpa, String firstName, String lastName,
-			ResultSet rs) throws SQLException {
-		super(rs);
+			User user) throws SQLException {
+		super(user.getUserId(), user.getAccountType(), user.getUsername(), user.getPassword(), user.getLastLogin());
 		this.studentId = studentId;
 		this.classRank = classRank;
 		this.gradeLevel = gradeLevel;
