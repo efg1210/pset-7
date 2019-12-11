@@ -1,8 +1,14 @@
 package com.apcsa.controller; 
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Scanner;
-import com.apcsa.data.PowerSchool;
-import com.apcsa.model.User;
+import com.apcsa.data.*;
+import com.apcsa.model.*;
 
 public class Application {
 
@@ -64,14 +70,15 @@ public class Application {
                                         
                 }
                 
+                System.out.println("");
                 if (activeUser.isAdministrator()) {
-                	admin(activeUser);
+                	admin();
                 } else if (activeUser.isTeacher()) {
-                	teacher(activeUser);
+                	teacher();
                 } else if (activeUser.isStudent()) {
-                	student(activeUser);
+                	student();
                 } else if (activeUser.isRoot()) {
-                	root(activeUser);
+                	root();
                 }
 
                 // create and show the user interface
@@ -84,20 +91,53 @@ public class Application {
         }
     }
     
-    private void admin(User activeUser) {
+    private void admin() {
     	System.out.println("admin");
     }
 
-    private void teacher(User activeUser) {
-    	System.out.println("teacher");
-    }
+    private boolean teacher() {
+    	System.out.println("Hello, again, " + activeUser.getFirstName() +"!");
+    	
+    	while (true) {
+    		System.out.println("\n[1] View enrollment by course.");
+        	System.out.println("[2] Add assignment.");
+        	System.out.println("[3] Delete assignment.");
+        	System.out.println("[4] Enter grade.");
+        	System.out.println("[5] Change password.");
+        	System.out.print("[6] Logout.\n\n::: ");
 
+        	int selection = Utils.getInt(in, 7);
+        	
+        	switch (selection) {
+        		case 1: viewEnrollmentCourse(); break;
+        		case 2: 
+        		case 3: 
+        		case 4: 
+        		case 5: 
+        		case 6: return false;
+        		default: System.out.println("Invalid selection. Please do it again.");
+        	}
+    	}
+    }
     
-    private void student(User activeUser) {
+    private void viewEnrollmentCourse() {
+    	if (activeUser.isTeacher()) {
+    		System.out.println("\nChoose a course.\n");
+    		ArrayList<String> courses = PowerSchool.teacherCourses(activeUser);
+    	} else if (activeUser.isAdministrator()) {
+    		
+    	} else {
+    		System.out.println("A student or root user is viewing enrollment by course, which is bad. Fix it.");
+    	}
+    }
+    
+    
+    
+    private void student() {
     	System.out.println("student");
     }
     
-    private void root(User activeUser) {
+    private void root() {
     	System.out.println("root");
     }
 

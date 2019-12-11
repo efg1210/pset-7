@@ -63,4 +63,8 @@ public class QueryUtils {
             "UPDATE users " +
                 "SET auth = ? " +
             "WHERE username = ?";
+    
+    public static final String GET_COURSES_FOR_TEACHER = 
+    		"SELECT * FROM COURSES " +
+    			"WHERE TEACHER_ID = ?";
 }

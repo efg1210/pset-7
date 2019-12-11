@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
+
+import com.apcsa.controller.ArrayList;
 import com.apcsa.controller.Utils;
 import com.apcsa.model.Administrator;
 import com.apcsa.model.Student;
@@ -277,5 +279,25 @@ public class PowerSchool {
             System.err.println("Error: Unable to execute SQL script from configuration file.");
             e.printStackTrace();
         }
+    }
+    
+    private ArrayList<String> teacherCourses(User teacher) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSES_FOR_TEACHER)) {
+
+               stmt.setString(1, teacher.getTeacherId());
+
+               ArrayList<String> courses = new ArrayList<String>();
+               
+               try (ResultSet rs = stmt.executeQuery()) {
+                   while (rs.next()) {
+                       courses.add(rs.getString("course_no"));
+                   }
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+
+           return null;
     }
 }
