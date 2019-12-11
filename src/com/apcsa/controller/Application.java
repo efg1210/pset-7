@@ -86,19 +86,48 @@ public class Application {
     
     private void admin(User activeUser) {
     	System.out.println("admin");
+    	/* Needs:
+    	 * Change Password (shared with teacher / student)
+    	 * Logout of Account (shared with all)
+    	 * View enrollment
+    	 * View enrollment by grade
+    	 * View enrollment by course (shared with teacher)
+    	 * View faculty
+    	 * View faculty by department
+    	 */
     }
 
     private void teacher(User activeUser) {
     	System.out.println("teacher");
+    	/* Needs:
+    	 * Change password (shared with student / admin)
+    	 * Logout of account (shared with all)
+    	 * View enrollment by course (shared with admin)
+    	 * Add assignment
+    	 * Delete assignment
+    	 * Enter grade for assignment
+    	 */
     }
 
     
     private void student(User activeUser) {
     	System.out.println("student");
+    	/* Needs:
+    	 * View course grades
+    	 * View assignment grades by course
+    	 * Change password (shared with teacher / admin)
+    	 * Logout of account (shared with all)
+    	 */
     }
     
     private void root(User activeUser) {
     	System.out.println("root");
+    	/* Needs:
+    	 * Logout of account (shared with all)
+    	 * Reset password FOR ANOTHER ACCOUNT
+    	 * Factory reset database
+    	 * Shut down application
+    	 */
     }
 
     /**
