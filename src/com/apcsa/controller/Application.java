@@ -121,12 +121,26 @@ public class Application {
     }
     
     private void root(User activeUser) {
-    	System.out.println("root");
+    	System.out.println("\nHello, again, Root!\n");
+        boolean validLogin = true;
+        while (validLogin) {
+            final int RESET_PASSWORD = 1;
+            final int RESET_DATABASE = 2;
+            final int LOGOUT = 3;
+            final int SHUTDOWN = 4;
+        	
+            switch (getSelectionRoot()) {
+                case RESET_PASSWORD: resetPassword(); break;
+                case RESET_DATABASE: resetDatabase(); break;
+                case LOGOUT: validLogin = false; break;
+                case SHUTDOWN: shutdown();
+                default: System.out.println("\nInvalid selection.\n"); break;
+            }
+        }
     	/* Needs:
     	 * Logout of account (shared with all)
     	 * Reset password FOR ANOTHER ACCOUNT
     	 * Factory reset database
-    	 * Shut down application
     	 */
     }
 
@@ -152,6 +166,47 @@ public class Application {
 
     public boolean isFirstLogin() {
         return activeUser.getLastLogin().equals("0000-00-00 00:00:00.000");
+    }
+    
+    
+    /**
+     * Shutdowns application.
+     */
+    
+    public int getSelectionRoot() {
+        System.out.println("[1] Reset user password.");
+        System.out.println("[2] Factory reset database.");
+        System.out.println("[3] Logout.");
+        System.out.println("[4] Shutdown.");
+        
+        return in.nextInt();
+    }
+    
+    public void resetDatabase() {
+    	System.out.println("Reset database");
+    }
+    
+    public void resetPassword() {
+    	System.out.println("Reset password");
+    }
+    
+    public void shutdown() {
+    	in.nextLine();
+        System.out.println("Are you sure? (y/n)");
+        String confirmation = in.nextLine();
+        
+        if (confirmation.equals("y")) {
+        	if (in != null) {
+                in.close();
+            }
+            
+            System.out.println("\nGoodbye!");
+            System.exit(0);
+        } else if (confirmation.equals("n")) {
+        	System.out.println("Shutdown aborted.");
+        } else {
+        	System.out.println("Invalid input. Shutdown aborted.");
+        }
     }
 
     /////// MAIN METHOD ///////////////////////////////////////////////////////////////////
