@@ -141,6 +141,7 @@ public class Application {
     	 * Logout of account (shared with all)
     	 * Reset password FOR ANOTHER ACCOUNT
     	 * Factory reset database
+    	 * Invalid selection needs to disappear for aborted shutdown
     	 */
     }
 
@@ -182,14 +183,33 @@ public class Application {
         return in.nextInt();
     }
     
+    public void resetPassword() {
+    	System.out.println("Reset password");
+    	
+    	System.out.print("Username:");
+    	String userID = in.nextLine();
+    	in.nextLine();
+    	if ("userID == a userID within database") {
+    		System.out.println("\n Are you sure you want to reset the password for " + userID + "? (y/n)");
+    		String confirmation = in.nextLine();
+    		in.nextLine();
+    		if (confirmation.equals("y")) {
+    			/* find user account
+    			 * change last login to 0000-00-00 00:00:00.000
+    			 */
+    			System.out.println("Successfully reset password for " + userID + ".");
+            } else if (confirmation.equals("n")) {
+            	System.out.println("Password reset aborted.");
+            } else {
+            	System.out.println("Invalid input. Password reset aborted.");
+            }
+    	}
+    }
+    
     public void resetDatabase() {
     	System.out.println("Reset database");
     }
-    
-    public void resetPassword() {
-    	System.out.println("Reset password");
-    }
-    
+     
     public void shutdown() {
     	in.nextLine();
         System.out.println("Are you sure? (y/n)");
