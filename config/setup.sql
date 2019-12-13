@@ -915,6 +915,7 @@ CREATE TABLE IF NOT EXISTS assignment_grades (
     student_id INTEGER NOT NULL,
     points_earned INTEGER,
     points_possible INTEGER NOT NULL,
+    is_graded INTEGER NOT NULL,
     FOREIGN KEY (course_id) REFERENCES courses (course_id),
     FOREIGN KEY (assignment_id) REFERENCES assignemnts (assignment_id),
     FOREIGN KEY (student_id) REFERENCES students (student_id),
