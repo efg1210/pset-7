@@ -301,4 +301,43 @@ public class PowerSchool {
 
            return null;
     }
+    
+    public static int courseID(String courseName) {
+    	try (Connection conn = getConnection();
+               PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_ID)) {
+
+               stmt.setString(1, courseName);
+               
+               try (ResultSet rs = stmt.executeQuery()) {
+                   if (rs.next()) {
+                       return rs.getInt("course_id");
+                   }
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+
+           return 0;
+    }
+    
+    public static ArrayList<Integer> studentIDByCourse(int courseID) {
+    	try (Connection conn = getConnection();
+               PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_ID_BY_COURSE)) {
+
+               stmt.setInt(1, courseID);
+               
+               ArrayList<Integer> studentIDs = new ArrayList<Integer>();
+               
+               try (ResultSet rs = stmt.executeQuery()) {
+            	   while (rs.next()) {
+            		   studentIDs.add(rs.getInt("student_id"));
+                   }
+               }
+               return studentIDs;
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+
+           return null;
+    }
 }

@@ -110,7 +110,7 @@ public class Application {
         	int selection = Utils.getInt(in, 7);
         	
         	switch (selection) {
-        		case 1: viewEnrollmentCourse(); break;
+        		case 1: enrollmentByCourse(); break;
         		case 2: 
         		case 3: 
         		case 4: 
@@ -121,17 +121,34 @@ public class Application {
     	}
     }
     
-    private void viewEnrollmentCourse() {
+    private void enrollmentByCourse() {
+    	ArrayList<String> courses = viewCourse();
+    	System.out.print("\n::: ");
+    	
+    	int selection = Utils.getInt(in, courses.size());
+    	if (selection <= courses.size()) {
+    		int courseID = PowerSchool.courseID(courses.get(selection - 1));
+    		System.out.println("course id: " + courseID);
+    	} else {
+    		System.out.println("Invalid selection. Try again.");
+    	}
+    	
+    	
+    }
+    
+    private ArrayList<String> viewCourse() {
     	if (activeUser.isTeacher()) {
-    		System.out.println("\nChoose a course.\n");
+    		//System.out.println("\nChoose a course.\n");
     		ArrayList<String> courses = PowerSchool.teacherCourses(activeUser);
     		for (int i = 0; i < courses.size(); i++) {
         		System.out.println(courses.get(i));
     		}
+    		return courses;
     	} else if (activeUser.isAdministrator()) {
-    		
+    		return null;
     	} else {
     		System.out.println("A student or root user is viewing enrollment by course, which is bad. Fix it.");
+    		return null;
     	}
     }
     
