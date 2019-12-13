@@ -12,9 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 
-import com.apcsa.controller.ArrayList;
 import com.apcsa.controller.Utils;
 import com.apcsa.model.Administrator;
 import com.apcsa.model.Student;
@@ -281,11 +281,11 @@ public class PowerSchool {
         }
     }
     
-    private ArrayList<String> teacherCourses(User teacher) {
+    public static ArrayList<String> teacherCourses(User teacher) {
     	try (Connection conn = getConnection();
                 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSES_FOR_TEACHER)) {
 
-               stmt.setString(1, teacher.getTeacherId());
+               stmt.setInt(1, ((Teacher) teacher).getTeacherId());
 
                ArrayList<String> courses = new ArrayList<String>();
                
@@ -294,6 +294,7 @@ public class PowerSchool {
                        courses.add(rs.getString("course_no"));
                    }
                }
+               return courses;
            } catch (SQLException e) {
                e.printStackTrace();
            }

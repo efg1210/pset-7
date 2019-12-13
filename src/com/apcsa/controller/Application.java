@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 import com.apcsa.data.*;
@@ -124,6 +125,9 @@ public class Application {
     	if (activeUser.isTeacher()) {
     		System.out.println("\nChoose a course.\n");
     		ArrayList<String> courses = PowerSchool.teacherCourses(activeUser);
+    		for (int i = 0; i < courses.size(); i++) {
+        		System.out.println(courses.get(i));
+    		}
     	} else if (activeUser.isAdministrator()) {
     		
     	} else {
