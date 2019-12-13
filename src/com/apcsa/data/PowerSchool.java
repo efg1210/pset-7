@@ -168,6 +168,32 @@ public class PowerSchool {
 
         return user;
     }
+    
+    public static User resetPassword(String username) {
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(QueryUtils.RESET_PASSWORD_SQL)) {
+
+            stmt.setString(1, username);
+            stmt.setString(2, Utils.getHash(username));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Timestamp ts = 0000-00-00 00:00:00.000;
+                    int affected = PowerSchool.updateLastLogin(conn, username, ts);
+
+                    if (affected != 1) {
+                        System.err.println("Unable to update last login (affected rows: " + affected + ").");
+                    }
+
+                    return new User(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     /*
      * Establishes a connection to the database.

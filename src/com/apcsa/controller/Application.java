@@ -195,7 +195,7 @@ public class Application {
     		in.nextLine();
     		if (confirmation.equals("y")) {
     			/* find user account
-    			 * PowerSchool.updateLastLogin()
+    			 * PowerSchool.resetPassword(, userID, "0000-00-00 00:00:00.000")
     			 */
     			System.out.println("Successfully reset password for " + userID + ".");
             } else if (confirmation.equals("n")) {
