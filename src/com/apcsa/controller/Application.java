@@ -195,7 +195,7 @@ public class Application {
     		in.nextLine();
     		if (confirmation.equals("y")) {
     			/* find user account
-    			 * change last login to 0000-00-00 00:00:00.000
+    			 * PowerSchool.updateLastLogin()
     			 */
     			System.out.println("Successfully reset password for " + userID + ".");
             } else if (confirmation.equals("n")) {
@@ -203,6 +203,8 @@ public class Application {
             } else {
             	System.out.println("Invalid input. Password reset aborted.");
             }
+    	} else {
+    		System.out.println("Invalid username. Password reset aborted.");
     	}
     }
     
