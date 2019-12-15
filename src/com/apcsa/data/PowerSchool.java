@@ -382,7 +382,7 @@ public class PowerSchool {
     
     public static double courseGrade(int courseID, int studentID) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_FROM_STUDENT_ID)) {
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_GRADE)) {
 
     		   stmt.setInt(1, courseID);   
     		   stmt.setInt(2, studentID);
@@ -409,7 +409,7 @@ public class PowerSchool {
     public static void addAssignment(int courseID, int mp, int isMid,
       int isFinal, String title, int pointValue) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_FROM_STUDENT_ID)) {
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.ADD_ASSIGNMENT )) {
 
     		stmt.setInt(1, courseID);
     		stmt.setInt(2, mp);
