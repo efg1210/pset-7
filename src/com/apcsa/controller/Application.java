@@ -127,17 +127,25 @@ public class Application {
     	
     	int selection = Utils.getInt(in, courses.size());
     	if (selection <= courses.size()) {
-    		int courseID = PowerSchool.courseID(courses.get(selection));
-    		
-    		//System.out.println(courseID);
+    		int courseID = PowerSchool.courseID(courses.get(selection - 1));    		
     		
     		ArrayList<Integer> studentIDs = PowerSchool.studentIDByCourse(courseID);
-
     		System.out.println("");
-    		for (int i = 0; i < studentIDs.size(); i++) {
-        		System.out.println("student id number " + i + ": " + studentIDs.get(i));
-    		}
     		
+    		ArrayList<String> studentFirstName = new ArrayList<String>();
+    		ArrayList<String> studentLastName = new ArrayList<String>();
+    		
+    		for (int i = 0; i < studentIDs.size(); i++) {
+    			System.out.println("id: " + studentIDs.get(i));
+    			
+    			studentFirstName.add(PowerSchool.studentFirstName(studentIDs.get(i)));
+    			studentLastName.add(PowerSchool.studentLastName(studentIDs.get(i)));
+    			
+    			System.out.print((i + 1) + ". " + studentLastName.get(i) + ", ");
+    			System.out.print(studentFirstName.get(i) + " / \n");
+    			
+    			
+    		}
     		
     	} else {
     		System.out.println("Invalid selection. Try again.");
@@ -145,6 +153,7 @@ public class Application {
     	
     	
     }
+    
     
     private ArrayList<String> viewCourse() {
     	if (activeUser.isTeacher()) {

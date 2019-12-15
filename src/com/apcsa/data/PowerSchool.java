@@ -320,11 +320,11 @@ public class PowerSchool {
            return 0;
     }
     
-    public static ArrayList<Integer> studentIDByCourse(int courseID1) {
+    public static ArrayList<Integer> studentIDByCourse(int courseID) {
     	try (Connection conn = getConnection();
                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_ID_BY_COURSE)) {
 
-               stmt.setInt(1, courseID1);
+               stmt.setInt(1, courseID);
                
                ArrayList<Integer> studentIDs = new ArrayList<Integer>();
                
@@ -334,6 +334,46 @@ public class PowerSchool {
                    }
                }
                return studentIDs;
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+           return null;
+    }
+    
+    public static String studentFirstName(int studentID) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_SQL)) {
+
+               stmt.setInt(1, studentID);
+
+               String firstName;
+               
+               try (ResultSet rs = stmt.executeQuery()) {
+                   if (rs.next()) {
+                	   firstName = rs.getString("first_name");
+                       return firstName;
+                   }
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+           return null;
+    }
+    
+    public static String studentLastName(int studentID) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_SQL)) {
+
+               stmt.setInt(1, studentID);
+
+               String lastName;
+               
+               try (ResultSet rs = stmt.executeQuery()) {
+                   if (rs.next()) {
+                	   lastName = rs.getString("last_name");
+                       return lastName;
+                   }
+               }
            } catch (SQLException e) {
                e.printStackTrace();
            }

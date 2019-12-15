@@ -75,4 +75,9 @@ public class QueryUtils {
     public static final String GET_STUDENT_ID_BY_COURSE =
     		"SELECT * FROM course_grades " + 
     			"WHERE course_id = ?";
+    
+    public static final String GRADE_BY_COURSE = 
+    		"SELECT * FROM COURSE_GRADES " +
+    			"WHERE COURSE_ID = ? " +
+    			"AND STUDENT_ID = ?";
 }
