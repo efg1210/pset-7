@@ -400,4 +400,27 @@ public class PowerSchool {
            }
            return 0;
     }
+    
+    /*
+     * course_id, assignment_id, marking_period, " +
+    			"is_midterm, is_final, title, point_value
+     * */
+    
+    public static void addAssignment(int courseID, int mp, int isMid,
+      int isFinal, String title, int pointValue) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_FROM_STUDENT_ID)) {
+
+    		stmt.setInt(1, courseID);
+    		stmt.setInt(2, mp);
+    		stmt.setInt(3, isMid);
+    		stmt.setInt(4, isFinal);
+    		stmt.setString(5, title);
+    		stmt.setInt(6, pointValue);
+               
+    		stmt.executeQuery();
+        } catch (SQLException e) {
+               e.printStackTrace();
+        }
+    }
 }

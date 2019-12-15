@@ -89,4 +89,10 @@ public class QueryUtils {
     		"SELECT * FROM course_grades " + 
     			"WHERE course_id = ? " +
     			"AND STUDENT_ID = ?";
+    
+    public static final String ADD_ASSIGNMENT = 
+    		"INSERT INTO ASSIGNMENTS " +
+    			"(course_id, marking_period, " +
+    			"is_midterm, is_final, title, point_value) " +
+    			"VALUES (?, ?, ?, ?, ?, ?)";
 }

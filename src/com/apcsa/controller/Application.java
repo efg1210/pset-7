@@ -111,13 +111,49 @@ public class Application {
         	
         	switch (selection) {
         		case 1: enrollmentByCourse(); break;
-        		case 2: 
+        		case 2: addAssignment(); break;
         		case 3: 
         		case 4: 
         		case 5: 
         		case 6: return false;
         		default: System.out.println("Invalid selection. Please do it again.");
         	}
+    	}
+    }
+    
+    private void addAssignment() {
+    	ArrayList<String> courses = viewCourse();
+    	System.out.print("\n::: ");
+    	
+    	int selection = Utils.getInt(in, courses.size());
+    	if (selection <= courses.size()) {
+    		int courseID = PowerSchool.courseID(courses.get(selection - 1));
+    		
+    		System.out.println("\nChoose a marking period or exam status.\n");
+    		System.out.println("[1] MP1 assignment.");
+    		System.out.println("[2] MP2 assignment.");
+    		System.out.println("[3] MP3 assignment.");
+    		System.out.println("[4] MP4 assignment.");
+    		System.out.println("[5] Midterm exam.");
+    		System.out.println("[6] Final exam.");
+        	System.out.print("\n::: ");
+        	assignment(Utils.getInt(in, 7), courseID);
+    	} else {
+    		System.out.println("Invalid selection. Try again.");
+    	}
+    }
+    
+    private void assignment(int selection, int courseID) {
+    	if (selection <= 4) {
+    		//System.out.println("selection: " + selection);
+    		
+    		System.out.print("\nAssignment Title: ");
+    		String title = in.nextLine();
+    		
+    		System.out.print("Point Value: ");
+    		int pointValue = Utils.getInt(in, 100);
+    		
+    		PowerSchool.addAssignment(courseID, (int) selection, 0, 0, title, pointValue);
     	}
     }
     
@@ -144,13 +180,13 @@ public class Application {
     			System.out.print((i + 1) + ". " + studentLastName.get(i) + ", ");
     			System.out.print(studentFirstName.get(i) + " / ");
     			
-    			if (activeUser.isAdministrator()) {
-    				
-    			} else if (activeUser.isTeacher()) {
-//    				System.out.println("\nstudent id: " + studentIDs.get(i));
-//    				System.out.println("course id: " + courseID);
-    				System.out.println(PowerSchool.courseGrade(courseID, (int) studentIDs.get(i)));
-    			}
+    			//doesn't work because there are no grades so far?
+//    			if (activeUser.isAdministrator()) {
+//    				
+//    			} else if (activeUser.isTeacher()) {
+//    				double grade = PowerSchool.courseGrade(courseID, studentIDs.get(i));
+//    				System.out.println(grade);
+//    			}
     		}
     		
     	} else {
@@ -162,7 +198,7 @@ public class Application {
     
     private ArrayList<String> viewCourse() {
     	if (activeUser.isTeacher()) {
-    		//System.out.println("\nChoose a course.\n");
+    		System.out.println("\nChoose a course.");
     		ArrayList<String> courses = PowerSchool.teacherCourses(activeUser);
     		System.out.println("");
     		for (int i = 0; i < courses.size(); i++) {
