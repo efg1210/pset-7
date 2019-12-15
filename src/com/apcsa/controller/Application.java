@@ -142,9 +142,15 @@ public class Application {
     			studentLastName.add(PowerSchool.studentLastName(studentIDs.get(i)));
     			
     			System.out.print((i + 1) + ". " + studentLastName.get(i) + ", ");
-    			System.out.print(studentFirstName.get(i) + " / \n");
+    			System.out.print(studentFirstName.get(i) + " / ");
     			
-    			
+    			if (activeUser.isAdministrator()) {
+    				
+    			} else if (activeUser.isTeacher()) {
+//    				System.out.println("\nstudent id: " + studentIDs.get(i));
+//    				System.out.println("course id: " + courseID);
+    				System.out.println(PowerSchool.courseGrade(courseID, (int) studentIDs.get(i)));
+    			}
     		}
     		
     	} else {
@@ -153,7 +159,6 @@ public class Application {
     	
     	
     }
-    
     
     private ArrayList<String> viewCourse() {
     	if (activeUser.isTeacher()) {

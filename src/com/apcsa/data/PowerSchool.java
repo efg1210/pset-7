@@ -379,4 +379,25 @@ public class PowerSchool {
            }
            return null;
     }
+    
+    public static double courseGrade(int courseID, int studentID) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_FROM_STUDENT_ID)) {
+
+    		   stmt.setInt(1, courseID);   
+    		   stmt.setInt(2, studentID);
+
+               double grade = 0;
+               
+	           try (ResultSet rs = stmt.executeQuery()) {
+	               if (rs.next()) {
+	            	   grade = rs.getDouble("grade");
+	               }
+	           }
+	           return grade;
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+           return 0;
+    }
 }
