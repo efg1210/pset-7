@@ -80,4 +80,8 @@ public class QueryUtils {
     		"SELECT * FROM COURSE_GRADES " +
     			"WHERE COURSE_ID = ? " +
     			"AND STUDENT_ID = ?";
+    
+    public static final String GET_STUDENT_FROM_STUDENT_ID =
+            "SELECT * FROM students " +
+                "WHERE STUDENT_ID = ?";
 }

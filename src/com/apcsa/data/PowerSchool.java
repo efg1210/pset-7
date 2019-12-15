@@ -342,7 +342,7 @@ public class PowerSchool {
     
     public static String studentFirstName(int studentID) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_SQL)) {
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_FROM_STUDENT_ID)) {
 
                stmt.setInt(1, studentID);
 
@@ -362,7 +362,7 @@ public class PowerSchool {
     
     public static String studentLastName(int studentID) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_SQL)) {
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_FROM_STUDENT_ID)) {
 
                stmt.setInt(1, studentID);
 

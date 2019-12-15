@@ -136,7 +136,7 @@ public class Application {
     		ArrayList<String> studentLastName = new ArrayList<String>();
     		
     		for (int i = 0; i < studentIDs.size(); i++) {
-    			System.out.println("id: " + studentIDs.get(i));
+    			//System.out.println("id: " + studentIDs.get(i));
     			
     			studentFirstName.add(PowerSchool.studentFirstName(studentIDs.get(i)));
     			studentLastName.add(PowerSchool.studentLastName(studentIDs.get(i)));
