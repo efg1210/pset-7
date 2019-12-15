@@ -320,15 +320,15 @@ public class PowerSchool {
            return 0;
     }
     
-    public static ArrayList<Integer> studentIDByCourse(int courseID) {
+    public static ArrayList<Integer> studentIDByCourse(int courseID1) {
     	try (Connection conn = getConnection();
                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_ID_BY_COURSE)) {
 
-               stmt.setInt(1, courseID);
+               stmt.setInt(1, courseID1);
                
                ArrayList<Integer> studentIDs = new ArrayList<Integer>();
                
-               try (ResultSet rs = stmt.executeQuery()) {
+               try (ResultSet rs = stmt.executeQuery()) {            	   
             	   while (rs.next()) {
             		   studentIDs.add(rs.getInt("student_id"));
                    }

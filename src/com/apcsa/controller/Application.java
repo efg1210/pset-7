@@ -127,12 +127,13 @@ public class Application {
     	
     	int selection = Utils.getInt(in, courses.size());
     	if (selection <= courses.size()) {
-    		int courseID = PowerSchool.courseID(courses.get(selection - 1));
+    		int courseID = PowerSchool.courseID(courses.get(selection));
+    		
+    		//System.out.println(courseID);
     		
     		ArrayList<Integer> studentIDs = PowerSchool.studentIDByCourse(courseID);
-    		
-    		System.out.println("array list students: " + studentIDs.get(0));
-    		
+
+    		System.out.println("");
     		for (int i = 0; i < studentIDs.size(); i++) {
         		System.out.println("student id number " + i + ": " + studentIDs.get(i));
     		}
