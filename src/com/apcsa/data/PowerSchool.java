@@ -176,13 +176,22 @@ public class PowerSchool {
             stmt.setString(1, username);
             stmt.setString(2, Utils.getHash(username));
 
+            if (stmt.executeUpdate() == 1) {
+                conn.commit();
+
+                return 1;
+            } else {
+                conn.rollback();
+
+                return -1;
+            }
+            
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Timestamp ts = 0000-00-00 00:00:00.000;
                     int affected = PowerSchool.updateLastLogin(conn, username, ts);
 
                     if (affected != 1) {
-                        System.err.println("Unable to update last login (affected rows: " + affected + ").");
+                        System.err.println("Unable to reset password (affected rows: " + affected + ").");
                     }
 
                     return new User(rs);

@@ -189,22 +189,19 @@ public class Application {
     	System.out.print("Username:");
     	String userID = in.nextLine();
     	in.nextLine();
+    	String confirmation = "";
     	if ("userID == a userID within database") {
-    		System.out.println("\n Are you sure you want to reset the password for " + userID + "? (y/n)");
-    		String confirmation = in.nextLine();
-    		in.nextLine();
-    		if (confirmation.equals("y")) {
-    			/* find user account
-    			 * PowerSchool.resetPassword(, userID, "0000-00-00 00:00:00.000")
-    			 */
-    			System.out.println("Successfully reset password for " + userID + ".");
-            } else if (confirmation.equals("n")) {
-            	System.out.println("Password reset aborted.");
-            } else {
-            	System.out.println("Invalid input. Password reset aborted.");
-            }
-    	} else {
-    		System.out.println("Invalid username. Password reset aborted.");
+    		do {
+        		System.out.println("\n Are you sure you want to reset the password for " + userID + "? (y/n)");
+        		confirmation = in.nextLine();
+        		in.nextLine();
+	    		if (confirmation.equals("y") || confirmation.equals("Y")) {
+	    			// PowerSchool.resetPassword(, userID, "0000-00-00 00:00:00.000")
+	    			System.out.println("Successfully reset password for " + userID + ".");
+	            } else if (confirmation.equals("n") || confirmation.equals("N")) {
+	            	System.out.println("Password reset aborted.");
+	            }
+    		} while (!confirmation.equals("y") && !confirmation.equals("n") && !confirmation.equals("Y") && !confirmation.equals("N"));
     	}
     }
     
