@@ -337,7 +337,6 @@ public class PowerSchool {
            } catch (SQLException e) {
                e.printStackTrace();
            }
-
            return null;
     }
 }

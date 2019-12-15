@@ -73,6 +73,6 @@ public class QueryUtils {
     			"WHERE COURSE_NO = ?";
     
     public static final String GET_STUDENT_ID_BY_COURSE =
-    		"SELECT STUDENT_ID FROM COURSE_GRADES "
-    		+ "WHERE COURSE_ID = ?";
+    		"SELECT STUDENT_ID FROM COURSE_GRADES " + 
+    			"WHERE COURSE_ID = ?";
 }
