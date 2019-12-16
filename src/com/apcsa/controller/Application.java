@@ -25,7 +25,7 @@ public class Application {
         this.in = new Scanner(System.in);
 
         try {
-        	PowerSchool.initialize(false);
+        	PowerSchool.initialize(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -148,65 +148,35 @@ public class Application {
     }
     
     private void assignment(int selection, int courseID) {
-    	if (selection <= 4) {
-    		System.out.print("\nAssignment Title: ");
-    		String title = in.nextLine();
-    		
-    		System.out.print("Point Value: ");
-    		
-    		int pointValue = Utils.getInt(in, 100);
-    		while (pointValue < 1 || pointValue > 100) {
-    			System.out.print("\nPoint values must be between 1 and 100.\n\nPoint Value: ");
-    			pointValue = Utils.getInt(in, 100);
-    		}
-    		
-    		System.out.print("\nAre you sure you want to create this assignment? (y/n) ");
-    		String agreement = in.nextLine().toLowerCase();
-    		
-    		if (agreement.equals("y")) {
-    			PowerSchool.addAssignment(courseID, 1, (int) selection, 0, 0, title, pointValue);
-    			System.out.println("\nSuccessfully created assignment.");
-    		}
-    	} else if (selection == 5) {
-    		System.out.print("\nAssignment Title: ");
-    		String title = in.nextLine();
-    		
-    		System.out.print("Point Value: ");
-    		
-    		int pointValue = Utils.getInt(in, 100);
-    		while (pointValue < 1 || pointValue > 100) {
-    			System.out.print("\nPoint values must be between 1 and 100.\n\nPoint Value: ");
-    			pointValue = Utils.getInt(in, 100);
-    		}
-    		
-    		System.out.print("\nAre you sure you want to create this assignment? (y/n) ");
-    		String agreement = in.nextLine().toLowerCase();
-    		
-    		if (agreement.equals("y")) {
-    			PowerSchool.addAssignment(courseID, 2, 0, 1, 0, title, pointValue);
-    			System.out.println("\nSuccessfully created assignment.");
-    		}
-    	} else if (selection == 6) {
-    		System.out.print("\nAssignment Title: ");
-    		String title = in.nextLine();
-    		
-    		System.out.print("Point Value: ");
-    		
-    		int pointValue = Utils.getInt(in, 100);
-    		while (pointValue < 1 || pointValue > 100) {
-    			System.out.print("\nPoint values must be between 1 and 100.\n\nPoint Value: ");
-    			pointValue = Utils.getInt(in, 100);
-    		}
-    		
-    		System.out.print("\nAre you sure you want to create this assignment? (y/n) ");
-    		String agreement = in.nextLine().toLowerCase();
-    		
-    		if (agreement.equals("y")) {
-    			PowerSchool.addAssignment(courseID, 3, 0, 0, 1, title, pointValue);
-    			System.out.println("\nSuccessfully created assignment.");
-    		}
-    	} else {
+    	if (selection > 6) {
     		System.out.println("\nInvalid selection. Try again.");
+    	} else {
+	    	System.out.print("\nAssignment Title: ");
+			String title = in.nextLine();
+			
+			System.out.print("Point Value: ");
+			
+			int pointValue = Utils.getInt(in, 100);
+			while (pointValue < 1 || pointValue > 100) {
+				System.out.print("\nPoint values must be between 1 and 100.\n\nPoint Value: ");
+				pointValue = Utils.getInt(in, 100);
+			}
+			
+			System.out.print("\nAre you sure you want to create this assignment? (y/n) ");
+			String agreement = in.nextLine().toLowerCase();
+			
+			if (agreement.equals("y")) {
+				if (selection <= 4) {
+					PowerSchool.addAssignment(courseID, 1, (int) selection, 0, 0, title, pointValue);
+				} else if (selection == 5) {
+	    			PowerSchool.addAssignment(courseID, 2, 0, 1, 0, title, pointValue);
+				} else if (selection == 6) {
+	    			PowerSchool.addAssignment(courseID, 3, 0, 0, 1, title, pointValue);
+				}
+				
+				System.out.println("\nSuccessfully created assignment.");
+			}
+	    	
     	}
     }
     
