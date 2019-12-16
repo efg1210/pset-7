@@ -146,19 +146,28 @@ public class Application {
     
     private void deleteAssignment() {
     	int courseID = assignments();
-    	int selection = Utils.getInt(in, 7);
+    	int markingPeriod = Utils.getInt(in, 7);
     	
-    	if (selection < 6) {
+    	if (markingPeriod < 6) {
     		System.out.println("Choose an assignment.\n");
         	ArrayList<String> assignments = new ArrayList<String>();
-        	if (selection <= 4) {
-        		assignments = PowerSchool.assignmentNameByMP(courseID, selection);
+        	ArrayList<Integer> values = new ArrayList<Integer>();
+        	if (markingPeriod <= 4) {
+        		assignments = PowerSchool.assignmentNameByMP(courseID, markingPeriod);
+        		values = PowerSchool.assignmentValuesByMP(courseID, markingPeriod);
         		for (int i = 0; i < assignments.size(); i++) {
-        			System.out.println("[" + (i + 1) + "] " + assignments.get(i));
+        			System.out.print("[" + (i + 1) + "] " + assignments.get(i));
+        			
+        			System.out.println(" (" + values.get(i) + ")");
         		}
-        	} else if (selection == 5) {
+            	System.out.print("\n::: ");
+        		int assignmentID = Utils.getInt(in, assignments.size());
+        		if (assignmentID < assignments.size()) {
+        			
+        		}
+        	} else if (markingPeriod == 5) {
         		System.out.println("\nMIDTERM");
-        	} else if (selection == 6) {
+        	} else if (markingPeriod == 6) {
         		System.out.println("\nFINAL");
         	} else {
         		System.out.println("\nInvalid selection. Try again.");

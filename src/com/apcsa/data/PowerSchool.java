@@ -463,4 +463,25 @@ public class PowerSchool {
            }
         return 0;
     }
+    
+    public static ArrayList<Integer> assignmentValuesByMP(int courseID, int mp) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_MP)) {
+
+                stmt.setInt(1, courseID);
+                stmt.setInt(2, mp);
+                
+                ArrayList<Integer> assignments = new ArrayList<Integer>();
+                
+                try (ResultSet rs = stmt.executeQuery()) {            	   
+             	   while (rs.next()) {
+             		  assignments.add(rs.getInt("point_value"));
+                    }
+                }
+                return assignments;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+    }
 }

@@ -103,4 +103,8 @@ public class QueryUtils {
     
     public static final String GET_ASSIGNMENT_IDS = 
     		"SELECT * FROM ASSIGNMENTS ";
+    
+    public static final String GET_ASSIGNMENT_BY_ID =
+    		"SELECT * FROM ASSIGNMENTS " +
+    			"WHERE ASSIGNMENT_ID = ?";
 }
