@@ -92,7 +92,7 @@ public class QueryUtils {
     
     public static final String ADD_ASSIGNMENT = 
     		"INSERT INTO ASSIGNMENTS " +
-    			"(course_id, marking_period, " +
+    			"(course_id, assignment_id, marking_period, " +
     			"is_midterm, is_final, title, point_value) " +
-    			"VALUES (?, ?, ?, ?, ?, ?)";
+    			"VALUES (?, ?, ?, ?, ?, ?, ?)";
 }

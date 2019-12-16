@@ -406,19 +406,20 @@ public class PowerSchool {
     			"is_midterm, is_final, title, point_value
      * */
     
-    public static void addAssignment(int courseID, int mp, int isMid,
+    public static void addAssignment(int courseID, int assignment_id, int mp, int isMid,
       int isFinal, String title, int pointValue) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.ADD_ASSIGNMENT )) {
+               PreparedStatement stmt = conn.prepareStatement(QueryUtils.ADD_ASSIGNMENT)) {
 
     		stmt.setInt(1, courseID);
-    		stmt.setInt(2, mp);
-    		stmt.setInt(3, isMid);
-    		stmt.setInt(4, isFinal);
-    		stmt.setString(5, title);
-    		stmt.setInt(6, pointValue);
+    		stmt.setInt(2, assignment_id);
+    		stmt.setInt(3, mp);
+    		stmt.setInt(4, isMid);
+    		stmt.setInt(5, isFinal);
+    		stmt.setString(6, title);
+    		stmt.setInt(7, pointValue);
                
-    		stmt.executeQuery();
+    		stmt.executeUpdate();
         } catch (SQLException e) {
                e.printStackTrace();
         }

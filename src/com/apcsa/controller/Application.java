@@ -25,7 +25,7 @@ public class Application {
         this.in = new Scanner(System.in);
 
         try {
-        	PowerSchool.initialize(false);
+        	PowerSchool.initialize(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -153,7 +153,7 @@ public class Application {
     		System.out.print("Point Value: ");
     		int pointValue = Utils.getInt(in, 100);
     		
-    		PowerSchool.addAssignment(courseID, (int) selection, 0, 0, title, pointValue);
+    		PowerSchool.addAssignment(courseID, 1, (int) selection, 0, 0, title, pointValue);
     	}
     }
     
@@ -181,12 +181,12 @@ public class Application {
     			System.out.print(studentFirstName.get(i) + " / ");
     			
     			//doesn't work because there are no grades so far?
-//    			if (activeUser.isAdministrator()) {
-//    				
-//    			} else if (activeUser.isTeacher()) {
-//    				double grade = PowerSchool.courseGrade(courseID, studentIDs.get(i));
-//    				System.out.println(grade);
-//    			}
+    			if (activeUser.isAdministrator()) {
+    				
+    			} else if (activeUser.isTeacher()) {
+    				double grade = PowerSchool.courseGrade(courseID, studentIDs.get(i));
+    				System.out.println(grade);
+    			}
     		}
     		
     	} else {
