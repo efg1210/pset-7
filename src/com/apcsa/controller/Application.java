@@ -25,7 +25,7 @@ public class Application {
         this.in = new Scanner(System.in);
 
         try {
-        	PowerSchool.initialize(true);
+        	PowerSchool.initialize(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -111,7 +111,7 @@ public class Application {
         	
         	switch (selection) {
         		case 1: enrollmentByCourse(); break;
-        		case 2: addAssignment(); break;
+        		case 2: addAssign(); break;
         		case 3: deleteAssignment(); break;
         		case 4: 
         		case 5: 
@@ -121,11 +121,7 @@ public class Application {
     	}
     }
     
-    private void deleteAssignment() {
-    	
-    }
-    
-    private void addAssignment() {
+    private int assignments() {
     	ArrayList<String> courses = viewCourse();
     	System.out.print("\n::: ");
     	
@@ -141,13 +137,40 @@ public class Application {
     		System.out.println("[5] Midterm exam.");
     		System.out.println("[6] Final exam.");
         	System.out.print("\n::: ");
-        	assignment(Utils.getInt(in, 7), courseID);
+        	return courseID;
     	} else {
     		System.out.println("Invalid selection. Try again.");
     	}
+    	return 0;
     }
     
-    private void assignment(int selection, int courseID) {
+    private void deleteAssignment() {
+    	int courseID = assignments();
+    	int selection = Utils.getInt(in, 7);
+    	
+    	if (selection < 6) {
+    		System.out.println("Choose an assignment.\n");
+        	ArrayList<String> assignments = new ArrayList<String>();
+        	if (selection <= 4) {
+        		assignments = PowerSchool.assignmentNameByMP(courseID, selection);
+        		for (int i = 0; i < assignments.size(); i++) {
+        			System.out.println("[" + (i + 1) + "] " + assignments.get(i));
+        		}
+        	} else if (selection == 5) {
+        		System.out.println("\nMIDTERM");
+        	} else if (selection == 6) {
+        		System.out.println("\nFINAL");
+        	} else {
+        		System.out.println("\nInvalid selection. Try again.");
+        	}
+    	} else {
+    		System.out.println("\nInvalid selection. Try again.");
+    	}
+    }
+    
+    private void addAssign() {
+    	int courseID = assignments();
+    	int selection = Utils.getInt(in, 7);
     	if (selection > 6) {
     		System.out.println("\nInvalid selection. Try again.");
     	} else {
@@ -165,13 +188,15 @@ public class Application {
 			System.out.print("\nAre you sure you want to create this assignment? (y/n) ");
 			String agreement = in.nextLine().toLowerCase();
 			
+			int assignmentID = PowerSchool.getLastAssignID() + 1;
+			
 			if (agreement.equals("y")) {
 				if (selection <= 4) {
-					PowerSchool.addAssignment(courseID, 1, (int) selection, 0, 0, title, pointValue);
+					PowerSchool.addAssignment(courseID, assignmentID, (int) selection, 0, 0, title, pointValue);
 				} else if (selection == 5) {
-	    			PowerSchool.addAssignment(courseID, 2, 0, 1, 0, title, pointValue);
+	    			PowerSchool.addAssignment(courseID, assignmentID, 0, 1, 0, title, pointValue);
 				} else if (selection == 6) {
-	    			PowerSchool.addAssignment(courseID, 3, 0, 0, 1, title, pointValue);
+	    			PowerSchool.addAssignment(courseID, assignmentID, 0, 0, 1, title, pointValue);
 				}
 				
 				System.out.println("\nSuccessfully created assignment.");

@@ -424,4 +424,43 @@ public class PowerSchool {
                e.printStackTrace();
         }
     }
+    
+    public static ArrayList<String> assignmentNameByMP(int courseID, int mp) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_MP)) {
+
+                stmt.setInt(1, courseID);
+                stmt.setInt(2, mp);
+                
+                ArrayList<String> assignments = new ArrayList<String>();
+                
+                try (ResultSet rs = stmt.executeQuery()) {            	   
+             	   while (rs.next()) {
+             		  assignments.add(rs.getString("title"));
+                    }
+                }
+                return assignments;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+    }
+    
+    public static int getLastAssignID() {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_IDS)) {
+    		
+               int assignmentID = 0;
+               
+	           try (ResultSet rs = stmt.executeQuery()) {
+	               while (rs.next()) {
+	            	   assignmentID = rs.getInt("assignment_ID");
+	               }
+	           }
+	           return assignmentID;
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+        return 0;
+    }
 }

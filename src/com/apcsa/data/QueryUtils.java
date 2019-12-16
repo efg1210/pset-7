@@ -95,4 +95,12 @@ public class QueryUtils {
     			"(course_id, assignment_id, marking_period, " +
     			"is_midterm, is_final, title, point_value) " +
     			"VALUES (?, ?, ?, ?, ?, ?, ?)";
+    
+    public static final String GET_ASSIGNMENT_BY_MP =
+    		"SELECT * FROM ASSIGNMENTS " +
+    			"WHERE COURSE_ID = ? " +
+    			"AND MARKING_PERIOD = ?";
+    
+    public static final String GET_ASSIGNMENT_IDS = 
+    		"SELECT * FROM ASSIGNMENTS ";
 }
