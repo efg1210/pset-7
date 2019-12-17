@@ -107,4 +107,12 @@ public class QueryUtils {
     public static final String GET_ASSIGNMENT_BY_ID =
     		"SELECT * FROM ASSIGNMENTS " +
     			"WHERE ASSIGNMENT_ID = ?";
+    
+    public static final String DELETE_ASSIGNMENT =
+    		"DELETE FROM ASSIGNMENTS " +
+    			"WHERE ASSIGNMENT_ID = ?";
+    
+    public static final String GET_ASSIGNMENT_BY_NAME =
+    		"SELECT * FROM ASSIGNMENTS " +
+    			"WHERE TITLE = ?";
 }

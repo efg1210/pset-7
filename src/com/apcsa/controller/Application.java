@@ -160,10 +160,14 @@ public class Application {
         			
         			System.out.println(" (" + values.get(i) + ")");
         		}
-            	System.out.print("\n::: ");
-        		int assignmentID = Utils.getInt(in, assignments.size());
+            	
+        		System.out.print("\n::: ");
+        		
+        		int assignmentNumber = Utils.getInt(in, assignments.size());
+        		
+        		int assignmentID = PowerSchool.assignmentIDByName(assignments.get(assignmentNumber - 1));
         		if (assignmentID < assignments.size()) {
-        			
+        			PowerSchool.deleteAssignment(assignmentID);
         		}
         	} else if (markingPeriod == 5) {
         		System.out.println("\nMIDTERM");

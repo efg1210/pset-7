@@ -401,18 +401,13 @@ public class PowerSchool {
            return 0;
     }
     
-    /*
-     * course_id, assignment_id, marking_period, " +
-    			"is_midterm, is_final, title, point_value
-     * */
-    
-    public static void addAssignment(int courseID, int assignment_id, int mp, int isMid,
+    public static void addAssignment(int courseID, int assignmentID, int mp, int isMid,
       int isFinal, String title, int pointValue) {
     	try (Connection conn = getConnection();
                PreparedStatement stmt = conn.prepareStatement(QueryUtils.ADD_ASSIGNMENT)) {
 
     		stmt.setInt(1, courseID);
-    		stmt.setInt(2, assignment_id);
+    		stmt.setInt(2, assignmentID);
     		stmt.setInt(3, mp);
     		stmt.setInt(4, isMid);
     		stmt.setInt(5, isFinal);
@@ -482,6 +477,37 @@ public class PowerSchool {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return null;
+    	return null;
+    }
+    
+    public static void deleteAssignment(int assignmentID) {
+		try (Connection conn = getConnection();
+		       PreparedStatement stmt = conn.prepareStatement(QueryUtils.DELETE_ASSIGNMENT)) {
+			
+			stmt.setInt(1, assignmentID);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+		       e.printStackTrace();
+		}
+    }
+    
+    public static int assignmentIDByName(String name) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_NAME)) {
+
+                stmt.setString(1, name);
+                
+                int assignmentID = 0;
+                
+                try (ResultSet rs = stmt.executeQuery()) {            	   
+             	   if (rs.next()) {
+             		  assignmentID = rs.getInt("assignment_id");
+                    }
+                }
+                return assignmentID;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+    	return 0;
     }
 }
