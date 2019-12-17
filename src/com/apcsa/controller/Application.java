@@ -149,7 +149,7 @@ public class Application {
     	int markingPeriod = Utils.getInt(in, 7);
     	
     	if (markingPeriod < 6) {
-    		System.out.println("Choose an assignment.\n");
+    		System.out.println("\nChoose an assignment.\n");
         	ArrayList<String> assignments = new ArrayList<String>();
         	ArrayList<Integer> values = new ArrayList<Integer>();
         	if (markingPeriod <= 4) {
@@ -162,12 +162,14 @@ public class Application {
         		}
             	
         		System.out.print("\n::: ");
-        		
         		int assignmentNumber = Utils.getInt(in, assignments.size());
-        		
-        		int assignmentID = PowerSchool.assignmentIDByName(assignments.get(assignmentNumber - 1));
-        		if (assignmentID < assignments.size()) {
+        		String assignmentName = assignments.get(assignmentNumber - 1);
+        		int assignmentID = PowerSchool.assignmentIDByName(assignmentName);
+        		System.out.print("\nAre you sure you want to delete this assignment? (y/n) ");
+    			String agreement = in.nextLine().toLowerCase();
+        		if ((assignmentID == PowerSchool.assignmentIDByName(assignmentName)) && agreement.equals("y")) {
         			PowerSchool.deleteAssignment(assignmentID);
+        			System.out.println("\nSuccessfully deleted " + assignmentName + ".");
         		}
         	} else if (markingPeriod == 5) {
         		System.out.println("\nMIDTERM");
