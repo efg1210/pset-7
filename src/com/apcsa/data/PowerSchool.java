@@ -602,7 +602,7 @@ public class PowerSchool {
                
 	           try (ResultSet rs = stmt.executeQuery()) {
 	               if (rs.next()) {
-	            	   grade = rs.getDouble("grade");
+	            	   grade = rs.getDouble("points_earned");
 	               }
 	           }
 	           return grade;
@@ -615,7 +615,7 @@ public class PowerSchool {
     public static void addAssignmentGrade(int courseID, int assignmentID, int studentID, 
       double pointsEarned, double pointsPoss, int isGraded) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.ADD_ASSIGNMENT_GRADE)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.ADD_ASSIGNMENT_GRADE)) {
 
      		stmt.setInt(1, courseID);
      		stmt.setInt(2, assignmentID);
@@ -628,5 +628,33 @@ public class PowerSchool {
          } catch (SQLException e) {
              e.printStackTrace();
          }
+    }
+    
+	public static void updateAssignmentGrade(int courseID, int assignmentID, int studentID, 
+	  double pointsEarned, int isGraded) {
+		try (Connection conn = getConnection();
+	      PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_ASSIGNMENT_GRADE)) {
+	
+			stmt.setDouble(1, pointsEarned);
+	 		stmt.setInt(2, isGraded);
+			stmt.setInt(3, courseID);
+	 		stmt.setInt(4, assignmentID);
+	 		stmt.setInt(5, studentID);
+	
+	 		stmt.executeUpdate();
+	     } catch (SQLException e) {
+	         e.printStackTrace();
+	     }
+	}
+	
+	public static void deleteGrades(int assignmentID) {
+		try (Connection conn = getConnection();
+		       PreparedStatement stmt = conn.prepareStatement(QueryUtils.DELETE_GRADES_FROM_ASSIGN)) {
+			
+			stmt.setInt(1, assignmentID);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
     }
 }

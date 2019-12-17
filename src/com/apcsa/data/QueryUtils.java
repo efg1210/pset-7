@@ -136,4 +136,16 @@ public class QueryUtils {
 			"(course_id, assignment_id, STUDENT_ID, " +
 			"POINTS_EARNED, POINTS_POSSIBLE, IS_GRADED) " +
 			"VALUES (?, ?, ?, ?, ?, ?)";
+    
+    public static final String UPDATE_ASSIGNMENT_GRADE = 
+    	"UPDATE ASSIGNMENT_GRADES " +
+			"SET POINTS_EARNED = ?, " +
+    		"IS_GRADED = ? " +
+    		"WHERE COURSE_ID = ? " +
+    		"AND ASSIGNMENT_ID = ? " +
+    		"AND STUDENT_ID = ? ";
+    
+    public static final String DELETE_GRADES_FROM_ASSIGN =
+    		"DELETE FROM ASSIGNMENT_GRADES " +
+    			"WHERE ASSIGNMENT_ID = ?";
 }
