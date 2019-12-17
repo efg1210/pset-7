@@ -144,8 +144,9 @@ public class Application {
     		values = PowerSchool.assignmentValuesByFin(courseID);
     	}
     	
-    	if (assignments.size() > 0) {
+    	ArrayList<Integer> studentIDs = PowerSchool.studentIDByCourse(courseID);
     	
+    	if (assignments.size() > 0  && studentIDs.size() > 0) {
 			System.out.println("\nChoose an assignment.\n");
 			for (int i = 0; i < assignments.size(); i++) {
 				System.out.print("[" + (i + 1) + "] " + assignments.get(i));
@@ -156,8 +157,7 @@ public class Application {
 			int assignmentNumber = Utils.getInt(in, assignments.size());
 			String assignmentName = assignments.get(assignmentNumber - 1);
 			int assignmentID = PowerSchool.assignmentIDByName(assignmentName);
-					
-			ArrayList<Integer> studentIDs = PowerSchool.studentIDByCourse(courseID);
+			
 			System.out.println("");
 			
 			ArrayList<String> studentFirstName = new ArrayList<String>();
@@ -187,7 +187,6 @@ public class Application {
 			
 			System.out.print("\nNew Grade: ");
 			
-			//System.out.print("\n::: ");
 			int newGrade = Utils.getInt(in, values.get(assignmentNumber - 1));
 			while (newGrade > values.get(assignmentNumber - 1)) {
 				System.out.print("New Grade: ");
@@ -196,6 +195,10 @@ public class Application {
 			
 			System.out.print("\nAre you sure you want to enter this grade? (y/n) ");
 			String agreement = in.nextLine().toLowerCase();
+			while (!agreement.equals("y") && !agreement.equals("n")) {
+				System.out.print("Are you sure you want to delete this assignment? (y/n) ");
+				agreement = in.nextLine().toLowerCase();
+			}
 			
 			if (agreement.equals("y") && grade == 0) {
 				PowerSchool.addAssignmentGrade(courseID, assignmentID, studentIDs.get(studentIndex), 
@@ -205,9 +208,13 @@ public class Application {
 				PowerSchool.updateAssignmentGrade(courseID, assignmentID, studentIDs.get(studentIndex), 
 				  newGrade, 1);
 				System.out.println("\nSuccessfully entered grade.");
+			} else {
+				System.out.println("\nGrade not entered.");
 			}
-    	} else {
+    	} else if (assignments.size() == 0) {
     		System.out.println("\nThere are no assignments.");
+    	} else if (studentIDs.size() == 0) {
+    		System.out.println("\nThere are no students for this course.");
     	}
     }
     
@@ -271,10 +278,17 @@ public class Application {
 		int assignmentID = PowerSchool.assignmentIDByName(assignmentName);
 		System.out.print("\nAre you sure you want to delete this assignment? (y/n) ");
 		String agreement = in.nextLine().toLowerCase();
+		while (!agreement.equals("y") && !agreement.equals("n")) {
+			System.out.print("Are you sure you want to delete this assignment? (y/n) ");
+			agreement = in.nextLine().toLowerCase();
+		}
+		
 		if ((assignmentID == PowerSchool.assignmentIDByName(assignmentName)) && agreement.equals("y")) {
 			PowerSchool.deleteGrades(assignmentID);
 			PowerSchool.deleteAssignment(assignmentID);
 			System.out.println("\nSuccessfully deleted " + assignmentName + ".");
+		} else {
+			System.out.println("\nAssignment not deleted.");
 		}
     }
     
@@ -300,6 +314,10 @@ public class Application {
 		
 		System.out.print("\nAre you sure you want to create this assignment? (y/n) ");
 		String agreement = in.nextLine().toLowerCase();
+		while (!agreement.equals("y") && !agreement.equals("n")) {
+			System.out.print("Are you sure you want to delete this assignment? (y/n) ");
+			agreement = in.nextLine().toLowerCase();
+		}
 		
 		int assignmentID = PowerSchool.getLastAssignID() + 1;
 		
@@ -313,6 +331,8 @@ public class Application {
 			}
 			
 			System.out.println("\nSuccessfully created assignment.");
+		} else {
+			System.out.println("\nAssignment not created.");
 		}
     }
     
@@ -344,7 +364,6 @@ public class Application {
     			System.out.print((i + 1) + ". " + studentLastName.get(i) + ", ");
     			System.out.print(studentFirstName.get(i) + " / ");
     			
-    			//doesn't work because there are no grades so far?
     			if (activeUser.isAdministrator()) {
     				
     			} else if (activeUser.isTeacher()) {
