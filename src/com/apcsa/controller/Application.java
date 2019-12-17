@@ -206,7 +206,20 @@ public class Application {
     }
     
     public void resetDatabase() {
-    	System.out.println("Reset database");
+    	System.out.println("Are you sure you want to factory reset the database? This will wipe out all of the data. (y/n)");
+    	String confirmation = "";
+		do {
+    		confirmation = in.nextLine();
+    		in.nextLine();
+    		if (confirmation.equals("y") || confirmation.equals("Y")) {
+    			PowerSchool.initialize(true);
+    			System.out.println("Successfully reset database. Please log in again to continue.");
+            } else if (confirmation.equals("n") || confirmation.equals("N")) {
+            	System.out.println("Factory reset aborted.");
+            } else {
+            	System.out.println("Invalid input. Please enter a valid input (y/n).");
+            }
+		} while (!confirmation.equals("y") && !confirmation.equals("n") && !confirmation.equals("Y") && !confirmation.equals("N"));
     }
      
     public void shutdown() {
