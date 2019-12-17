@@ -116,7 +116,7 @@ public class Application {
         		case 4: enterGrade(); break;
         		case 5: 
         		case 6: return false;
-        		default: System.out.println("Invalid selection. Please do it again.");
+        		default: System.out.println("\nInvalid selection.");
         	}
     	}
     }
@@ -133,27 +133,25 @@ public class Application {
     	ArrayList<String> assignments = new ArrayList<String>();
     	ArrayList<Integer> values = new ArrayList<Integer>();
     	
+    	if (markingPeriod <= 4) {
+    		assignments = PowerSchool.assignmentNameByMP(courseID, markingPeriod);
+    		values = PowerSchool.assignmentValuesByMP(courseID, markingPeriod);
+    	} else if (markingPeriod == 5) {
+    		assignments = PowerSchool.assignmentNameByMid(courseID);
+    		values = PowerSchool.assignmentValuesByMid(courseID);
+    	} else if (markingPeriod == 6) {
+    		assignments = PowerSchool.assignmentNameByFin(courseID);
+    		values = PowerSchool.assignmentValuesByFin(courseID);
+    	}
+    	
     	if (assignments.size() > 0) {
     	
-	    	System.out.println("\nChoose an assignment.\n");
-	    	
-	    	if (markingPeriod <= 4) {
-	    		assignments = PowerSchool.assignmentNameByMP(courseID, markingPeriod);
-	    		values = PowerSchool.assignmentValuesByMP(courseID, markingPeriod);
-	    	} else if (markingPeriod == 5) {
-	    		assignments = PowerSchool.assignmentNameByMid(courseID);
-	    		values = PowerSchool.assignmentValuesByMid(courseID);
-	    	} else if (markingPeriod == 6) {
-	    		assignments = PowerSchool.assignmentNameByFin(courseID);
-	    		values = PowerSchool.assignmentValuesByFin(courseID);
-	    	}
-	    	
-	    	for (int i = 0; i < assignments.size(); i++) {
+			System.out.println("\nChoose an assignment.\n");
+			for (int i = 0; i < assignments.size(); i++) {
 				System.out.print("[" + (i + 1) + "] " + assignments.get(i));
-				
 				System.out.println(" (" + values.get(i) + ")");
 			}
-	    	
+			
 			System.out.print("\n::: ");
 			int assignmentNumber = Utils.getInt(in, assignments.size());
 			String assignmentName = assignments.get(assignmentNumber - 1);
@@ -209,9 +207,8 @@ public class Application {
 				System.out.println("\nSuccessfully entered grade.");
 			}
     	} else {
-    		System.out.println("\nThere are no assignments. Please make one to grade.");
+    		System.out.println("\nThere are no assignments.");
     	}
-		
     }
     
     private int assignments() {
@@ -222,7 +219,7 @@ public class Application {
     	
     	while (selection > courses.size()) {
     		System.out.print("::: ");
-    		selection = Utils.getInt(in, 7);
+    		selection = Utils.getInt(in, courses.size());
     	}
     	
     	int courseID = PowerSchool.courseID(courses.get(selection - 1));
@@ -324,7 +321,7 @@ public class Application {
     	System.out.print("\n::: ");
        	int selection = Utils.getInt(in, courses.size());
     	
-    	while (selection >= courses.size()) {
+    	while (selection > courses.size()) {
     		System.out.print("::: ");
         	selection = Utils.getInt(in, courses.size());
     	}
