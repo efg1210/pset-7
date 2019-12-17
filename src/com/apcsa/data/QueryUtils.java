@@ -115,4 +115,14 @@ public class QueryUtils {
     public static final String GET_ASSIGNMENT_BY_NAME =
     		"SELECT * FROM ASSIGNMENTS " +
     			"WHERE TITLE = ?";
+    
+    public static final String GET_ASSIGNMENT_BY_MID =
+    		"SELECT * FROM ASSIGNMENTS " +
+    			"WHERE COURSE_ID = ? " +
+    			"AND IS_MIDTERM = 1";
+    
+    public static final String GET_ASSIGNMENT_BY_FIN =
+    		"SELECT * FROM ASSIGNMENTS " +
+    			"WHERE COURSE_ID = ? " +
+    			"AND IS_FINAL = 1";
 }

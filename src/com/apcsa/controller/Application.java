@@ -148,10 +148,42 @@ public class Application {
     	int courseID = assignments();
     	int markingPeriod = Utils.getInt(in, 7);
     	
-    	if (markingPeriod < 6) {
+    	if (markingPeriod < 7) {
     		System.out.println("\nChoose an assignment.\n");
         	ArrayList<String> assignments = new ArrayList<String>();
         	ArrayList<Integer> values = new ArrayList<Integer>();
+        	
+        	if (markingPeriod <= 4) {
+        		assignments = PowerSchool.assignmentNameByMP(courseID, markingPeriod);
+        		values = PowerSchool.assignmentValuesByMP(courseID, markingPeriod);
+        	} else if (markingPeriod == 5) {
+        		assignments = PowerSchool.assignmentNameByMid(courseID);
+        		values = PowerSchool.assignmentValuesByMid(courseID);
+        	} else if (markingPeriod == 6) {
+        		assignments = PowerSchool.assignmentNameByFin(courseID);
+        		values = PowerSchool.assignmentValuesByFin(courseID);
+        	} else {
+        		System.out.println("\nInvalid selection. Try again.");
+        	}
+        	
+        	for (int i = 0; i < assignments.size(); i++) {
+    			System.out.print("[" + (i + 1) + "] " + assignments.get(i));
+    			
+    			System.out.println(" (" + values.get(i) + ")");
+    		}
+        	
+    		System.out.print("\n::: ");
+    		int assignmentNumber = Utils.getInt(in, assignments.size());
+    		String assignmentName = assignments.get(assignmentNumber - 1);
+    		int assignmentID = PowerSchool.assignmentIDByName(assignmentName);
+    		System.out.print("\nAre you sure you want to delete this assignment? (y/n) ");
+			String agreement = in.nextLine().toLowerCase();
+    		if ((assignmentID == PowerSchool.assignmentIDByName(assignmentName)) && agreement.equals("y")) {
+    			PowerSchool.deleteAssignment(assignmentID);
+    			System.out.println("\nSuccessfully deleted " + assignmentName + ".");
+    		}
+        	
+    		/*
         	if (markingPeriod <= 4) {
         		assignments = PowerSchool.assignmentNameByMP(courseID, markingPeriod);
         		values = PowerSchool.assignmentValuesByMP(courseID, markingPeriod);
@@ -172,12 +204,13 @@ public class Application {
         			System.out.println("\nSuccessfully deleted " + assignmentName + ".");
         		}
         	} else if (markingPeriod == 5) {
-        		System.out.println("\nMIDTERM");
+        		System.out.println("MIDTERM");
         	} else if (markingPeriod == 6) {
-        		System.out.println("\nFINAL");
+        		System.out.println("FINAL");
         	} else {
         		System.out.println("\nInvalid selection. Try again.");
         	}
+    		*/
     	} else {
     		System.out.println("\nInvalid selection. Try again.");
     	}
