@@ -1,5 +1,6 @@
 package com.apcsa.controller; 
 
+import java.sql.Timestamp;
 import java.util.Scanner;
 import com.apcsa.data.PowerSchool;
 import com.apcsa.model.User;
@@ -166,7 +167,7 @@ public class Application {
      */
 
     public boolean isFirstLogin() {
-        return activeUser.getLastLogin().equals("0000-00-00 00:00:00.000");
+        return (activeUser.getLastLogin().equals("0000-00-00 00:00:00.000") || activeUser.getLastLogin().equals("1111-11-11 11:11:11.11"));
     }
     
     
@@ -184,24 +185,33 @@ public class Application {
     }
     
     public void resetPassword() {
-    	System.out.println("Reset password");
-    	
+    	in.nextLine();
     	System.out.print("Username:");
     	String userID = in.nextLine();
-    	in.nextLine();
+    	Timestamp ts = Timestamp.valueOf("1111-11-11 11:11:11.11");
     	String confirmation = "";
-    	if ("userID == a userID within database") {
-    		do {
-        		System.out.println("\n Are you sure you want to reset the password for " + userID + "? (y/n)");
+    	System.out.println("\n Are you sure you want to reset the password for " + userID + "? (y/n)");
+    	try {
+    		do {   		
         		confirmation = in.nextLine();
-        		in.nextLine();
 	    		if (confirmation.equals("y") || confirmation.equals("Y")) {
-	    			// PowerSchool.resetPassword(, userID, "0000-00-00 00:00:00.000")
-	    			System.out.println("Successfully reset password for " + userID + ".");
+	    			int successfulChange = PowerSchool.resetPassword(userID, ts);
+	    			switch(successfulChange) {
+		    			case 1: System.out.println("Successfully reset password for " + userID + "."); break;
+		    			case -1: System.out.println(userID + " is not a valid username."); break;
+		    			case -2: System.out.println("Issue with updating last login"); break;
+		    			case -3: System.out.println("Issue with PowerSchool statement"); break;
+		    			default: System.out.println("Issue with Application statement"); break;
+	    			}
 	            } else if (confirmation.equals("n") || confirmation.equals("N")) {
 	            	System.out.println("Password reset aborted.");
+	            } else {
+	            	System.out.println("Invalid input. Please enter a valid input (y/n).");
 	            }
     		} while (!confirmation.equals("y") && !confirmation.equals("n") && !confirmation.equals("Y") && !confirmation.equals("N"));
+    	} catch(Exception e) {
+            System.out.println("\nInvalid username.\n");
+            return;
     	}
     }
     
