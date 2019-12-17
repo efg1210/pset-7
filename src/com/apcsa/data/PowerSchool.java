@@ -299,7 +299,7 @@ public class PowerSchool {
                e.printStackTrace();
            }
 
-           return null;
+        return null;
     }
     
     public static int courseID(String courseName) {
@@ -317,7 +317,7 @@ public class PowerSchool {
                e.printStackTrace();
            }
 
-           return 0;
+        return 0;
     }
     
     public static ArrayList<Integer> studentIDByCourse(int courseID) {
@@ -337,7 +337,7 @@ public class PowerSchool {
            } catch (SQLException e) {
                e.printStackTrace();
            }
-           return null;
+        return null;
     }
     
     public static String studentFirstName(int studentID) {
@@ -357,7 +357,7 @@ public class PowerSchool {
            } catch (SQLException e) {
                e.printStackTrace();
            }
-           return null;
+        return null;
     }
     
     public static String studentLastName(int studentID) {
@@ -377,7 +377,7 @@ public class PowerSchool {
            } catch (SQLException e) {
                e.printStackTrace();
            }
-           return null;
+        return null;
     }
     
     public static double courseGrade(int courseID, int studentID) {
@@ -398,7 +398,7 @@ public class PowerSchool {
            } catch (SQLException e) {
                e.printStackTrace();
            }
-           return 0;
+        return 0;
     }
     
     public static void addAssignment(int courseID, int assignmentID, int mp, int isMid,
@@ -416,7 +416,7 @@ public class PowerSchool {
                
     		stmt.executeUpdate();
         } catch (SQLException e) {
-               e.printStackTrace();
+            e.printStackTrace();
         }
     }
     
@@ -438,7 +438,7 @@ public class PowerSchool {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return null;
+        return null;
     }
     
     public static int getLastAssignID() {
@@ -487,7 +487,7 @@ public class PowerSchool {
 			stmt.setInt(1, assignmentID);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-		       e.printStackTrace();
+		    e.printStackTrace();
 		}
     }
     
@@ -589,5 +589,44 @@ public class PowerSchool {
                 e.printStackTrace();
             }
     	return null;
+    }
+    
+    public static double assignmentGrade(int assignmentID, int studentID) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGN_GRADE)) {
+
+    		   stmt.setInt(1, assignmentID);   
+    		   stmt.setInt(2, studentID);
+
+               double grade = 0;
+               
+	           try (ResultSet rs = stmt.executeQuery()) {
+	               if (rs.next()) {
+	            	   grade = rs.getDouble("grade");
+	               }
+	           }
+	           return grade;
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+        return 0;
+    }
+    
+    public static void addAssignmentGrade(int courseID, int assignmentID, int studentID, 
+      double pointsEarned, double pointsPoss, int isGraded) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.ADD_ASSIGNMENT_GRADE)) {
+
+     		stmt.setInt(1, courseID);
+     		stmt.setInt(2, assignmentID);
+     		stmt.setInt(3, studentID);
+     		stmt.setDouble(4, pointsEarned);
+     		stmt.setDouble(5, pointsPoss);
+     		stmt.setInt(6, isGraded);
+                
+     		stmt.executeUpdate();
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
     }
 }

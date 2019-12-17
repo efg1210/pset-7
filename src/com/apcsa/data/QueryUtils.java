@@ -60,69 +60,80 @@ public class QueryUtils {
      */
     
     public static final String UPDATE_PASSWORD_SQL =
-            "UPDATE users " +
-                "SET auth = ? " +
-            "WHERE username = ?";
+        "UPDATE users " +
+            "SET auth = ? " +
+        "WHERE username = ?";
     
     public static final String GET_COURSES_FOR_TEACHER = 
-    		"SELECT * FROM COURSES " +
-    			"WHERE TEACHER_ID = ?";
+		"SELECT * FROM COURSES " +
+			"WHERE TEACHER_ID = ?";
     
     public static final String GET_COURSE_ID = 
-    		"SELECT * FROM COURSES " +
-    			"WHERE COURSE_NO = ?";
+		"SELECT * FROM COURSES " +
+			"WHERE COURSE_NO = ?";
     
     public static final String GET_STUDENT_ID_BY_COURSE =
-    		"SELECT * FROM course_grades " + 
-    			"WHERE course_id = ?";
+		"SELECT * FROM course_grades " + 
+			"WHERE course_id = ?";
     
     public static final String GRADE_BY_COURSE = 
-    		"SELECT * FROM COURSE_GRADES " +
-    			"WHERE COURSE_ID = ? " +
-    			"AND STUDENT_ID = ?";
+		"SELECT * FROM COURSE_GRADES " +
+			"WHERE COURSE_ID = ? " +
+			"AND STUDENT_ID = ?";
     
     public static final String GET_STUDENT_FROM_STUDENT_ID =
-            "SELECT * FROM students " +
-                "WHERE STUDENT_ID = ?";
+        "SELECT * FROM students " +
+            "WHERE STUDENT_ID = ?";
     
     public static final String GET_GRADE =
-    		"SELECT * FROM course_grades " + 
-    			"WHERE course_id = ? " +
-    			"AND STUDENT_ID = ?";
+		"SELECT * FROM course_grades " + 
+			"WHERE course_id = ? " +
+			"AND STUDENT_ID = ?";
     
     public static final String ADD_ASSIGNMENT = 
-    		"INSERT INTO ASSIGNMENTS " +
-    			"(course_id, assignment_id, marking_period, " +
-    			"is_midterm, is_final, title, point_value) " +
-    			"VALUES (?, ?, ?, ?, ?, ?, ?)";
+    	"INSERT INTO ASSIGNMENTS " +
+			"(course_id, assignment_id, marking_period, " +
+			"is_midterm, is_final, title, point_value) " +
+			"VALUES (?, ?, ?, ?, ?, ?, ?)";
     
     public static final String GET_ASSIGNMENT_BY_MP =
-    		"SELECT * FROM ASSIGNMENTS " +
-    			"WHERE COURSE_ID = ? " +
-    			"AND MARKING_PERIOD = ?";
+		"SELECT * FROM ASSIGNMENTS " +
+			"WHERE COURSE_ID = ? " +
+			"AND MARKING_PERIOD = ?";
     
     public static final String GET_ASSIGNMENT_IDS = 
-    		"SELECT * FROM ASSIGNMENTS ";
+    	"SELECT * FROM ASSIGNMENTS ";
     
     public static final String GET_ASSIGNMENT_BY_ID =
-    		"SELECT * FROM ASSIGNMENTS " +
-    			"WHERE ASSIGNMENT_ID = ?";
-    
+		"SELECT * FROM ASSIGNMENTS " +
+			"WHERE ASSIGNMENT_ID = ?";
+
     public static final String DELETE_ASSIGNMENT =
-    		"DELETE FROM ASSIGNMENTS " +
-    			"WHERE ASSIGNMENT_ID = ?";
+		"DELETE FROM ASSIGNMENTS " +
+			"WHERE ASSIGNMENT_ID = ?";
     
     public static final String GET_ASSIGNMENT_BY_NAME =
-    		"SELECT * FROM ASSIGNMENTS " +
-    			"WHERE TITLE = ?";
+		"SELECT * FROM ASSIGNMENTS " +
+			"WHERE TITLE = ?";
     
     public static final String GET_ASSIGNMENT_BY_MID =
-    		"SELECT * FROM ASSIGNMENTS " +
-    			"WHERE COURSE_ID = ? " +
-    			"AND IS_MIDTERM = 1";
+		"SELECT * FROM ASSIGNMENTS " +
+			"WHERE COURSE_ID = ? " +
+			"AND IS_MIDTERM = 1";
     
     public static final String GET_ASSIGNMENT_BY_FIN =
-    		"SELECT * FROM ASSIGNMENTS " +
-    			"WHERE COURSE_ID = ? " +
-    			"AND IS_FINAL = 1";
+		"SELECT * FROM ASSIGNMENTS " +
+			"WHERE COURSE_ID = ? " +
+			"AND IS_FINAL = 1";
+    
+    public static final String GET_ASSIGN_GRADE = 
+		"SELECT * FROM ASSIGNMENT_GRADES " +
+			"WHERE ASSIGNMENT_ID = ? " +
+			"AND STUDENT_ID = ?";
+    
+    public static final String ADD_ASSIGNMENT_GRADE = 
+		"INSERT INTO ASSIGNMENT_GRADES " +
+			"(course_id, assignment_id, STUDENT_ID, " +
+			"POINTS_EARNED, POINTS_POSSIBLE, IS_GRADED) " +
+			"VALUES (?, ?, ?, ?, ?, ?)";
 }
