@@ -236,8 +236,6 @@ public class PowerSchool {
 
     private static int updateLastLogin(Connection conn, String username, Timestamp ts) {
         try (PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_LAST_LOGIN_SQL)) {
-
-        	System.out.println(ts);
         	
             conn.setAutoCommit(false);
             stmt.setString(1, ts.toString());
