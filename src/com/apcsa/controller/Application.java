@@ -356,7 +356,7 @@ public class Application {
     			}
     		}
 		} else {
-			System.out.println("There are no students for this course.");
+			System.out.println("\nThere are no students for this course.");
 		}
     }
     
