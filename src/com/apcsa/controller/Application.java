@@ -93,7 +93,7 @@ public class Application {
     }
     
     private void admin() {
-    	System.out.println("admin");
+    	System.out.println("admin"); 
     }
 
     private boolean teacher() {
