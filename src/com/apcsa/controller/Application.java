@@ -92,8 +92,30 @@ public class Application {
         }
     }
     
-    private void admin() {
-    	System.out.println("admin");
+    private boolean admin() {
+    	System.out.println("Hello, again, " + activeUser.getFirstName() +"!");
+    	
+    	while (true) {
+    		System.out.println("\n[1] View faculty.");
+        	System.out.println("[2] View faculty by department.");
+        	System.out.println("[3] View student enrollment.");
+        	System.out.println("[4] View student enrollment by grade.");
+        	System.out.println("[5] View student enrollment by course.");
+        	System.out.println("[6] Change password.");
+        	System.out.print("[7] Logout.\n\n::: ");
+
+        	int selection = Utils.getInt(in, 8);
+        	
+        	switch (selection) {
+        		case 1: enrollmentByCourse(); break;
+        		case 2: addAssign(); break;
+        		case 3: deleteAssignment(); break;
+        		case 4: enterGrade(); break;
+        		case 5: 
+        		case 6: return false;
+        		default: System.out.println("\nInvalid selection.");
+        	}
+    	}
     }
 
     private boolean teacher() {
