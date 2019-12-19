@@ -173,4 +173,8 @@ public class QueryUtils {
     public static final String GET_TEACHER_WITH_TEACH_ID =
     		"SELECT * FROM TEACHERS " +
     			"WHERE TEACHER_ID = ?";
+    
+    public static final String GET_DEP_NAME =
+    		"SELECT * FROM DEPARTMENTS " +
+    			"WHERE DEPARTMENT_ID = ?";
 }

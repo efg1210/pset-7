@@ -343,7 +343,7 @@ public class PowerSchool {
     		e.printStackTrace();
     	}
 
-        return 0;
+        return -1;
     }
     
     public static ArrayList<Integer> studentIDByCourse(int courseID) {
@@ -424,7 +424,7 @@ public class PowerSchool {
     	} catch (SQLException e) {
     		e.printStackTrace();
     	}
-        return 0;
+        return -1;
     }
     
     public static void addAssignment(int courseID, int assignmentID, int mp, int isMid,
@@ -482,7 +482,7 @@ public class PowerSchool {
     	} catch (SQLException e) {
     		e.printStackTrace();
     	}
-        return 0;
+        return -1;
     }
     
     public static ArrayList<Integer> assignmentValuesByMP(int courseID, int mp) {
@@ -534,7 +534,7 @@ public class PowerSchool {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    	return 0;
+    	return -1;
     }
     
     public static ArrayList<String> assignmentNameByMid(int courseID) {
@@ -635,7 +635,7 @@ public class PowerSchool {
     	} catch (SQLException e) {
     		e.printStackTrace();
     	}
-    	return 0;
+    	return -1;
     }
     
     public static void addAssignmentGrade(int courseID, int assignmentID, int studentID, 
@@ -734,6 +734,46 @@ public class PowerSchool {
 				if (rs.next()) {
 					lastName = rs.getString("last_name");
 					return lastName;
+				}
+			}
+        } catch (SQLException e) {
+        	e.printStackTrace();
+        }
+		return null;
+	}
+	
+	public static int teacherDepartmentID(int teacherID) {
+		try (Connection conn = getConnection();
+	          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_TEACHER_WITH_TEACH_ID)) {
+
+			stmt.setInt(1, teacherID);
+			
+			int depID;
+			       
+			try (ResultSet rs = stmt.executeQuery()) {
+				if (rs.next()) {
+					depID = rs.getInt("department_id");
+					return depID;
+				}
+			}
+        } catch (SQLException e) {
+        	e.printStackTrace();
+        }
+		return -1;
+	}
+	
+	public static String depByID(int depID) {
+		try (Connection conn = getConnection();
+		      PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_DEP_NAME)) {
+
+			stmt.setInt(1, depID);
+			
+			String depName;
+			       
+			try (ResultSet rs = stmt.executeQuery()) {
+				if (rs.next()) {
+					depName = rs.getString("title");
+					return depName;
 				}
 			}
         } catch (SQLException e) {

@@ -133,7 +133,10 @@ public class Application {
 		
 		for (int i = 0; i < teacherIDs.size() - 1; i++) {
 			System.out.print(i + ". ");
-			System.out.print(PowerSchool.teacherFirstName(teacherIDs.get(i)));
+			System.out.print(PowerSchool.teacherLastName(teacherIDs.get(i)) + ", ");
+			System.out.print(PowerSchool.teacherFirstName(teacherIDs.get(i)) + "/ ");
+			int depID = PowerSchool.teacherDepartmentID(teacherIDs.get(i));
+			System.out.println(PowerSchool.depByID(depID));
 		}
 	}
 
@@ -455,7 +458,7 @@ public class Application {
     	 */
     }
     
-    private void root(User activeUser) {
+    private void root(/*User activeUser*/) {
     	System.out.println("\nHello, again, Root!\n");
         boolean validLogin = true;
         while (validLogin) {
