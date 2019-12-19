@@ -193,7 +193,7 @@ public class Application {
 	    	try {
 	    		int successfulChange = PowerSchool.resetPassword(userID, ts);
 		    	switch(successfulChange) {
-		    		case 1: System.out.println("Successfully reset password for " + userID + "."); break;
+		    		case 1: System.out.println("\nSuccessfully reset password for " + userID + ".\n"); break;
 			    	case -1: System.out.println(userID + " is not a valid username."); break;
 			    	case -2: System.out.println("Issue with updating last login"); break;
 			    	case -3: System.out.println("Issue with PowerSchool statement"); break;
@@ -210,7 +210,7 @@ public class Application {
     	if (Utils.confirm(in, "\nAre you sure you want to factory reset the database? This will wipe out all of the data. (y/n)")) {
 	    	try {
 	    		PowerSchool.initialize(true);
-    			System.out.println("Successfully reset database. Please log in again to continue.");
+    			System.out.println("\nSuccessfully reset database. Please log in again to continue.\n");
 	    	} catch(Exception e) {
 	            return;
 	    	}
