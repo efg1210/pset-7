@@ -414,13 +414,51 @@ public class Application {
     
     
     private void student() {
-    	System.out.println("student");
+    	System.out.println("\nHello, again, " + activeUser.getFirstName() + "!");
     	/* Needs:
     	 * View course grades
     	 * View assignment grades by course
     	 * Change password (shared with teacher / admin)
     	 * Logout of account (shared with all)
     	 */
+    	
+        boolean validLogin = true;
+        while (validLogin) {
+            final int VIEW_COURSE_GRADES = 1;
+            final int VIEW_ASSIGNMENT_GRADES = 2;
+            final int CHANGE_PASSWORD = 3;
+            final int LOGOUT = 4;
+        	
+            switch (getSelectionRoot()) {
+                case VIEW_COURSE_GRADES: viewCourseGrades(); break;
+                case VIEW_ASSIGNMENT_GRADES: viewAssignmentGrades(); break;
+                case CHANGE_PASSWORD: changePassword(); break;
+                case LOGOUT: validLogin = false; break;
+                default: System.out.println("\nInvalid selection.\n"); break;
+            }
+        }
+    	
+    }
+    
+    public int getSelectionStudent() {
+        System.out.println("[1] Reset user password.");
+        System.out.println("[2] Factory reset database.");
+        System.out.println("[3] Logout.");
+        System.out.println("[4] Shutdown.");
+        
+        return in.nextInt();
+    }
+    
+    public void viewCourseGrades() {
+    	System.out.println("View Course Grades");
+    }
+    
+    public void viewAssignmentGrades() {
+    	System.out.println("View Assignment Grades");
+    }
+    
+    public void changePassword() {
+    	System.out.println("Change Password");
     }
     
     private void root(User activeUser) {
