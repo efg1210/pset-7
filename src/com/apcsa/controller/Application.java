@@ -92,38 +92,29 @@ public class Application {
         }
     }
     
-    private boolean admin() {
-    	System.out.println("Hello, again, " + activeUser.getFirstName() +"!");
-    	
-    	while (true) {
-    		System.out.println("\n[1] View faculty.");
-        	System.out.println("[2] View faculty by department.");
-        	System.out.println("[3] View student enrollment.");
-        	System.out.println("[4] View student enrollment by grade.");
-        	System.out.println("[5] View student enrollment by course.");
-        	System.out.println("[6] Change password.");
-        	System.out.print("[7] Logout.\n\n::: ");
-
-        	int selection = Utils.getInt(in, 8);
-        	
-        	switch (selection) {
-        		case 1: viewFaculty(); break;
-        		case 2: break;
-        		case 3: break;
-        		case 4: break;
-        		case 5:
-        		case 6:
-        		case 7: return false;
-        		default: System.out.println("\nInvalid selection.");
-        	}
-    	}
-    }
-    
-    private void viewFaculty() {
-    	
+    private void admin() {
+    	System.out.println("admin");
+    	/* Needs:
+    	 * Change Password (shared with teacher / student)
+    	 * Logout of Account (shared with all)
+    	 * View enrollment
+    	 * View enrollment by grade
+    	 * View enrollment by course (shared with teacher)
+    	 * View faculty
+    	 * View faculty by department
+    	 */
     }
 
     private boolean teacher() {
+      /* Needs:
+    	 * Change password (shared with student / admin)
+    	 * Logout of account (shared with all)
+    	 * View enrollment by course (shared with admin)
+    	 * Add assignment
+    	 * Delete assignment
+    	 * Enter grade for assignment
+    	 */
+  
     	System.out.println("Hello, again, " + activeUser.getFirstName() +"!");
     	
     	while (true) {
@@ -133,7 +124,7 @@ public class Application {
         	System.out.println("[4] Enter grade.");
         	System.out.println("[5] Change password.");
         	System.out.print("[6] Logout.\n\n::: ");
-
+        
         	int selection = Utils.getInt(in, 7);
         	
         	switch (selection) {
@@ -424,10 +415,37 @@ public class Application {
     
     private void student() {
     	System.out.println("student");
+    	/* Needs:
+    	 * View course grades
+    	 * View assignment grades by course
+    	 * Change password (shared with teacher / admin)
+    	 * Logout of account (shared with all)
+    	 */
     }
     
-    private void root() {
-    	System.out.println("root");
+    private void root(User activeUser) {
+    	System.out.println("\nHello, again, Root!\n");
+        boolean validLogin = true;
+        while (validLogin) {
+            final int RESET_PASSWORD = 1;
+            final int RESET_DATABASE = 2;
+            final int LOGOUT = 3;
+            final int SHUTDOWN = 4;
+        	
+            switch (getSelectionRoot()) {
+                case RESET_PASSWORD: resetPassword(); break;
+                case RESET_DATABASE: resetDatabase(); break;
+                case LOGOUT: validLogin = false; break;
+                case SHUTDOWN: shutdown();
+                default: System.out.println("\nInvalid selection.\n"); break;
+            }
+        }
+    	/* Needs:
+    	 * Logout of account (shared with all)
+    	 * Reset password FOR ANOTHER ACCOUNT
+    	 * Factory reset database
+    	 * Invalid selection needs to disappear for aborted shutdown
+    	 */
     }
 
     /**
@@ -451,7 +469,73 @@ public class Application {
      */
 
     public boolean isFirstLogin() {
-        return activeUser.getLastLogin().equals("0000-00-00 00:00:00.000");
+        return (activeUser.getLastLogin().equals("0000-00-00 00:00:00.000") || activeUser.getLastLogin().equals("1111-11-11 11:11:11.11"));
+    }
+    
+    
+    /**
+     * Shutdowns application.
+     */
+    
+    public int getSelectionRoot() {
+        System.out.println("[1] Reset user password.");
+        System.out.println("[2] Factory reset database.");
+        System.out.println("[3] Logout.");
+        System.out.println("[4] Shutdown.");
+        
+        return in.nextInt();
+    }
+    
+    public void resetPassword() {
+    	in.nextLine();
+    	System.out.print("Username:");
+    	String userID = in.nextLine();
+    	Timestamp ts = Timestamp.valueOf("1111-11-11 11:11:11.11");
+    	if (Utils.confirm(in, "\nAre you sure you want to reset the password for " + userID + "? (y/n)")) {
+	    	try {
+	    		int successfulChange = PowerSchool.resetPassword(userID, ts);
+		    	switch(successfulChange) {
+		    		case 1: System.out.println("\nSuccessfully reset password for " + userID + ".\n"); break;
+			    	case -1: System.out.println(userID + " is not a valid username."); break;
+			    	case -2: System.out.println("Issue with updating last login"); break;
+			    	case -3: System.out.println("Issue with PowerSchool statement"); break;
+		    	}
+	    	} catch(Exception e) {
+	            System.out.println("\nInvalid username.\n");
+	            return;
+	    	}
+    	}
+    }
+    
+    public void resetDatabase() {
+    	in.nextLine();
+    	if (Utils.confirm(in, "\nAre you sure you want to factory reset the database? This will wipe out all of the data. (y/n)")) {
+	    	try {
+	    		PowerSchool.initialize(true);
+    			System.out.println("\nSuccessfully reset database. Please log in again to continue.\n");
+	    	} catch(Exception e) {
+	            return;
+	    	}
+    	}
+    }
+    
+     
+    public void shutdown() {
+    	in.nextLine();
+        
+    	if (Utils.confirm(in, "\nAre you sure you want to shut down the system? (y/n)")) {
+	    	try {
+	        	if (in != null) {
+	                in.close();
+	            }
+	            
+	            System.out.println("\nGoodbye!");
+	            System.exit(0);
+	    	} catch(Exception e) {
+	            return;
+	    	}
+    	}
+        
     }
 
     /////// MAIN METHOD ///////////////////////////////////////////////////////////////////

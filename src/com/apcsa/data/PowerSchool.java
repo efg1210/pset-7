@@ -170,6 +170,32 @@ public class PowerSchool {
 
         return user;
     }
+    
+    public static int resetPassword(String username, Timestamp ts) {
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(QueryUtils.RESET_PASSWORD_SQL)) {
+        	
+        	conn.setAutoCommit(false);
+            stmt.setString(1, Utils.getHash(username));
+            stmt.setString(2, ts.toString());
+            stmt.setString(3, username);
+
+            if (stmt.executeUpdate() == 1) {
+                conn.commit();
+
+                return 1;
+            } else {
+                conn.rollback();
+
+                return -1;
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            
+            return -2;
+        }
+    }
 
     /*
      * Establishes a connection to the database.
@@ -193,7 +219,7 @@ public class PowerSchool {
 
     private static int updateLastLogin(Connection conn, String username, Timestamp ts) {
         try (PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_LAST_LOGIN_SQL)) {
-
+        	
             conn.setAutoCommit(false);
             stmt.setString(1, ts.toString());
             stmt.setString(2, username);

@@ -50,4 +50,28 @@ public class Utils {
             in.nextLine();                      // always consume the dangling newline character
         }
     }
+    
+    /**
+     * Confirms a user's intent to perform an action.
+     * 
+     * @param in the Scanner
+     * @param message the confirmation prompt
+     * @return true if the user confirms; false otherwise
+     */
+
+    public static boolean confirm(Scanner in, String message) {
+        String response = "";
+        
+        // prompt user for explicit response of yes or no
+        
+        while (!response.equals("y") && !response.equals("n")) {
+            System.out.print(message);
+            response = in.next().toLowerCase();
+        }
+        
+        return response.equals("y");
+    }
+    
 }
+
+
