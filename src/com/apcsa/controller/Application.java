@@ -107,15 +107,20 @@ public class Application {
         	int selection = Utils.getInt(in, 8);
         	
         	switch (selection) {
-        		case 1: enrollmentByCourse(); break;
-        		case 2: addAssign(); break;
-        		case 3: deleteAssignment(); break;
-        		case 4: enterGrade(); break;
-        		case 5: 
-        		case 6: return false;
+        		case 1: viewFaculty(); break;
+        		case 2: break;
+        		case 3: break;
+        		case 4: break;
+        		case 5:
+        		case 6:
+        		case 7: return false;
         		default: System.out.println("\nInvalid selection.");
         	}
     	}
+    }
+    
+    private void viewFaculty() {
+    	
     }
 
     private boolean teacher() {
