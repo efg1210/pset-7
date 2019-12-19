@@ -170,48 +170,29 @@ public class PowerSchool {
     }
     
     public static int resetPassword(String username, Timestamp ts) {
-//        try (Connection conn = getConnection();
-//             PreparedStatement stmt = conn.prepareStatement(QueryUtils.RESET_PASSWORD_SQL)) {
-//        	
-//        	conn.setAutoCommit(false);
-//            stmt.setString(1, Utils.getHash(username));
-//            stmt.setString(2, ts);
-//            stmt.setString(3, username);
-//
-//            if (stmt.executeUpdate() == 1) {
-//                conn.commit();
-//
-//                return 1;
-//            } else {
-//                conn.rollback();
-//
-//                return -1;
-//            }
-//            
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            
-//            return -2;
-//        }
-    	
-    	try (Connection conn = getConnection()) {
-    		int success = updatePassword(username, Utils.getHash(username));
-    		if (success == 1) {
-    			success = updateLastLogin(conn, username, ts);
-    			if (success == 1) {
-    				return 1;
-    			} else if (success == -1) {
-    				return -2;
-    			}
-    		} else if (success == -1){
-    			return -1;
-    		}
-    	} catch (SQLException e) {
-    		e.printStackTrace();
-    		
-    		return -3;
-    	}
-    	 return -3;
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(QueryUtils.RESET_PASSWORD_SQL)) {
+        	
+        	conn.setAutoCommit(false);
+            stmt.setString(1, Utils.getHash(username));
+            stmt.setString(2, ts.toString());
+            stmt.setString(3, username);
+
+            if (stmt.executeUpdate() == 1) {
+                conn.commit();
+
+                return 1;
+            } else {
+                conn.rollback();
+
+                return -1;
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            
+            return -2;
+        }
     }
 
     /*

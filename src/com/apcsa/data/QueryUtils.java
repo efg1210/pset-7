@@ -45,8 +45,8 @@ public class QueryUtils {
     
     public static final String RESET_PASSWORD_SQL = 
     	"UPDATE users " +
-    		"SET auth = ? " +
-    		"SET last_login = ? " +
+    		"SET auth = ?, " +
+    		"last_login = ? " +
     	"WHERE username = ?";
     
     /*

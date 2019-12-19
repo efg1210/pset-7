@@ -189,7 +189,7 @@ public class Application {
     	System.out.print("Username:");
     	String userID = in.nextLine();
     	Timestamp ts = Timestamp.valueOf("1111-11-11 11:11:11.11");
-    	if (Utils.confirm(in, "\n Are you sure you want to reset the password for " + userID + "? (y/n)")) {
+    	if (Utils.confirm(in, "\nAre you sure you want to reset the password for " + userID + "? (y/n)")) {
 	    	try {
 	    		int successfulChange = PowerSchool.resetPassword(userID, ts);
 		    	switch(successfulChange) {
@@ -207,7 +207,7 @@ public class Application {
     
     public void resetDatabase() {
     	in.nextLine();
-    	if (Utils.confirm(in, "\n Are you sure you want to factory reset the database? This will wipe out all of the data. (y/n)")) {
+    	if (Utils.confirm(in, "\nAre you sure you want to factory reset the database? This will wipe out all of the data. (y/n)")) {
 	    	try {
 	    		PowerSchool.initialize(true);
     			System.out.println("Successfully reset database. Please log in again to continue.");
@@ -221,7 +221,7 @@ public class Application {
     public void shutdown() {
     	in.nextLine();
         
-    	if (Utils.confirm(in, "\n Are you sure you want to shut down the system? (y/n)")) {
+    	if (Utils.confirm(in, "\nAre you sure you want to shut down the system? (y/n)")) {
 	    	try {
 	        	if (in != null) {
 	                in.close();
