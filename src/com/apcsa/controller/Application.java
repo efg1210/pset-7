@@ -79,7 +79,7 @@ public class Application {
                 } else if (activeUser.isStudent()) {
                 	student();
                 } else if (activeUser.isRoot()) {
-                	root();
+                	root(activeUser);
                 }
 
                 // create and show the user interface
@@ -132,7 +132,7 @@ public class Application {
         		case 2: addAssign(); break;
         		case 3: deleteAssignment(); break;
         		case 4: enterGrade(); break;
-        		case 5: 
+        		case 5: changePassword(); break;
         		case 6: return false;
         		default: System.out.println("\nInvalid selection.");
         	}
@@ -441,10 +441,10 @@ public class Application {
     }
     
     public int getSelectionStudent() {
-        System.out.println("[1] Reset user password.");
-        System.out.println("[2] Factory reset database.");
-        System.out.println("[3] Logout.");
-        System.out.println("[4] Shutdown.");
+        System.out.println("[1] View course grades.");
+        System.out.println("[2] View assignment grades by course.");
+        System.out.println("[3] Change password.");
+        System.out.println("[4] Logout.");
         
         return in.nextInt();
     }
@@ -459,6 +459,18 @@ public class Application {
     
     public void changePassword() {
     	System.out.println("Change Password");
+    	
+    	System.out.println("\nEnter current password: ");
+    	String oldPassword = in.nextLine();
+    	System.out.println("\nEnter new password: ");
+    	String newPassword = in.nextLine();
+    	
+    	if (PowerSchool.passwordTest(activeUser.getUsername(), oldPassword)) {
+    		PowerSchool.updatePassword(activeUser.getUsername(), newPassword);
+    		System.out.println("\nSuccesfully changed password.\n");
+    	} else {
+    		System.out.println("\nInvalid current password.\n");
+    	};
     }
     
     private void root(User activeUser) {
