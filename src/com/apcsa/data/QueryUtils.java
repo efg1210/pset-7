@@ -166,4 +166,11 @@ public class QueryUtils {
     public static final String DELETE_GRADES_FROM_ASSIGN =
     		"DELETE FROM ASSIGNMENT_GRADES " +
     			"WHERE ASSIGNMENT_ID = ?";
+    
+    public static final String GET_TEACHER_IDS =
+    		"SELECT * FROM TEACHERS";
+    
+    public static final String GET_TEACHER_WITH_TEACH_ID =
+    		"SELECT * FROM TEACHERS " +
+    			"WHERE TEACHER_ID = ?";
 }

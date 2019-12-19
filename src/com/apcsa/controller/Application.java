@@ -129,7 +129,12 @@ public class Application {
 	}
  
 	private void viewFaculty() {
-	 	
+		ArrayList<Integer> teacherIDs = PowerSchool.teacherIDs();
+		
+		for (int i = 0; i < teacherIDs.size() - 1; i++) {
+			System.out.print(i + ". ");
+			System.out.print(PowerSchool.teacherFirstName(teacherIDs.get(i)));
+		}
 	}
 
     private boolean teacher() {
