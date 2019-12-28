@@ -686,7 +686,7 @@ public class PowerSchool {
 	
 	public static ArrayList<Integer> teacherIDs() {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_MID)) {
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_TEACHER_IDS)) {
                 
                 ArrayList<Integer> teacherIDs = new ArrayList<Integer>();
                 

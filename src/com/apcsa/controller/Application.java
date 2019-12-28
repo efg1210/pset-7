@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.Scanner;
 import com.apcsa.data.*;
 import com.apcsa.model.*;
+import java.util.Collections;
 
 public class Application {
 
@@ -130,13 +131,21 @@ public class Application {
  
 	private void viewFaculty() {
 		ArrayList<Integer> teacherIDs = PowerSchool.teacherIDs();
-		
-		for (int i = 0; i < teacherIDs.size() - 1; i++) {
-			System.out.print(i + ". ");
-			System.out.print(PowerSchool.teacherLastName(teacherIDs.get(i)) + ", ");
-			System.out.print(PowerSchool.teacherFirstName(teacherIDs.get(i)) + "/ ");
+		ArrayList<String> teacherMessage = new ArrayList<String>();
+
+		System.out.println("");
+		for (int i = 0; i < teacherIDs.size(); i++) {
+			String tempMessage = "";
+			tempMessage += (PowerSchool.teacherLastName(teacherIDs.get(i)) + ", ");
+			tempMessage += (PowerSchool.teacherFirstName(teacherIDs.get(i)) + " / ");
 			int depID = PowerSchool.teacherDepartmentID(teacherIDs.get(i));
-			System.out.println(PowerSchool.depByID(depID));
+			tempMessage += (PowerSchool.depByID(depID));
+			teacherMessage.add(tempMessage);
+		}
+		Collections.sort(teacherMessage);
+		for (int i = 0; i < teacherMessage.size(); i++) {
+			System.out.print((i + 1) + ". ");
+			System.out.println(teacherMessage.get(i));
 		}
 	}
 
