@@ -119,13 +119,32 @@ public class Application {
 			switch (selection) {
 				case 1: viewFaculty(); break;
 				case 2: facultyByDept(); break;
-				case 3: break;
+				case 3: enrollment(); break;
 				case 4: break;
 				case 5:
 				case 6:
 				case 7: return false;
 				default: System.out.println("\nInvalid selection.");
 			}
+		}
+	}
+	
+	private void enrollment() {
+		ArrayList<Integer> studentIDs = PowerSchool.studentIDs();
+		ArrayList<String> studentMessage = new ArrayList<String>();
+
+		System.out.println("");
+		for (int i = 0; i < studentIDs.size(); i++) {
+			String tempMessage = "";
+			tempMessage += (PowerSchool.studentLastName(studentIDs.get(i)) + ", ");
+			tempMessage += (PowerSchool.studentFirstName(studentIDs.get(i)) + " / ");
+			tempMessage += PowerSchool.studentGradYear(studentIDs.get(i));
+			studentMessage.add(tempMessage);
+		}
+		Collections.sort(studentMessage);
+		for (int i = 0; i < studentMessage.size(); i++) {
+			System.out.print((i + 1) + ". ");
+			System.out.println(studentMessage.get(i));
 		}
 	}
  

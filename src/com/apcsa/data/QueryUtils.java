@@ -184,4 +184,7 @@ public class QueryUtils {
     public static final String GET_TEACHER_BY_DEPT =
     		"SELECT * FROM TEACHERS " +
     			"WHERE DEPARTMENT_ID = ?";
+    
+    public static final String GET_STUDENT_IDS =
+    		"SELECT * FROM STUDENTS";
 }
