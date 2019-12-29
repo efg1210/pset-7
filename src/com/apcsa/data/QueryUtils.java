@@ -177,4 +177,11 @@ public class QueryUtils {
     public static final String GET_DEP_NAME =
     		"SELECT * FROM DEPARTMENTS " +
     			"WHERE DEPARTMENT_ID = ?";
+    
+    public static final String GET_DEPARTMENT_IDS =
+    		"SELECT * FROM DEPARTMENTS";
+    
+    public static final String GET_TEACHER_BY_DEPT =
+    		"SELECT * FROM TEACHERS " +
+    			"WHERE DEPARTMENT_ID = ?";
 }

@@ -118,7 +118,7 @@ public class Application {
 			
 			switch (selection) {
 				case 1: viewFaculty(); break;
-				case 2: break;
+				case 2: facultyByDept(); break;
 				case 3: break;
 				case 4: break;
 				case 5:
@@ -129,6 +129,30 @@ public class Application {
 		}
 	}
  
+	private void facultyByDept() {
+		ArrayList<Integer> deptIDs = PowerSchool.deptIDs();
+		System.out.println("\nChoose a department.\n");
+		for (int i = 0; i < deptIDs.size(); i++) {
+			System.out.print("[" + (i + 1) + "] ");
+			System.out.println(PowerSchool.depByID(deptIDs.get(i)));
+		}
+		
+		System.out.print("\n::: ");
+		int deptId = Utils.getInt(in, deptIDs.size());
+		while (deptId >= deptIDs.size()) {
+    		System.out.print("::: ");
+    		deptId = Utils.getInt(in, deptIDs.size());
+    	}
+		
+		ArrayList<Integer> teacherIDs = PowerSchool.teachersByDept(deptId);
+		for (int i = 0; i < teacherIDs.size(); i++) {
+			System.out.print("\n" + (i + 1) + ". ");
+			System.out.print(PowerSchool.teacherLastName(teacherIDs.get(i)) + ", ");
+			System.out.print(PowerSchool.teacherFirstName(teacherIDs.get(i)) + " / ");
+			System.out.println(PowerSchool.depByID(deptId));
+		}
+	}
+	
 	private void viewFaculty() {
 		ArrayList<Integer> teacherIDs = PowerSchool.teacherIDs();
 		ArrayList<String> teacherMessage = new ArrayList<String>();

@@ -781,4 +781,42 @@ public class PowerSchool {
         }
 		return null;
 	}
+	
+	public static ArrayList<Integer> deptIDs() {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_DEPARTMENT_IDS)) {
+                
+                ArrayList<Integer> deptIDs = new ArrayList<Integer>();
+                
+                try (ResultSet rs = stmt.executeQuery()) {            	   
+             	   while (rs.next()) {
+             		  deptIDs.add(rs.getInt("department_id"));
+                    }
+                }
+                return deptIDs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return null;
+    }
+	
+	public static ArrayList<Integer> teachersByDept(int deptID) {
+    	try (Connection conn = getConnection();
+    	  PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_TEACHER_BY_DEPT)) {
+                
+    		stmt.setInt(1, deptID);
+    		
+    		ArrayList<Integer> teacherIDs = new ArrayList<Integer>();
+                
+            try (ResultSet rs = stmt.executeQuery()) {            	   
+         	   while (rs.next()) {
+         		  teacherIDs.add(rs.getInt("teacher_id"));
+                }
+            }
+            return teacherIDs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return null;
+    }
 }
