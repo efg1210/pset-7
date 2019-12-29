@@ -144,6 +144,8 @@ public class Application {
     		gradeLevel = Utils.getInt(in, 5);
     	}
 		
+		gradeLevel += 8;
+		
 		ArrayList<Integer> studentIDs = PowerSchool.studentsByGrade(gradeLevel);
 		ArrayList<String> studentMessage = new ArrayList<String>();
 
@@ -157,14 +159,11 @@ public class Application {
 			studentMessage.add(tempMessage);
 		}
 		
-		System.out.println("student id size: " + studentIDs.size());
-		System.out.println("message size: " + studentMessage.size());
-		
-//		Collections.sort(studentMessage);
-//		for (int i = 0; i < studentMessage.size(); i++) {
-//			System.out.print((i + 1) + ". ");
-//			System.out.println(studentMessage.get(i));
-//		}
+		Collections.sort(studentMessage);
+		for (int i = 0; i < studentMessage.size(); i++) {
+			System.out.print((i + 1) + ". ");
+			System.out.println(studentMessage.get(i));
+		}
 	}
 	
 	private void enrollment() {
