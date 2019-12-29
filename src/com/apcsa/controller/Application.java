@@ -159,11 +159,16 @@ public class Application {
 			studentMessage.add(tempMessage);
 		}
 		
-		Collections.sort(studentMessage);
-		for (int i = 0; i < studentMessage.size(); i++) {
-			System.out.print((i + 1) + ". ");
-			System.out.println(studentMessage.get(i));
+		if (studentIDs.size() > 0) {
+			Collections.sort(studentMessage);
+			for (int i = 0; i < studentMessage.size(); i++) {
+				System.out.print((i + 1) + ". ");
+				System.out.println(studentMessage.get(i));
+			}
+		} else {
+			System.out.println("There are no students from this grade.");
 		}
+		
 	}
 	
 	private void enrollment() {
