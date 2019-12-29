@@ -309,18 +309,18 @@ public class PowerSchool {
     
     public static ArrayList<String> teacherCourses(User teacher) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSES_FOR_TEACHER)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSES_FOR_TEACHER)) {
 
-               stmt.setInt(1, ((Teacher) teacher).getTeacherId());
-
-               ArrayList<String> courses = new ArrayList<String>();
-               
-               try (ResultSet rs = stmt.executeQuery()) {
-                   while (rs.next()) {
-                       courses.add(rs.getString("course_no"));
-                   }
-               }
-               return courses;
+			stmt.setInt(1, ((Teacher) teacher).getTeacherId());
+			
+			ArrayList<String> courses = new ArrayList<String>();
+			   
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					courses.add(rs.getString("course_no"));
+				}
+			}
+			return courses;
         } catch (SQLException e) {
         	e.printStackTrace();
         }
@@ -330,15 +330,15 @@ public class PowerSchool {
     
     public static int courseID(String courseName) {
     	try (Connection conn = getConnection();
-               PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_ID)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_ID)) {
 
-               stmt.setString(1, courseName);
-               
-               try (ResultSet rs = stmt.executeQuery()) {
-                   if (rs.next()) {
-                       return rs.getInt("course_id");
-                   }
-               }
+			stmt.setString(1, courseName);
+			   
+			try (ResultSet rs = stmt.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt("course_id");
+				}
+			}
     	} catch (SQLException e) {
     		e.printStackTrace();
     	}
@@ -348,18 +348,18 @@ public class PowerSchool {
     
     public static ArrayList<Integer> studentIDByCourse(int courseID) {
     	try (Connection conn = getConnection();
-               PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_ID_BY_COURSE)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_ID_BY_COURSE)) {
 
-               stmt.setInt(1, courseID);
-               
-               ArrayList<Integer> studentIDs = new ArrayList<Integer>();
-               
-               try (ResultSet rs = stmt.executeQuery()) {            	   
-            	   while (rs.next()) {
-            		   studentIDs.add(rs.getInt("student_id"));
-                   }
-               }
-               return studentIDs;
+			stmt.setInt(1, courseID);
+			   
+			ArrayList<Integer> studentIDs = new ArrayList<Integer>();
+			   
+			try (ResultSet rs = stmt.executeQuery()) {            	   
+				while (rs.next()) {
+					studentIDs.add(rs.getInt("student_id"));
+				}
+			}
+			return studentIDs;
         } catch (SQLException e) {
         	e.printStackTrace();
         }
@@ -388,7 +388,7 @@ public class PowerSchool {
     
     public static String studentLastName(int studentID) {
     	try (Connection conn = getConnection();
-              PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_FROM_STUDENT_ID)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_FROM_STUDENT_ID)) {
 
 			stmt.setInt(1, studentID);
 			
@@ -408,19 +408,19 @@ public class PowerSchool {
     
     public static double courseGrade(int courseID, int studentID) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_GRADE)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_GRADE)) {
 
-    		   stmt.setInt(1, courseID);   
-    		   stmt.setInt(2, studentID);
-
-               double grade = 0;
-               
-	           try (ResultSet rs = stmt.executeQuery()) {
-	               if (rs.next()) {
-	            	   grade = rs.getDouble("grade");
-	               }
+		   stmt.setInt(1, courseID);   
+		   stmt.setInt(2, studentID);
+	
+	       double grade = 0;
+	       
+	       try (ResultSet rs = stmt.executeQuery()) {
+	           if (rs.next()) {
+	        	   grade = rs.getDouble("grade");
 	           }
-	           return grade;
+	       }
+	       return grade;
     	} catch (SQLException e) {
     		e.printStackTrace();
     	}
@@ -430,7 +430,7 @@ public class PowerSchool {
     public static void addAssignment(int courseID, int assignmentID, int mp, int isMid,
       int isFinal, String title, int pointValue) {
     	try (Connection conn = getConnection();
-               PreparedStatement stmt = conn.prepareStatement(QueryUtils.ADD_ASSIGNMENT)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.ADD_ASSIGNMENT)) {
 
     		stmt.setInt(1, courseID);
     		stmt.setInt(2, assignmentID);
@@ -448,19 +448,19 @@ public class PowerSchool {
     
     public static ArrayList<String> assignmentNameByMP(int courseID, int mp) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_MP)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_MP)) {
 
-                stmt.setInt(1, courseID);
-                stmt.setInt(2, mp);
-                
-                ArrayList<String> assignments = new ArrayList<String>();
-                
-                try (ResultSet rs = stmt.executeQuery()) {            	   
-             	   while (rs.next()) {
-             		  assignments.add(rs.getString("title"));
-                    }
-                }
-                return assignments;
+		        stmt.setInt(1, courseID);
+		        stmt.setInt(2, mp);
+		        
+		        ArrayList<String> assignments = new ArrayList<String>();
+		        
+		        try (ResultSet rs = stmt.executeQuery()) {            	   
+		     	   while (rs.next()) {
+		     		  assignments.add(rs.getString("title"));
+		            }
+		        }
+		        return assignments;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -469,16 +469,16 @@ public class PowerSchool {
     
     public static int getLastAssignID() {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_IDS)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_IDS)) {
     		
-               int assignmentID = 0;
-               
-	           try (ResultSet rs = stmt.executeQuery()) {
-	               while (rs.next()) {
-	            	   assignmentID = rs.getInt("assignment_ID");
-	               }
+	       int assignmentID = 0;
+	       
+	       try (ResultSet rs = stmt.executeQuery()) {
+	           while (rs.next()) {
+	        	   assignmentID = rs.getInt("assignment_ID");
 	           }
-	           return assignmentID;
+	       }
+	       return assignmentID;
     	} catch (SQLException e) {
     		e.printStackTrace();
     	}
@@ -487,19 +487,19 @@ public class PowerSchool {
     
     public static ArrayList<Integer> assignmentValuesByMP(int courseID, int mp) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_MP)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_MP)) {
 
-                stmt.setInt(1, courseID);
-                stmt.setInt(2, mp);
-                
-                ArrayList<Integer> assignments = new ArrayList<Integer>();
-                
-                try (ResultSet rs = stmt.executeQuery()) {            	   
-             	   while (rs.next()) {
-             		  assignments.add(rs.getInt("point_value"));
-                    }
-                }
-                return assignments;
+	        stmt.setInt(1, courseID);
+	        stmt.setInt(2, mp);
+	        
+	        ArrayList<Integer> assignments = new ArrayList<Integer>();
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {            	   
+	     	   while (rs.next()) {
+	     		  assignments.add(rs.getInt("point_value"));
+	           }
+	        }
+	        return assignments;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -508,7 +508,7 @@ public class PowerSchool {
     
     public static void deleteAssignment(int assignmentID) {
 		try (Connection conn = getConnection();
-		       PreparedStatement stmt = conn.prepareStatement(QueryUtils.DELETE_ASSIGNMENT)) {
+		  PreparedStatement stmt = conn.prepareStatement(QueryUtils.DELETE_ASSIGNMENT)) {
 			
 			stmt.setInt(1, assignmentID);
 			stmt.executeUpdate();
@@ -519,18 +519,18 @@ public class PowerSchool {
     
     public static int assignmentIDByName(String name) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_NAME)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_NAME)) {
 
-                stmt.setString(1, name);
-                
-                int assignmentID = 0;
-                
-                try (ResultSet rs = stmt.executeQuery()) {            	   
-             	   if (rs.next()) {
-             		  assignmentID = rs.getInt("assignment_id");
-                    }
-                }
-                return assignmentID;
+	        stmt.setString(1, name);
+	        
+	        int assignmentID = 0;
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {            	   
+	     	   if (rs.next()) {
+	     		  assignmentID = rs.getInt("assignment_id");
+	           }
+	        }
+	        return assignmentID;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -539,18 +539,18 @@ public class PowerSchool {
     
     public static ArrayList<String> assignmentNameByMid(int courseID) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_MID)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_MID)) {
 
-                stmt.setInt(1, courseID);
-                
-                ArrayList<String> assignments = new ArrayList<String>();
-                
-                try (ResultSet rs = stmt.executeQuery()) {            	   
-             	   while (rs.next()) {
-             		  assignments.add(rs.getString("title"));
-                    }
-                }
-                return assignments;
+	        stmt.setInt(1, courseID);
+	        
+	        ArrayList<String> assignments = new ArrayList<String>();
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {            	   
+	     	   while (rs.next()) {
+	     		  assignments.add(rs.getString("title"));
+	           }
+	        }
+	        return assignments;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -559,18 +559,18 @@ public class PowerSchool {
     
     public static ArrayList<String> assignmentNameByFin(int courseID) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_FIN)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_FIN)) {
 
-                stmt.setInt(1, courseID);
-                
-                ArrayList<String> assignments = new ArrayList<String>();
-                
-                try (ResultSet rs = stmt.executeQuery()) {            	   
-             	   while (rs.next()) {
-             		  assignments.add(rs.getString("title"));
-                    }
-                }
-                return assignments;
+	        stmt.setInt(1, courseID);
+	        
+	        ArrayList<String> assignments = new ArrayList<String>();
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {            	   
+	     	   while (rs.next()) {
+	     		  assignments.add(rs.getString("title"));
+	           }
+	        }
+	        return assignments;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -579,18 +579,18 @@ public class PowerSchool {
     
     public static ArrayList<Integer> assignmentValuesByMid(int courseID) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_MID)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_MID)) {
 
-                stmt.setInt(1, courseID);
-                
-                ArrayList<Integer> assignments = new ArrayList<Integer>();
-                
-                try (ResultSet rs = stmt.executeQuery()) {            	   
-             	   while (rs.next()) {
-             		  assignments.add(rs.getInt("point_value"));
-                    }
-                }
-                return assignments;
+		    stmt.setInt(1, courseID);
+		    
+		    ArrayList<Integer> assignments = new ArrayList<Integer>();
+		    
+		    try (ResultSet rs = stmt.executeQuery()) {            	   
+		 	   while (rs.next()) {
+		 		  assignments.add(rs.getInt("point_value"));
+		       }
+		    }
+		    return assignments;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
@@ -599,18 +599,18 @@ public class PowerSchool {
     
     public static ArrayList<Integer> assignmentValuesByFin(int courseID) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_FIN)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_FIN)) {
 
-                stmt.setInt(1, courseID);
-                
-                ArrayList<Integer> assignments = new ArrayList<Integer>();
-                
-                try (ResultSet rs = stmt.executeQuery()) {            	   
-             	   while (rs.next()) {
-             		  assignments.add(rs.getInt("point_value"));
-                    }
-                }
-                return assignments;
+	        stmt.setInt(1, courseID);
+	        
+	        ArrayList<Integer> assignments = new ArrayList<Integer>();
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {            	   
+	     	   while (rs.next()) {
+	     		  assignments.add(rs.getInt("point_value"));
+	           }
+	        }
+	        return assignments;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -619,19 +619,19 @@ public class PowerSchool {
     
     public static double assignmentGrade(int assignmentID, int studentID) {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGN_GRADE)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGN_GRADE)) {
 
-    		   stmt.setInt(1, assignmentID);   
-    		   stmt.setInt(2, studentID);
-
-               double grade = 0;
-               
-	           try (ResultSet rs = stmt.executeQuery()) {
-	               if (rs.next()) {
-	            	   grade = rs.getDouble("points_earned");
-	               }
-	           }
-	           return grade;
+			stmt.setInt(1, assignmentID);   
+			stmt.setInt(2, studentID);
+			
+			double grade = 0;
+			   
+			try (ResultSet rs = stmt.executeQuery()) {
+				if (rs.next()) {
+					grade = rs.getDouble("points_earned");
+				}
+			}
+			return grade;
     	} catch (SQLException e) {
     		e.printStackTrace();
     	}
@@ -675,7 +675,7 @@ public class PowerSchool {
 	
 	public static void deleteGrades(int assignmentID) {
 		try (Connection conn = getConnection();
-		       PreparedStatement stmt = conn.prepareStatement(QueryUtils.DELETE_GRADES_FROM_ASSIGN)) {
+		  PreparedStatement stmt = conn.prepareStatement(QueryUtils.DELETE_GRADES_FROM_ASSIGN)) {
 			
 			stmt.setInt(1, assignmentID);
 			stmt.executeUpdate();
@@ -693,7 +693,7 @@ public class PowerSchool {
             try (ResultSet rs = stmt.executeQuery()) {            	   
          	   while (rs.next()) {
          		  teacherIDs.add(rs.getInt("teacher_id"));
-                }
+               }
             }
             return teacherIDs;
         } catch (SQLException e) {
@@ -704,7 +704,7 @@ public class PowerSchool {
 	
 	public static String teacherFirstName(int teacherID) {
 		try (Connection conn = getConnection();
-	          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_TEACHER_WITH_TEACH_ID)) {
+	      PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_TEACHER_WITH_TEACH_ID)) {
 
 			stmt.setInt(1, teacherID);
 			
@@ -724,7 +724,7 @@ public class PowerSchool {
 	
 	public static String teacherLastName(int teacherID) {
 		try (Connection conn = getConnection();
-	          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_TEACHER_WITH_TEACH_ID)) {
+	      PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_TEACHER_WITH_TEACH_ID)) {
 
 			stmt.setInt(1, teacherID);
 			
@@ -744,7 +744,7 @@ public class PowerSchool {
 	
 	public static int teacherDepartmentID(int teacherID) {
 		try (Connection conn = getConnection();
-	          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_TEACHER_WITH_TEACH_ID)) {
+	      PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_TEACHER_WITH_TEACH_ID)) {
 
 			stmt.setInt(1, teacherID);
 			
@@ -764,7 +764,7 @@ public class PowerSchool {
 	
 	public static String depByID(int depID) {
 		try (Connection conn = getConnection();
-		      PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_DEP_NAME)) {
+		  PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_DEP_NAME)) {
 
 			stmt.setInt(1, depID);
 			
@@ -784,16 +784,16 @@ public class PowerSchool {
 	
 	public static ArrayList<Integer> deptIDs() {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_DEPARTMENT_IDS)) {
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_DEPARTMENT_IDS)) {
                 
-                ArrayList<Integer> deptIDs = new ArrayList<Integer>();
-                
-                try (ResultSet rs = stmt.executeQuery()) {            	   
-             	   while (rs.next()) {
-             		  deptIDs.add(rs.getInt("department_id"));
-                    }
-                }
-                return deptIDs;
+	        ArrayList<Integer> deptIDs = new ArrayList<Integer>();
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {            	   
+	     	   while (rs.next()) {
+	     		  deptIDs.add(rs.getInt("department_id"));
+	           }
+	        }
+	        return deptIDs;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -811,7 +811,7 @@ public class PowerSchool {
             try (ResultSet rs = stmt.executeQuery()) {            	   
          	   while (rs.next()) {
          		  teacherIDs.add(rs.getInt("teacher_id"));
-                }
+               }
             }
             return teacherIDs;
         } catch (SQLException e) {
@@ -829,7 +829,7 @@ public class PowerSchool {
 	        try (ResultSet rs = stmt.executeQuery()) {            	   
 	     	   while (rs.next()) {
 	     		  studentIDs.add(rs.getInt("student_id"));
-	            }
+	           }
 	        }
 	        return studentIDs;
         } catch (SQLException e) {
@@ -850,6 +850,46 @@ public class PowerSchool {
                if (rs.next()) {
             	   gradYear = rs.getInt("graduation");
                    return gradYear;
+               }
+           }
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+        return -1;
+    }
+	
+	public static ArrayList<Integer> studentsByGrade(int gradeLevel) {
+		try (Connection conn = getConnection();
+    	  PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_IDS_BY_GRADE)) {
+                
+    		stmt.setInt(1, gradeLevel);
+    		
+    		ArrayList<Integer> studentIDs = new ArrayList<Integer>();
+                
+            try (ResultSet rs = stmt.executeQuery()) {            	   
+         	   while (rs.next()) {
+         		  studentIDs.add(rs.getInt("student_id"));
+               }
+            }
+            return studentIDs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return null;
+    }
+	
+	public static int studentRank(int studentID) {
+    	try (Connection conn = getConnection();
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_FROM_STUDENT_ID)) {
+
+           stmt.setInt(1, studentID);
+
+           int classRank;
+           
+           try (ResultSet rs = stmt.executeQuery()) {
+               if (rs.next()) {
+            	   classRank = rs.getInt("class_rank");
+                   return classRank;
                }
            }
     	} catch (SQLException e) {

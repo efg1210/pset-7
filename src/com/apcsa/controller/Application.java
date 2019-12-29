@@ -120,13 +120,51 @@ public class Application {
 				case 1: viewFaculty(); break;
 				case 2: facultyByDept(); break;
 				case 3: enrollment(); break;
-				case 4: break;
+				case 4: classEnrollment(); break;
 				case 5:
 				case 6:
 				case 7: return false;
 				default: System.out.println("\nInvalid selection.");
 			}
 		}
+	}
+	
+	private void classEnrollment() {
+		System.out.println("\nChoose a grade level.\n");
+		System.out.println("[1] Freshman.");
+		System.out.println("[2] Sophomore.");
+		System.out.println("[3] Junior.");
+		System.out.println("[4] Senior.");
+		
+		System.out.print("\n::: ");
+		
+		int gradeLevel = Utils.getInt(in, 5);
+		while (gradeLevel >= 5) {
+    		System.out.print("::: ");
+    		gradeLevel = Utils.getInt(in, 5);
+    	}
+		
+		ArrayList<Integer> studentIDs = PowerSchool.studentsByGrade(gradeLevel);
+		ArrayList<String> studentMessage = new ArrayList<String>();
+
+		System.out.println("");
+		
+		for (int i = 0; i < studentIDs.size(); i++) {
+			String tempMessage = "";
+			tempMessage += (PowerSchool.studentLastName(studentIDs.get(i)) + ", ");
+			tempMessage += (PowerSchool.studentFirstName(studentIDs.get(i)) + " / #");
+			tempMessage += PowerSchool.studentRank(studentIDs.get(i));
+			studentMessage.add(tempMessage);
+		}
+		
+		System.out.println("student id size: " + studentIDs.size());
+		System.out.println("message size: " + studentMessage.size());
+		
+//		Collections.sort(studentMessage);
+//		for (int i = 0; i < studentMessage.size(); i++) {
+//			System.out.print((i + 1) + ". ");
+//			System.out.println(studentMessage.get(i));
+//		}
 	}
 	
 	private void enrollment() {

@@ -187,4 +187,8 @@ public class QueryUtils {
     
     public static final String GET_STUDENT_IDS =
     		"SELECT * FROM STUDENTS";
+    
+    public static final String GET_STUDENT_IDS_BY_GRADE =
+    		"SELECT * FROM STUDENTS " +
+    			"WHERE GRADE_LEVEL = ?";
 }
