@@ -191,4 +191,7 @@ public class QueryUtils {
     public static final String GET_STUDENT_IDS_BY_GRADE =
     		"SELECT * FROM STUDENTS " +
     			"WHERE GRADE_LEVEL = ?";
+    
+    public static final String GET_ALL_COURSE_NO =
+    		"SELECT * FROM COURSES";
 }

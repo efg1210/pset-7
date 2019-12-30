@@ -121,7 +121,7 @@ public class Application {
 				case 2: facultyByDept(); break;
 				case 3: enrollment(); break;
 				case 4: classEnrollment(); break;
-				case 5:
+				case 5: enrollmentByCourse(); break;
 				case 6:
 				case 7: return false;
 				default: System.out.println("\nInvalid selection.");
@@ -483,40 +483,68 @@ public class Application {
 		}
     }
     
+    private boolean isValidCourseNo(String courseNo) {
+    	ArrayList<String> courseNums = PowerSchool.courseNumbers();
+    	for (int i = 0; i < courseNums.size(); i++) {
+    		if (courseNums.get(i).equals(courseNo)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     private void enrollmentByCourse() {
-    	ArrayList<String> courses = viewCourse();
-    	System.out.print("\n::: ");
-       	int selection = Utils.getInt(in, courses.size());
+    	int courseID = 0;
     	
-    	while (selection > courses.size()) {
-    		System.out.print("::: ");
-        	selection = Utils.getInt(in, courses.size());
+    	if (activeUser.isTeacher()) {
+    		ArrayList<String> courses = viewCourse();
+    		
+    		System.out.print("\n::: ");
+        	
+           	int selection = Utils.getInt(in, courses.size());
+        	
+        	while (selection > courses.size()) {
+        		System.out.print("::: ");
+            	selection = Utils.getInt(in, courses.size());
+        	}
+        	courseID = PowerSchool.courseID(courses.get(selection - 1));    		
+    	} else if (activeUser.isAdministrator()) {
+    		System.out.print("\nCourse No.: ");
+    		String courseNo = in.next();
+    		
+    		while (!isValidCourseNo(courseNo)) {
+    			System.out.println("\nCourse not found.");
+    			System.out.print("\nCourse No.: ");
+    			courseNo = in.next();
+    		}
+    		
+    		courseID = PowerSchool.courseID(courseNo);
+    	} else {
+    		System.out.println("\nHow did you get into view enrollment by course?");
     	}
     	
-    	int courseID = PowerSchool.courseID(courses.get(selection - 1));    		
+    	ArrayList<Integer> studentIDs = PowerSchool.studentIDByCourse(courseID);
 		
-		ArrayList<Integer> studentIDs = PowerSchool.studentIDByCourse(courseID);
-		
-		if (studentIDs.size() > 0) {
+    	if (studentIDs.size() > 0) {
+    		ArrayList<String> studentMessage = new ArrayList<String>();
+
     		System.out.println("");
     		
-    		ArrayList<String> studentFirstName = new ArrayList<String>();
-    		ArrayList<String> studentLastName = new ArrayList<String>();
-    		
     		for (int i = 0; i < studentIDs.size(); i++) {
-    			
-    			studentFirstName.add(PowerSchool.studentFirstName(studentIDs.get(i)));
-    			studentLastName.add(PowerSchool.studentLastName(studentIDs.get(i)));
-    			
-    			System.out.print((i + 1) + ". " + studentLastName.get(i) + ", ");
-    			System.out.print(studentFirstName.get(i) + " / ");
-    			
+    			String tempMessage = "";
+    			tempMessage += (PowerSchool.studentLastName(studentIDs.get(i)) + ", ");
+    			tempMessage += (PowerSchool.studentFirstName(studentIDs.get(i)) + " / ");
     			if (activeUser.isAdministrator()) {
-    				
+    				tempMessage += PowerSchool.studentGPA(studentIDs.get(i));
     			} else if (activeUser.isTeacher()) {
-    				double grade = PowerSchool.courseGrade(courseID, studentIDs.get(i));
-    				System.out.println(grade);
+    				tempMessage += PowerSchool.courseGrade(courseID, studentIDs.get(i));
     			}
+    			studentMessage.add(tempMessage);
+    		}
+    		Collections.sort(studentMessage);
+    		for (int i = 0; i < studentMessage.size(); i++) {
+    			System.out.print((i + 1) + ". ");
+    			System.out.println(studentMessage.get(i));
     		}
 		} else {
 			System.out.println("\nThere are no students for this course.");

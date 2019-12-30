@@ -897,4 +897,42 @@ public class PowerSchool {
     	}
         return -1;
     }
+	
+	public static double studentGPA(int studentID) {
+    	try (Connection conn = getConnection();
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_FROM_STUDENT_ID)) {
+
+           stmt.setInt(1, studentID);
+
+           double gpa;
+           
+           try (ResultSet rs = stmt.executeQuery()) {
+               if (rs.next()) {
+            	   gpa = rs.getDouble("gpa");
+                   return gpa;
+               }
+           }
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+        return -1;
+    }
+	
+	public static ArrayList<String> courseNumbers() {
+    	try (Connection conn = getConnection();
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ALL_COURSE_NO)) {
+
+	        ArrayList<String> courseNums = new ArrayList<String>();
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {            	   
+	     	   while (rs.next()) {
+	     		  courseNums.add(rs.getString("course_no"));
+	           }
+	        }
+	        return courseNums;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return null;
+    }
 }
