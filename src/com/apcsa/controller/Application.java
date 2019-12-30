@@ -64,10 +64,12 @@ public class Application {
                     String newPassword = Utils.getHash(in.next());
                     String oldPassword = activeUser.getPassword();
                     
-                    if(!newPassword.equals(oldPassword)) {
+                    if (!newPassword.equals(oldPassword)) {
                     	System.out.println("\nPassword updated.");
                         activeUser.setPassword(newPassword);
                         PowerSchool.updatePassword(username, activeUser.getPassword());
+                    } else {
+                    	System.out.println("\nOld password and new password cannot match.");
                     }
                                         
                 }
@@ -90,6 +92,25 @@ public class Application {
             } else {
                 System.out.println("\nInvalid username and/or password.");
             }
+        }
+    }
+    
+    private void changePassword() {
+    	System.out.print("\nEnter current password: ");
+        String oldPassword = Utils.getHash(in.next());
+        System.out.print("Enter new password: ");
+        String newPassword = Utils.getHash(in.next());
+        
+        if (oldPassword.equals(activeUser.getPassword())) {
+        	if (!newPassword.equals(oldPassword)) {
+            	System.out.println("\nSuccessfully changed password.");
+                activeUser.setPassword(newPassword);
+                PowerSchool.updatePassword(activeUser.getUsername(), activeUser.getPassword());
+            } else {
+            	System.out.println("\nOld password and new password cannot match.");
+            }
+        } else {
+        	System.out.println("\nInvalid current password.");
         }
     }
     
@@ -122,7 +143,7 @@ public class Application {
 				case 3: enrollment(); break;
 				case 4: classEnrollment(); break;
 				case 5: enrollmentByCourse(); break;
-				case 6:
+				case 6: changePassword(); break;
 				case 7: return false;
 				default: System.out.println("\nInvalid selection.");
 			}
@@ -261,7 +282,7 @@ public class Application {
         		case 2: addAssign(); break;
         		case 3: deleteAssignment(); break;
         		case 4: enterGrade(); break;
-        		case 5: 
+        		case 5: changePassword(); break;
         		case 6: return false;
         		default: System.out.println("\nInvalid selection.");
         	}
