@@ -82,7 +82,7 @@ public class Application {
                 } else if (activeUser.isStudent()) {
                 	student();
                 } else if (activeUser.isRoot()) {
-                	root();
+                	root(activeUser);
                 }
 
                 // create and show the user interface
@@ -299,8 +299,8 @@ public class Application {
         		case 6: 
         			if (logout(false)) {
                 		return false;
-					}
-                	break;
+					    }
+              break;
         		default: System.out.println("\nInvalid selection.");
         	}
     	}
@@ -609,13 +609,63 @@ public class Application {
     
     
     private void student() {
-    	System.out.println("student");
+    	System.out.println("\nHello, again, " + activeUser.getFirstName() + "!");
     	/* Needs:
     	 * View course grades
     	 * View assignment grades by course
     	 * Change password (shared with teacher / admin)
     	 * Logout of account (shared with all)
     	 */
+    	
+        boolean validLogin = true;
+        while (validLogin) {
+            final int VIEW_COURSE_GRADES = 1;
+            final int VIEW_ASSIGNMENT_GRADES = 2;
+            final int CHANGE_PASSWORD = 3;
+            final int LOGOUT = 4;
+        	
+            switch (getSelectionRoot()) {
+                case VIEW_COURSE_GRADES: viewCourseGrades(); break;
+                case VIEW_ASSIGNMENT_GRADES: viewAssignmentGrades(); break;
+                case CHANGE_PASSWORD: changePassword(); break;
+                case LOGOUT: validLogin = false; break;
+                default: System.out.println("\nInvalid selection.\n"); break;
+            }
+        }
+    	
+    }
+    
+    public int getSelectionStudent() {
+        System.out.println("[1] View course grades.");
+        System.out.println("[2] View assignment grades by course.");
+        System.out.println("[3] Change password.");
+        System.out.println("[4] Logout.");
+        
+        return in.nextInt();
+    }
+    
+    public void viewCourseGrades() {
+    	System.out.println("View Course Grades");
+    }
+    
+    public void viewAssignmentGrades() {
+    	System.out.println("View Assignment Grades");
+    }
+    
+    public void changePassword() {
+    	System.out.println("Change Password");
+    	
+    	System.out.println("\nEnter current password: ");
+    	String oldPassword = in.nextLine();
+    	System.out.println("\nEnter new password: ");
+    	String newPassword = in.nextLine();
+    	
+    	if (PowerSchool.passwordTest(activeUser.getUsername(), oldPassword)) {
+    		PowerSchool.updatePassword(activeUser.getUsername(), newPassword);
+    		System.out.println("\nSuccesfully changed password.\n");
+    	} else {
+    		System.out.println("\nInvalid current password.\n");
+    	};
     }
     
     private void root(/*User activeUser*/) {

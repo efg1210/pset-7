@@ -95,6 +95,25 @@ public class PowerSchool {
 
         return null;
     }
+    
+    public static boolean passwordTest(String username, String password) {
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(QueryUtils.LOGIN_SQL)) {
+
+            stmt.setString(1, username);
+            stmt.setString(2, Utils.getHash(password));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                	return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 
     /**
      * Returns the administrator account associated with the user.
