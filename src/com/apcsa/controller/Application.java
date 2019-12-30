@@ -82,7 +82,7 @@ public class Application {
                 } else if (activeUser.isStudent()) {
                 	student();
                 } else if (activeUser.isRoot()) {
-                	root(activeUser);
+                	root();
                 }
 
                 // create and show the user interface
@@ -652,7 +652,7 @@ public class Application {
     	System.out.println("View Assignment Grades");
     }
     
-    private void root(/*User activeUser*/) {
+    private void root() {
     	System.out.println("Hello, again, Root!\n");
         boolean validLogin = true;
         while (validLogin) {
