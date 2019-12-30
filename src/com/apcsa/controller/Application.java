@@ -199,10 +199,10 @@ public class Application {
 		}
 		
 		System.out.print("\n::: ");
-		int deptId = Utils.getInt(in, deptIDs.size());
-		while (deptId >= deptIDs.size()) {
+		int deptId = Utils.getInt(in, deptIDs.size() + 1);
+		while (deptId > deptIDs.size()) {
     		System.out.print("::: ");
-    		deptId = Utils.getInt(in, deptIDs.size());
+    		deptId = Utils.getInt(in, deptIDs.size() + 1);
     	}
 		
 		ArrayList<Integer> teacherIDs = PowerSchool.teachersByDept(deptId);
