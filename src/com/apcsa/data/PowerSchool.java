@@ -42,8 +42,8 @@ public class PowerSchool {
             // check if all tables have been created and loaded in database
 
             try (Connection conn = getConnection();
-                 Statement stmt = conn.createStatement();
-                 ResultSet rs = stmt.executeQuery(QueryUtils.SETUP_SQL)) {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(QueryUtils.SETUP_SQL)) {
 
                 while (rs.next()) {
                     if (rs.getInt("names") != 9) {
