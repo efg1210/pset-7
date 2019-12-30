@@ -652,22 +652,6 @@ public class Application {
     	System.out.println("View Assignment Grades");
     }
     
-    public void changePassword() {
-    	System.out.println("Change Password");
-    	
-    	System.out.println("\nEnter current password: ");
-    	String oldPassword = in.nextLine();
-    	System.out.println("\nEnter new password: ");
-    	String newPassword = in.nextLine();
-    	
-    	if (PowerSchool.passwordTest(activeUser.getUsername(), oldPassword)) {
-    		PowerSchool.updatePassword(activeUser.getUsername(), newPassword);
-    		System.out.println("\nSuccesfully changed password.\n");
-    	} else {
-    		System.out.println("\nInvalid current password.\n");
-    	};
-    }
-    
     private void root(/*User activeUser*/) {
     	System.out.println("Hello, again, Root!\n");
         boolean validLogin = true;
