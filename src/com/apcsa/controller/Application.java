@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.Scanner;
 import com.apcsa.data.*;
 import com.apcsa.model.*;
+import java.util.Collections;
 
 public class Application {
 
@@ -92,18 +93,146 @@ public class Application {
         }
     }
     
-    private void admin() {
-    	System.out.println("admin");
-    	/* Needs:
-    	 * Change Password (shared with teacher / student)
-    	 * Logout of Account (shared with all)
-    	 * View enrollment
-    	 * View enrollment by grade
-    	 * View enrollment by course (shared with teacher)
-    	 * View faculty
-    	 * View faculty by department
-    	 */
-    }
+	private boolean admin() {
+		/* Needs:
+		 * Change Password (shared with teacher / student)
+		 * Logout of Account (shared with all)
+		 * View enrollment
+		 * View enrollment by grade
+		 * View enrollment by course (shared with teacher)
+		 * View faculty
+		 * View faculty by department
+		 */
+		System.out.println("Hello, again, " + activeUser.getFirstName() +"!");
+		
+		while (true) {
+			System.out.println("\n[1] View faculty.");
+			System.out.println("[2] View faculty by department.");
+			System.out.println("[3] View student enrollment.");
+			System.out.println("[4] View student enrollment by grade.");
+			System.out.println("[5] View student enrollment by course.");
+			System.out.println("[6] Change password.");
+			System.out.print("[7] Logout.\n\n::: ");
+			
+			int selection = Utils.getInt(in, 8);
+			
+			switch (selection) {
+				case 1: viewFaculty(); break;
+				case 2: facultyByDept(); break;
+				case 3: enrollment(); break;
+				case 4: classEnrollment(); break;
+				case 5: enrollmentByCourse(); break;
+				case 6:
+				case 7: return false;
+				default: System.out.println("\nInvalid selection.");
+			}
+		}
+	}
+	
+	private void classEnrollment() {
+		System.out.println("\nChoose a grade level.\n");
+		System.out.println("[1] Freshman.");
+		System.out.println("[2] Sophomore.");
+		System.out.println("[3] Junior.");
+		System.out.println("[4] Senior.");
+		
+		System.out.print("\n::: ");
+		
+		int gradeLevel = Utils.getInt(in, 5);
+		while (gradeLevel >= 5) {
+    		System.out.print("::: ");
+    		gradeLevel = Utils.getInt(in, 5);
+    	}
+		
+		gradeLevel += 8;
+		
+		ArrayList<Integer> studentIDs = PowerSchool.studentsByGrade(gradeLevel);
+		ArrayList<String> studentMessage = new ArrayList<String>();
+
+		System.out.println("");
+		
+		for (int i = 0; i < studentIDs.size(); i++) {
+			String tempMessage = "";
+			tempMessage += (PowerSchool.studentLastName(studentIDs.get(i)) + ", ");
+			tempMessage += (PowerSchool.studentFirstName(studentIDs.get(i)) + " / #");
+			tempMessage += PowerSchool.studentRank(studentIDs.get(i));
+			studentMessage.add(tempMessage);
+		}
+		
+		if (studentIDs.size() > 0) {
+			Collections.sort(studentMessage);
+			for (int i = 0; i < studentMessage.size(); i++) {
+				System.out.print((i + 1) + ". ");
+				System.out.println(studentMessage.get(i));
+			}
+		} else {
+			System.out.println("There are no students from this grade.");
+		}
+		
+	}
+	
+	private void enrollment() {
+		ArrayList<Integer> studentIDs = PowerSchool.studentIDs();
+		ArrayList<String> studentMessage = new ArrayList<String>();
+
+		System.out.println("");
+		for (int i = 0; i < studentIDs.size(); i++) {
+			String tempMessage = "";
+			tempMessage += (PowerSchool.studentLastName(studentIDs.get(i)) + ", ");
+			tempMessage += (PowerSchool.studentFirstName(studentIDs.get(i)) + " / ");
+			tempMessage += PowerSchool.studentGradYear(studentIDs.get(i));
+			studentMessage.add(tempMessage);
+		}
+		Collections.sort(studentMessage);
+		for (int i = 0; i < studentMessage.size(); i++) {
+			System.out.print((i + 1) + ". ");
+			System.out.println(studentMessage.get(i));
+		}
+	}
+ 
+	private void facultyByDept() {
+		ArrayList<Integer> deptIDs = PowerSchool.deptIDs();
+		System.out.println("\nChoose a department.\n");
+		for (int i = 0; i < deptIDs.size(); i++) {
+			System.out.print("[" + (i + 1) + "] ");
+			System.out.println(PowerSchool.depByID(deptIDs.get(i)));
+		}
+		
+		System.out.print("\n::: ");
+		int deptId = Utils.getInt(in, deptIDs.size() + 1);
+		while (deptId > deptIDs.size()) {
+    		System.out.print("::: ");
+    		deptId = Utils.getInt(in, deptIDs.size() + 1);
+    	}
+		
+		ArrayList<Integer> teacherIDs = PowerSchool.teachersByDept(deptId);
+		for (int i = 0; i < teacherIDs.size(); i++) {
+			System.out.print("\n" + (i + 1) + ". ");
+			System.out.print(PowerSchool.teacherLastName(teacherIDs.get(i)) + ", ");
+			System.out.print(PowerSchool.teacherFirstName(teacherIDs.get(i)) + " / ");
+			System.out.println(PowerSchool.depByID(deptId));
+		}
+	}
+	
+	private void viewFaculty() {
+		ArrayList<Integer> teacherIDs = PowerSchool.teacherIDs();
+		ArrayList<String> teacherMessage = new ArrayList<String>();
+
+		System.out.println("");
+		for (int i = 0; i < teacherIDs.size(); i++) {
+			String tempMessage = "";
+			tempMessage += (PowerSchool.teacherLastName(teacherIDs.get(i)) + ", ");
+			tempMessage += (PowerSchool.teacherFirstName(teacherIDs.get(i)) + " / ");
+			int depID = PowerSchool.teacherDepartmentID(teacherIDs.get(i));
+			tempMessage += (PowerSchool.depByID(depID));
+			teacherMessage.add(tempMessage);
+		}
+		Collections.sort(teacherMessage);
+		for (int i = 0; i < teacherMessage.size(); i++) {
+			System.out.print((i + 1) + ". ");
+			System.out.println(teacherMessage.get(i));
+		}
+	}
 
     private boolean teacher() {
       /* Needs:
@@ -354,40 +483,68 @@ public class Application {
 		}
     }
     
+    private boolean isValidCourseNo(String courseNo) {
+    	ArrayList<String> courseNums = PowerSchool.courseNumbers();
+    	for (int i = 0; i < courseNums.size(); i++) {
+    		if (courseNums.get(i).equals(courseNo)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     private void enrollmentByCourse() {
-    	ArrayList<String> courses = viewCourse();
-    	System.out.print("\n::: ");
-       	int selection = Utils.getInt(in, courses.size());
+    	int courseID = 0;
     	
-    	while (selection > courses.size()) {
-    		System.out.print("::: ");
-        	selection = Utils.getInt(in, courses.size());
+    	if (activeUser.isTeacher()) {
+    		ArrayList<String> courses = viewCourse();
+    		
+    		System.out.print("\n::: ");
+        	
+           	int selection = Utils.getInt(in, courses.size());
+        	
+        	while (selection > courses.size()) {
+        		System.out.print("::: ");
+            	selection = Utils.getInt(in, courses.size());
+        	}
+        	courseID = PowerSchool.courseID(courses.get(selection - 1));    		
+    	} else if (activeUser.isAdministrator()) {
+    		System.out.print("\nCourse No.: ");
+    		String courseNo = in.next();
+    		
+    		while (!isValidCourseNo(courseNo)) {
+    			System.out.println("\nCourse not found.");
+    			System.out.print("\nCourse No.: ");
+    			courseNo = in.next();
+    		}
+    		
+    		courseID = PowerSchool.courseID(courseNo);
+    	} else {
+    		System.out.println("\nHow did you get into view enrollment by course?");
     	}
     	
-    	int courseID = PowerSchool.courseID(courses.get(selection - 1));    		
+    	ArrayList<Integer> studentIDs = PowerSchool.studentIDByCourse(courseID);
 		
-		ArrayList<Integer> studentIDs = PowerSchool.studentIDByCourse(courseID);
-		
-		if (studentIDs.size() > 0) {
+    	if (studentIDs.size() > 0) {
+    		ArrayList<String> studentMessage = new ArrayList<String>();
+
     		System.out.println("");
     		
-    		ArrayList<String> studentFirstName = new ArrayList<String>();
-    		ArrayList<String> studentLastName = new ArrayList<String>();
-    		
     		for (int i = 0; i < studentIDs.size(); i++) {
-    			
-    			studentFirstName.add(PowerSchool.studentFirstName(studentIDs.get(i)));
-    			studentLastName.add(PowerSchool.studentLastName(studentIDs.get(i)));
-    			
-    			System.out.print((i + 1) + ". " + studentLastName.get(i) + ", ");
-    			System.out.print(studentFirstName.get(i) + " / ");
-    			
+    			String tempMessage = "";
+    			tempMessage += (PowerSchool.studentLastName(studentIDs.get(i)) + ", ");
+    			tempMessage += (PowerSchool.studentFirstName(studentIDs.get(i)) + " / ");
     			if (activeUser.isAdministrator()) {
-    				
+    				tempMessage += PowerSchool.studentGPA(studentIDs.get(i));
     			} else if (activeUser.isTeacher()) {
-    				double grade = PowerSchool.courseGrade(courseID, studentIDs.get(i));
-    				System.out.println(grade);
+    				tempMessage += PowerSchool.courseGrade(courseID, studentIDs.get(i));
     			}
+    			studentMessage.add(tempMessage);
+    		}
+    		Collections.sort(studentMessage);
+    		for (int i = 0; i < studentMessage.size(); i++) {
+    			System.out.print((i + 1) + ". ");
+    			System.out.println(studentMessage.get(i));
     		}
 		} else {
 			System.out.println("\nThere are no students for this course.");
@@ -423,7 +580,7 @@ public class Application {
     	 */
     }
     
-    private void root(User activeUser) {
+    private void root(/*User activeUser*/) {
     	System.out.println("\nHello, again, Root!\n");
         boolean validLogin = true;
         while (validLogin) {
