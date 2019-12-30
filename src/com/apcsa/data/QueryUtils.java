@@ -166,4 +166,32 @@ public class QueryUtils {
     public static final String DELETE_GRADES_FROM_ASSIGN =
     		"DELETE FROM ASSIGNMENT_GRADES " +
     			"WHERE ASSIGNMENT_ID = ?";
+    
+    public static final String GET_TEACHER_IDS =
+    		"SELECT * FROM TEACHERS";
+    
+    public static final String GET_TEACHER_WITH_TEACH_ID =
+    		"SELECT * FROM TEACHERS " +
+    			"WHERE TEACHER_ID = ?";
+    
+    public static final String GET_DEP_NAME =
+    		"SELECT * FROM DEPARTMENTS " +
+    			"WHERE DEPARTMENT_ID = ?";
+    
+    public static final String GET_DEPARTMENT_IDS =
+    		"SELECT * FROM DEPARTMENTS";
+    
+    public static final String GET_TEACHER_BY_DEPT =
+    		"SELECT * FROM TEACHERS " +
+    			"WHERE DEPARTMENT_ID = ?";
+    
+    public static final String GET_STUDENT_IDS =
+    		"SELECT * FROM STUDENTS";
+    
+    public static final String GET_STUDENT_IDS_BY_GRADE =
+    		"SELECT * FROM STUDENTS " +
+    			"WHERE GRADE_LEVEL = ?";
+    
+    public static final String GET_ALL_COURSE_NO =
+    		"SELECT * FROM COURSES";
 }
