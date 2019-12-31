@@ -573,7 +573,12 @@ public class Application {
     			tempMessage += (PowerSchool.studentLastName(studentIDs.get(i)) + ", ");
     			tempMessage += (PowerSchool.studentFirstName(studentIDs.get(i)) + " / ");
     			if (activeUser.isAdministrator()) {
-    				tempMessage += PowerSchool.studentGPA(studentIDs.get(i));
+    				double gpa = PowerSchool.studentGPA(studentIDs.get(i));
+    				if (gpa < 0) {
+    					tempMessage += "--";
+    				} else {
+    					tempMessage += gpa;
+    				}
     			} else if (activeUser.isTeacher()) {
     				tempMessage += PowerSchool.courseGrade(courseID, studentIDs.get(i));
     			}
