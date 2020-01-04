@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.Scanner;
 import com.apcsa.data.*;
 import com.apcsa.model.*;
+import java.util.Collections;
 
 public class Application {
 
@@ -63,10 +64,12 @@ public class Application {
                     String newPassword = Utils.getHash(in.next());
                     String oldPassword = activeUser.getPassword();
                     
-                    if(!newPassword.equals(oldPassword)) {
+                    if (!newPassword.equals(oldPassword)) {
                     	System.out.println("\nPassword updated.");
                         activeUser.setPassword(newPassword);
                         PowerSchool.updatePassword(username, activeUser.getPassword());
+                    } else {
+                    	System.out.println("\nOld password and new password cannot match.");
                     }
                                         
                 }
@@ -79,7 +82,7 @@ public class Application {
                 } else if (activeUser.isStudent()) {
                 	student();
                 } else if (activeUser.isRoot()) {
-                	root(activeUser);
+                	root();
                 }
 
                 // create and show the user interface
@@ -92,18 +95,178 @@ public class Application {
         }
     }
     
-    private void admin() {
-    	System.out.println("admin");
-    	/* Needs:
-    	 * Change Password (shared with teacher / student)
-    	 * Logout of Account (shared with all)
-    	 * View enrollment
-    	 * View enrollment by grade
-    	 * View enrollment by course (shared with teacher)
-    	 * View faculty
-    	 * View faculty by department
-    	 */
+    private boolean logout(boolean factoryReset) {
+    	if (factoryReset) {
+    		return true;
+    	} else {
+    		System.out.println("");
+    		return Utils.confirm(in, "Are you sure you want to logout? (y/n) ");
+    	}
     }
+    
+    private void changePassword() {
+    	System.out.print("\nEnter current password: ");
+        String oldPassword = Utils.getHash(in.next());
+        System.out.print("Enter new password: ");
+        String newPassword = Utils.getHash(in.next());
+        
+        if (oldPassword.equals(activeUser.getPassword())) {
+        	if (!newPassword.equals(oldPassword)) {
+            	System.out.println("\nSuccessfully changed password.");
+                activeUser.setPassword(newPassword);
+                PowerSchool.updatePassword(activeUser.getUsername(), activeUser.getPassword());
+            } else {
+            	System.out.println("\nOld password and new password cannot match.");
+            }
+        } else {
+        	System.out.println("\nInvalid current password.");
+        }
+    }
+    
+	private boolean admin() {
+		/* Needs:
+		 * Change Password (shared with teacher / student)
+		 * Logout of Account (shared with all)
+		 * View enrollment
+		 * View enrollment by grade
+		 * View enrollment by course (shared with teacher)
+		 * View faculty
+		 * View faculty by department
+		 */
+		System.out.println("Hello, again, " + activeUser.getFirstName() +"!");
+		
+		while (true) {
+			System.out.println("\n[1] View faculty.");
+			System.out.println("[2] View faculty by department.");
+			System.out.println("[3] View student enrollment.");
+			System.out.println("[4] View student enrollment by grade.");
+			System.out.println("[5] View student enrollment by course.");
+			System.out.println("[6] Change password.");
+			System.out.print("[7] Logout.\n\n::: ");
+			
+			int selection = Utils.getInt(in, 8);
+			
+			switch (selection) {
+				case 1: viewFaculty(); break;
+				case 2: facultyByDept(); break;
+				case 3: enrollment(); break;
+				case 4: classEnrollment(); break;
+				case 5: enrollmentByCourse(); break;
+				case 6: changePassword(); break;
+				case 7: 
+					if (logout(false)) {
+                		return false;
+					}
+                	break;
+				default: System.out.println("\nInvalid selection.");
+			}
+		}
+	}
+	
+	private void classEnrollment() {
+		System.out.println("\nChoose a grade level.\n");
+		System.out.println("[1] Freshman.");
+		System.out.println("[2] Sophomore.");
+		System.out.println("[3] Junior.");
+		System.out.println("[4] Senior.");
+		
+		System.out.print("\n::: ");
+		
+		int gradeLevel = Utils.getInt(in, 5);
+		while (gradeLevel >= 5) {
+    		System.out.print("::: ");
+    		gradeLevel = Utils.getInt(in, 5);
+    	}
+		
+		gradeLevel += 8;
+		
+		ArrayList<Integer> studentIDs = PowerSchool.studentsByGrade(gradeLevel);
+		ArrayList<String> studentMessage = new ArrayList<String>();
+
+		System.out.println("");
+		
+		for (int i = 0; i < studentIDs.size(); i++) {
+			String tempMessage = "";
+			tempMessage += (PowerSchool.studentLastName(studentIDs.get(i)) + ", ");
+			tempMessage += (PowerSchool.studentFirstName(studentIDs.get(i)) + " / #");
+			tempMessage += PowerSchool.studentRank(studentIDs.get(i));
+			studentMessage.add(tempMessage);
+		}
+		
+		if (studentIDs.size() > 0) {
+			Collections.sort(studentMessage);
+			for (int i = 0; i < studentMessage.size(); i++) {
+				System.out.print((i + 1) + ". ");
+				System.out.println(studentMessage.get(i));
+			}
+		} else {
+			System.out.println("There are no students from this grade.");
+		}
+		
+	}
+	
+	private void enrollment() {
+		ArrayList<Integer> studentIDs = PowerSchool.studentIDs();
+		ArrayList<String> studentMessage = new ArrayList<String>();
+
+		System.out.println("");
+		for (int i = 0; i < studentIDs.size(); i++) {
+			String tempMessage = "";
+			tempMessage += (PowerSchool.studentLastName(studentIDs.get(i)) + ", ");
+			tempMessage += (PowerSchool.studentFirstName(studentIDs.get(i)) + " / ");
+			tempMessage += PowerSchool.studentGradYear(studentIDs.get(i));
+			studentMessage.add(tempMessage);
+		}
+		Collections.sort(studentMessage);
+		for (int i = 0; i < studentMessage.size(); i++) {
+			System.out.print((i + 1) + ". ");
+			System.out.println(studentMessage.get(i));
+		}
+	}
+ 
+	private void facultyByDept() {
+		ArrayList<Integer> deptIDs = PowerSchool.deptIDs();
+		System.out.println("\nChoose a department.\n");
+		for (int i = 0; i < deptIDs.size(); i++) {
+			System.out.print("[" + (i + 1) + "] ");
+			System.out.println(PowerSchool.depByID(deptIDs.get(i)));
+		}
+		
+		System.out.print("\n::: ");
+		int deptId = Utils.getInt(in, deptIDs.size() + 1);
+		while (deptId > deptIDs.size()) {
+    		System.out.print("::: ");
+    		deptId = Utils.getInt(in, deptIDs.size() + 1);
+    	}
+		
+		ArrayList<Integer> teacherIDs = PowerSchool.teachersByDept(deptId);
+		for (int i = 0; i < teacherIDs.size(); i++) {
+			System.out.print("\n" + (i + 1) + ". ");
+			System.out.print(PowerSchool.teacherLastName(teacherIDs.get(i)) + ", ");
+			System.out.print(PowerSchool.teacherFirstName(teacherIDs.get(i)) + " / ");
+			System.out.println(PowerSchool.depByID(deptId));
+		}
+	}
+	
+	private void viewFaculty() {
+		ArrayList<Integer> teacherIDs = PowerSchool.teacherIDs();
+		ArrayList<String> teacherMessage = new ArrayList<String>();
+
+		System.out.println("");
+		for (int i = 0; i < teacherIDs.size(); i++) {
+			String tempMessage = "";
+			tempMessage += (PowerSchool.teacherLastName(teacherIDs.get(i)) + ", ");
+			tempMessage += (PowerSchool.teacherFirstName(teacherIDs.get(i)) + " / ");
+			int depID = PowerSchool.teacherDepartmentID(teacherIDs.get(i));
+			tempMessage += (PowerSchool.depByID(depID));
+			teacherMessage.add(tempMessage);
+		}
+		Collections.sort(teacherMessage);
+		for (int i = 0; i < teacherMessage.size(); i++) {
+			System.out.print((i + 1) + ". ");
+			System.out.println(teacherMessage.get(i));
+		}
+	}
 
     private boolean teacher() {
       /* Needs:
@@ -133,7 +296,11 @@ public class Application {
         		case 3: deleteAssignment(); break;
         		case 4: enterGrade(); break;
         		case 5: changePassword(); break;
-        		case 6: return false;
+        		case 6: 
+        			if (logout(false)) {
+                		return false;
+					    }
+              break;
         		default: System.out.println("\nInvalid selection.");
         	}
     	}
@@ -354,40 +521,68 @@ public class Application {
 		}
     }
     
+    private boolean isValidCourseNo(String courseNo) {
+    	ArrayList<String> courseNums = PowerSchool.courseNumbers();
+    	for (int i = 0; i < courseNums.size(); i++) {
+    		if (courseNums.get(i).equals(courseNo)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     private void enrollmentByCourse() {
-    	ArrayList<String> courses = viewCourse();
-    	System.out.print("\n::: ");
-       	int selection = Utils.getInt(in, courses.size());
+    	int courseID = 0;
     	
-    	while (selection > courses.size()) {
-    		System.out.print("::: ");
-        	selection = Utils.getInt(in, courses.size());
+    	if (activeUser.isTeacher()) {
+    		ArrayList<String> courses = viewCourse();
+    		
+    		System.out.print("\n::: ");
+        	
+           	int selection = Utils.getInt(in, courses.size());
+        	
+        	while (selection > courses.size()) {
+        		System.out.print("::: ");
+            	selection = Utils.getInt(in, courses.size());
+        	}
+        	courseID = PowerSchool.courseID(courses.get(selection - 1));    		
+    	} else if (activeUser.isAdministrator()) {
+    		System.out.print("\nCourse No.: ");
+    		String courseNo = in.next();
+    		
+    		while (!isValidCourseNo(courseNo)) {
+    			System.out.println("\nCourse not found.");
+    			System.out.print("\nCourse No.: ");
+    			courseNo = in.next();
+    		}
+    		
+    		courseID = PowerSchool.courseID(courseNo);
+    	} else {
+    		System.out.println("\nHow did you get into view enrollment by course?");
     	}
     	
-    	int courseID = PowerSchool.courseID(courses.get(selection - 1));    		
+    	ArrayList<Integer> studentIDs = PowerSchool.studentIDByCourse(courseID);
 		
-		ArrayList<Integer> studentIDs = PowerSchool.studentIDByCourse(courseID);
-		
-		if (studentIDs.size() > 0) {
+    	if (studentIDs.size() > 0) {
+    		ArrayList<String> studentMessage = new ArrayList<String>();
+
     		System.out.println("");
     		
-    		ArrayList<String> studentFirstName = new ArrayList<String>();
-    		ArrayList<String> studentLastName = new ArrayList<String>();
-    		
     		for (int i = 0; i < studentIDs.size(); i++) {
-    			
-    			studentFirstName.add(PowerSchool.studentFirstName(studentIDs.get(i)));
-    			studentLastName.add(PowerSchool.studentLastName(studentIDs.get(i)));
-    			
-    			System.out.print((i + 1) + ". " + studentLastName.get(i) + ", ");
-    			System.out.print(studentFirstName.get(i) + " / ");
-    			
+    			String tempMessage = "";
+    			tempMessage += (PowerSchool.studentLastName(studentIDs.get(i)) + ", ");
+    			tempMessage += (PowerSchool.studentFirstName(studentIDs.get(i)) + " / ");
     			if (activeUser.isAdministrator()) {
-    				
+    				tempMessage += PowerSchool.studentGPA(studentIDs.get(i));
     			} else if (activeUser.isTeacher()) {
-    				double grade = PowerSchool.courseGrade(courseID, studentIDs.get(i));
-    				System.out.println(grade);
+    				tempMessage += PowerSchool.courseGrade(courseID, studentIDs.get(i));
     			}
+    			studentMessage.add(tempMessage);
+    		}
+    		Collections.sort(studentMessage);
+    		for (int i = 0; i < studentMessage.size(); i++) {
+    			System.out.print((i + 1) + ". ");
+    			System.out.println(studentMessage.get(i));
     		}
 		} else {
 			System.out.println("\nThere are no students for this course.");
@@ -457,24 +652,8 @@ public class Application {
     	System.out.println("View Assignment Grades");
     }
     
-    public void changePassword() {
-    	System.out.println("Change Password");
-    	
-    	System.out.println("\nEnter current password: ");
-    	String oldPassword = in.nextLine();
-    	System.out.println("\nEnter new password: ");
-    	String newPassword = in.nextLine();
-    	
-    	if (PowerSchool.passwordTest(activeUser.getUsername(), oldPassword)) {
-    		PowerSchool.updatePassword(activeUser.getUsername(), newPassword);
-    		System.out.println("\nSuccesfully changed password.\n");
-    	} else {
-    		System.out.println("\nInvalid current password.\n");
-    	};
-    }
-    
-    private void root(User activeUser) {
-    	System.out.println("\nHello, again, Root!\n");
+    private void root() {
+    	System.out.println("Hello, again, Root!\n");
         boolean validLogin = true;
         while (validLogin) {
             final int RESET_PASSWORD = 1;
@@ -482,12 +661,22 @@ public class Application {
             final int LOGOUT = 3;
             final int SHUTDOWN = 4;
         	
+            boolean factoryReset = false;
+            
             switch (getSelectionRoot()) {
                 case RESET_PASSWORD: resetPassword(); break;
-                case RESET_DATABASE: resetDatabase(); break;
-                case LOGOUT: validLogin = false; break;
-                case SHUTDOWN: shutdown();
-                default: System.out.println("\nInvalid selection.\n"); break;
+                case RESET_DATABASE: 
+                	factoryReset = resetDatabase();
+                	if (!factoryReset) {
+                		break;
+                	}
+                case LOGOUT: 
+                	if (logout(factoryReset)) {
+                		validLogin = false;
+					}
+                	break;
+                case SHUTDOWN: shutdown(); break;
+                default: System.out.println("\nInvalid selection.\n");
             }
         }
     	/* Needs:
@@ -531,22 +720,22 @@ public class Application {
         System.out.println("[1] Reset user password.");
         System.out.println("[2] Factory reset database.");
         System.out.println("[3] Logout.");
-        System.out.println("[4] Shutdown.");
+        System.out.print("[4] Shutdown.\n\n::: ");
         
         return in.nextInt();
     }
     
     public void resetPassword() {
     	in.nextLine();
-    	System.out.print("Username:");
+    	System.out.print("\nUsername: ");
     	String userID = in.nextLine();
     	Timestamp ts = Timestamp.valueOf("1111-11-11 11:11:11.11");
-    	if (Utils.confirm(in, "\nAre you sure you want to reset the password for " + userID + "? (y/n)")) {
+    	if (Utils.confirm(in, "\nAre you sure you want to reset the password for " + userID + "? (y/n) ")) {
 	    	try {
 	    		int successfulChange = PowerSchool.resetPassword(userID, ts);
 		    	switch(successfulChange) {
-		    		case 1: System.out.println("\nSuccessfully reset password for " + userID + ".\n"); break;
-			    	case -1: System.out.println(userID + " is not a valid username."); break;
+		    		case 1: System.out.println("\nSuccessfully reset password for " + userID + "."); break;
+			    	case -1: System.out.println("\n" + userID + " is not a valid username."); break;
 			    	case -2: System.out.println("Issue with updating last login"); break;
 			    	case -3: System.out.println("Issue with PowerSchool statement"); break;
 		    	}
@@ -554,26 +743,32 @@ public class Application {
 	            System.out.println("\nInvalid username.\n");
 	            return;
 	    	}
+    	} else {
+    		System.out.println("");
     	}
     }
     
-    public void resetDatabase() {
+    public boolean resetDatabase() {
     	in.nextLine();
-    	if (Utils.confirm(in, "\nAre you sure you want to factory reset the database? This will wipe out all of the data. (y/n)")) {
+    	if (Utils.confirm(in, "\nAre you sure you want to factory reset the database? This will wipe out all of the data. (y/n) ")) {
 	    	try {
 	    		PowerSchool.initialize(true);
-    			System.out.println("\nSuccessfully reset database. Please log in again to continue.\n");
+    			System.out.println("\nSuccessfully reset database. Please log in again to continue.");
+    			return true;
 	    	} catch(Exception e) {
-	            return;
+	            return false;
 	    	}
+    	} else {
+    		System.out.println("");
     	}
+    	return false;
     }
     
      
     public void shutdown() {
     	in.nextLine();
         
-    	if (Utils.confirm(in, "\nAre you sure you want to shut down the system? (y/n)")) {
+    	if (Utils.confirm(in, "\nAre you sure you want to shut down the system? (y/n) ")) {
 	    	try {
 	        	if (in != null) {
 	                in.close();
@@ -584,8 +779,9 @@ public class Application {
 	    	} catch(Exception e) {
 	            return;
 	    	}
+    	} else {
+    		System.out.println("");
     	}
-        
     }
 
     /////// MAIN METHOD ///////////////////////////////////////////////////////////////////
