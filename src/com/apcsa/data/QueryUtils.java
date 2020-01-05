@@ -212,4 +212,9 @@ public class QueryUtils {
     			"INNER JOIN assignments ON assignments.course_id = courses.course_id " +
     			"INNER JOIN assignment_grades ON assignment_grades.course_id = courses.course_id " +
     			"WHERE courses.course_id = ? AND assignment_grades.student_id = ?";
+    
+    public static final String GET_COURSE_GRADES = 
+    		"SELECT * FROM COURSE_GRADES " +
+    			"WHERE COURSE_ID = ? " +
+    			"AND STUDENT_ID = ?";
 }

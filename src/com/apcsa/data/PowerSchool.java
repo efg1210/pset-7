@@ -1021,17 +1021,22 @@ public class PowerSchool {
 	    return null;
 	}
 	
-	public static String getCourseTitlesFromCourseNo(String courseNo) {
+	public static ArrayList<String> getCourseTitlesFromCourseNo(ArrayList<String> courseNo) {
 	    try (Connection conn = getConnection();
 	        PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_ID)) {
 	    	
-			stmt.setString(1, courseNo);
-			
-			try (ResultSet rs = stmt.executeQuery()) {
-				if (rs.next()) {
-					return rs.getString("title");
+	    	ArrayList<String> courseTitles = new ArrayList<String>();
+	    	
+	    	for (int i = 0; i < courseNo.size(); i++) {
+	    		String tempCourse = courseNo.get(i);
+	    		stmt.setString(1, tempCourse);
+				try (ResultSet rs = stmt.executeQuery()) {
+					while (rs.next()) {
+						courseTitles.add(rs.getString("title"));
+					}
 				}
-			}
+	    	}
+			return courseTitles;
 	    } catch (SQLException e) {
 	   		e.printStackTrace();
 	    }
@@ -1039,5 +1044,53 @@ public class PowerSchool {
 	    return null;
 	    
 	}
+	
+	public static ArrayList<Integer> getCourseIDsFromCourseNo(ArrayList<String> courseNo) {
+	    try (Connection conn = getConnection();
+	        PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_ID)) {
+	    	
+	    	ArrayList<Integer> courseIDs = new ArrayList<Integer>();
+	    	
+	    	for (int i = 0; i < courseNo.size(); i++) {
+	    		String tempCourse = courseNo.get(i);
+	    		stmt.setString(1, tempCourse);
+				try (ResultSet rs = stmt.executeQuery()) {
+					while (rs.next()) {
+						courseIDs.add(Integer.parseInt(rs.getString("course_ID")));
+					}
+				}
+	    	}
+			return courseIDs;
+	    } catch (SQLException e) {
+	   		e.printStackTrace();
+	    }
+	    
+	    return null;   
+	}
+	
+	public static ArrayList<Double> getCourseGrades(ArrayList<Integer> courseID, int studentID) {
+	    try (Connection conn = getConnection();
+		        PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_GRADES)) {
+		    	
+		    	ArrayList<Double> courseGrades = new ArrayList<Double>();
+		    	
+		    	for (int i = 0; i < courseID.size(); i++) {
+		    		int tempID = courseID.get(i);
+		    		stmt.setInt(1, tempID);
+		    		stmt.setInt(2, studentID);
+					try (ResultSet rs = stmt.executeQuery()) {
+						while (rs.next()) {
+							
+							courseGrades.add(Double.parseDouble(rs.getString("grade")));
+						}
+					}
+		    	}
+				return courseGrades;
+		    } catch (SQLException e) {
+		   		e.printStackTrace();
+		    }
+		return null;
+	}
+	
 }
 
