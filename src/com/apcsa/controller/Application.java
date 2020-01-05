@@ -598,10 +598,18 @@ public class Application {
         		System.out.println("[" + (i + 1) + "] " + courses.get(i));
     		}
     		return courses;
+    	} else if (activeUser.isStudent()) {
+    		System.out.println("\nChoose a course.");
+    		ArrayList<String> courses = PowerSchool.studentCourses(activeUser);
+    		System.out.println("");
+    		for (int i = 0; i < courses.size(); i++) {
+        		System.out.println("[" + (i + 1) + "] " + courses.get(i));
+    		}
+    		return courses;
     	} else if (activeUser.isAdministrator()) {
     		return null;
     	} else {
-    		System.out.println("A student or root user is viewing enrollment by course, which is bad. Fix it.");
+    		System.out.println("Root user is viewing enrollment by course, which is bad. Fix it.");
     		return null;
     	}
     }
@@ -624,7 +632,7 @@ public class Application {
             final int CHANGE_PASSWORD = 3;
             final int LOGOUT = 4;
         	
-            switch (getSelectionRoot()) {
+            switch (getSelectionStudent()) {
                 case VIEW_COURSE_GRADES: viewCourseGrades(); break;
                 case VIEW_ASSIGNMENT_GRADES: viewAssignmentGrades(); break;
                 case CHANGE_PASSWORD: changePassword(); break;
@@ -645,11 +653,50 @@ public class Application {
     }
     
     public void viewCourseGrades() {
-    	System.out.println("View Course Grades");
+    	ArrayList<String> courses = PowerSchool.studentCourses(activeUser);
+    	ArrayList<String> courseTitle[];
+    	for (int h = 0; h <= courses.size(); h++) {
+    		String course = courses.get(h);
+    		courseTitle.add(PowerSchool.getCourseTitlesFromCourseNo(course));
+    	}
+    	System.out.println(courseTitle);
+//    	for (int i = 1; i <= courseTitle.size(); i++) {
+//    		System.out.println(i + 1 + ". " + courseTitle.get(i) + " / " + grade.get(i));	
+//    	}	
     }
     
     public void viewAssignmentGrades() {
-    	System.out.println("View Assignment Grades");
+    	int courseID = assignments();
+    	int markingPeriod = Utils.getInt(in, 7);
+    	int studentID = (activeUser.getUserId() - 9); //userIDs 1-9 are root, admin, & teacher
+    	
+    	while (markingPeriod > 6) {
+    		System.out.print("::: ");
+    		markingPeriod = Utils.getInt(in, 7);
+    	}
+    	
+    	ArrayList<String> assignments = new ArrayList<String>();
+    	ArrayList<Integer> pointsEarned = new ArrayList<Integer>();
+    	ArrayList<Integer> pointsPossible = new ArrayList<Integer>();
+    	
+    	if (markingPeriod <= 4) {
+    		assignments = PowerSchool.assignmentNameByMP(courseID, markingPeriod);
+        	pointsPossible = PowerSchool.assignmentValuesByMP(courseID, markingPeriod);
+        	pointsEarned = PowerSchool.pointsEarnedByStudent(courseID, /*PowerSchool.getAssignmentIDByCourseIDAndStudentID(courseID, studentID)*/ 1, studentID);
+    	} else if (markingPeriod == 5) {
+    		assignments = PowerSchool.assignmentNameByMid(courseID);
+    	} else if (markingPeriod == 6) {
+    		assignments = PowerSchool.assignmentNameByFin(courseID);
+    		pointsPossible = PowerSchool.assignmentValuesByFin(courseID);
+    	}
+    	System.out.println(pointsEarned + "bump");
+    	for (int i = 0; i < assignments.size(); i++) {
+			System.out.print("[" + (i + 1) + "] " + assignments.get(i));
+			System.out.print(" / " + pointsEarned.get(i));
+			System.out.println(" (out of " + pointsPossible.get(i) + " pts)");
+		}
+    	
+    	System.out.println("");
     }
     
     private void root() {

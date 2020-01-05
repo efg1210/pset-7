@@ -144,6 +144,12 @@ public class QueryUtils {
 			"WHERE COURSE_ID = ? " +
 			"AND IS_FINAL = 1";
     
+    public static final String GET_POINTS_EARNED_ON_ASSIGNMENT =
+    		"SELECT * FROM ASSIGNMENT_GRADES " +
+    			"WHERE COURSE_ID = ? " +
+    			"AND ASSIGNMENT_ID = ? " +
+    			"AND STUDENT_ID = ? ";
+    
     public static final String GET_ASSIGN_GRADE = 
 		"SELECT * FROM ASSIGNMENT_GRADES " +
 			"WHERE ASSIGNMENT_ID = ? " +
@@ -194,4 +200,16 @@ public class QueryUtils {
     
     public static final String GET_ALL_COURSE_NO =
     		"SELECT * FROM COURSES";
+    
+    public static final String GET_COURSES_FOR_STUDENT =
+    	    "SELECT courses.title, grade, courses.course_no FROM course_grades " +
+    	         "INNER JOIN courses ON course_grades.course_id = courses.course_id " +
+    	         "INNER JOIN students ON students.student_id = course_grades.student_id " +
+    	         "WHERE students.student_id = ?";
+    
+    public static final String GET_ASSIGNMENT_ID_BY_COURSE_ID_AND_STUDENT_ID =
+    		"SELECT * FROM courses " +
+    			"INNER JOIN assignments ON assignments.course_id = courses.course_id " +
+    			"INNER JOIN assignment_grades ON assignment_grades.course_id = courses.course_id " +
+    			"WHERE courses.course_id = ? AND assignment_grades.student_id = ?";
 }

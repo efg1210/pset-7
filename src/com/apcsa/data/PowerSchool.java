@@ -525,6 +525,51 @@ public class PowerSchool {
     	return null;
     }
     
+    public static ArrayList<Integer> pointsEarnedByStudent(int courseID, int assignmentID, int studentID) {
+    	try (Connection conn = getConnection();
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_POINTS_EARNED_ON_ASSIGNMENT)) {
+
+	        stmt.setInt(1, courseID);
+	        stmt.setInt(2, assignmentID);
+	        stmt.setInt(3, studentID);
+	        
+	        ArrayList<Integer> assignments = new ArrayList<Integer>();
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {
+	     	   while (rs.next()) {
+	     		  assignments.add(rs.getInt("points_earned"));
+	     		  System.out.print("bop");
+	           }
+	        }
+	        return assignments;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return null;
+    }
+    
+    public static int getAssignmentIDByCourseIDAndStudentID(int courseID, int studentID) {
+    	try (Connection conn = getConnection();
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_ID_BY_COURSE_ID_AND_STUDENT_ID)) {
+
+	        stmt.setInt(1, courseID);
+	        stmt.setInt(2, studentID);
+	        
+	        int assignment_id = -1;
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {            	   
+	     	   while (rs.next()) {
+	     		  assignment_id = rs.getInt("assignment_id");
+	     		  System.out.println(assignment_id);
+	           }
+	        }
+	        return assignment_id;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return -1;
+    }
+    
     public static void deleteAssignment(int assignmentID) {
 		try (Connection conn = getConnection();
 		  PreparedStatement stmt = conn.prepareStatement(QueryUtils.DELETE_ASSIGNMENT)) {
@@ -954,4 +999,45 @@ public class PowerSchool {
         }
     	return null;
     }
+	
+	public static ArrayList<String> studentCourses(User student) {
+		try (Connection conn = getConnection();
+	      PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSES_FOR_STUDENT)) {
+
+			stmt.setInt(1, ((Student) student).getStudentId());
+			
+			ArrayList<String> courses = new ArrayList<String>();
+			   
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					courses.add(rs.getString("course_no"));
+				}
+			}
+			return courses;
+	    } catch (SQLException e) {
+	    	e.printStackTrace();
+	    }
+
+	    return null;
+	}
+	
+	public static String getCourseTitlesFromCourseNo(String courseNo) {
+	    try (Connection conn = getConnection();
+	        PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_ID)) {
+	    	
+			stmt.setString(1, courseNo);
+			
+			try (ResultSet rs = stmt.executeQuery()) {
+				if (rs.next()) {
+					return rs.getString("title");
+				}
+			}
+	    } catch (SQLException e) {
+	   		e.printStackTrace();
+	    }
+
+	    return null;
+	    
+	}
 }
+
