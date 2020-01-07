@@ -619,7 +619,7 @@ public class Application {
     private void student() {
     	System.out.println("\nHello, again, " + activeUser.getFirstName() + "!");
     	
-    	updateGrades();
+    	//updateGrades();
     	/* Needs:
     	 * View course grades
     	 * View assignment grades by course
@@ -666,49 +666,88 @@ public class Application {
     	
     	ArrayList<String> courses = PowerSchool.studentCourses(activeUser);
     	ArrayList<Integer> courseIDs = PowerSchool.getCourseIDsFromCourseNo(courses);
+    	
     	ArrayList<String> assignments = new ArrayList<String>();
     	ArrayList<Integer> pointsEarned = new ArrayList<Integer>();
     	ArrayList<Integer> pointsPossible = new ArrayList<Integer>();
+    	ArrayList<Double> grades = new ArrayList<Double>();
+    	
+    	int studentID = activeUser.getUserId() - 9;
     	int pointsPossibleSum = 0;
     	int pointsEarnedSum = 0;
-    	ArrayList<Double> grades = newArrayList<Double>();
     	double tempMPGrade = 0;
+    	int examPointsEarned = 0;
+    	int examPointsPossible = 0;
+    	double examGrade = 0;
+    	double midtermGrade = 0;
+    	double finalExamGrade = 0;
+    	int assignmentID = 0;
     	
-    	for (int i = 0; i <= courses.size(); i++) { //iterates through all courses
+    	for (int i = 0; i < courses.size(); i++) { //iterates through all courses
     		for (int j = 1; j <= 4; j++) { //iterates through all marking periods
+    			System.out.println("Marking period " + j);
         		assignments = PowerSchool.assignmentNameByMP(courseIDs.get(i), j);
             	pointsPossible = PowerSchool.assignmentValuesByMP(courseIDs.get(i), j);
-            	pointsEarned = PowerSchool.pointsEarnedByStudent(courseIDs.get(i), /*PowerSchool.getAssignmentIDByCourseIDAndStudentID(courseID, studentID)*/ 1, activeUser.getUserId() - 9);
-            	for (int k = 0; k < assignments.size(); k++) { //iterates through all assignments
-            		if (pointsEarned.get(k) != null) { //adds non-null pointsEarned + corresponding pointsPossible to total sum for calculation
-            			pointsPossibleSum += pointsPossible.get(k);
-            			pointsEarnedSum += pointsEarned.get(k);
-            		}
+            	pointsEarned = PowerSchool.pointsEarnedByStudent(courseIDs.get(i), PowerSchool.getAssignmentIDByCourseIDAndStudentIDAndMarkingPeriod(courseIDs.get(i), studentID, j), studentID);
+            	if (assignments != null) {
+	            	for (int k = 0; k < assignments.size(); k++) { //iterates through all assignments
+	            		if (pointsEarned.get(k) != null) { //adds non-null pointsEarned + corresponding pointsPossible to total sum for calculation
+	            			pointsPossibleSum += pointsPossible.get(k);
+	            			pointsEarnedSum += pointsEarned.get(k);
+	            		}
+	            	}
             	}
-            	if (assignments.get(0) != null) { //if anything was in assignments
+            	if (assignments != null) { //if anything was in assignments
             		tempMPGrade = Utils.round(pointsEarnedSum/pointsPossibleSum, 2);
             	}
             	if (j < 3) {
             		grades.add(i, tempMPGrade);
+            		System.out.println("Grade added");
             	} else { //makes space for midterm
             		grades.add(i + 1, tempMPGrade);
+            		System.out.println("Grade added");
             	}
     		}
     		
-    		if(/*midterm != null*/true) {
+    		for (int l = 1; l <= 2; l++) { // midterm / final exam grade. in for loop for conveinence. 
+    			if (l == 1) {
+    				assignmentID = PowerSchool.assignmentIDByMid(courseIDs.get(i));
+    			} else if (l == 2) {
+    				assignmentID = PowerSchool.assignmentIDByFin(courseIDs.get(i));
+    			}
+    			
+            	examPointsEarned = PowerSchool.getExamPointsEarned(courseIDs.get(i), assignmentID, studentID);
+            	examPointsPossible = PowerSchool.getExamPointsPossible(courseIDs.get(i), assignmentID, studentID);
+            	
+            	if (assignmentID != -1) {
+        			examGrade = Utils.round(examPointsEarned/examPointsPossible, 2);
+            	}
+            	
+	    		if (l == 1) {
+	    			midtermGrade = examGrade;
+	    			examGrade = -1;
+	    		} else if (l == 2) {
+	    			finalExamGrade = examGrade;
+	    		} else { 
+	    			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+	    		}
+    		}
+    		
+    		if(midtermGrade != -1) {
     			grades.add(2, midtermGrade);
     		} else {
     			grades.add(2, null);
     		}
     		
-    		if(/*finalExam != null*/true) {
+    		if(finalExamGrade != -1) {
     			grades.add(5, finalExamGrade);
     		} else {
     			grades.add(5, null);
     		}
     		
     		grades.add(6, Utils.getGrade(grades));
-    		PowerSchool.updateCourseGrades();
+    		
+    		PowerSchool.updateCourseGrades(courseIDs.get(i), studentID, grades);
     	}
     }
     
@@ -718,7 +757,9 @@ public class Application {
     	ArrayList<Double> grade = PowerSchool.getCourseGrades(PowerSchool.getCourseIDsFromCourseNo(courses), activeUser.getUserId() - 9);
     	System.out.println(courseTitle);
     	for (int i = 1; i <= courseTitle.size(); i++) {
-    		System.out.println(i + 1 + ". " + courseTitle.get(i) + " / " + grade.get(i));	
+    		if (grade.get(i) != null) {
+        		System.out.println(i + 1 + ". " + courseTitle.get(i) + " / " + grade.get(i));	
+    		}
     	}	
     }
     
@@ -739,14 +780,13 @@ public class Application {
     	if (markingPeriod <= 4) {
     		assignments = PowerSchool.assignmentNameByMP(courseID, markingPeriod);
         	pointsPossible = PowerSchool.assignmentValuesByMP(courseID, markingPeriod);
-        	pointsEarned = PowerSchool.pointsEarnedByStudent(courseID, /*PowerSchool.getAssignmentIDByCourseIDAndStudentID(courseID, studentID)*/ 1, studentID);
+        	pointsEarned = PowerSchool.pointsEarnedByStudent(courseID, PowerSchool.getAssignmentIDByCourseIDAndStudentIDAndMarkingPeriod(courseID, studentID, markingPeriod), studentID);
     	} else if (markingPeriod == 5) {
     		assignments = PowerSchool.assignmentNameByMid(courseID);
     	} else if (markingPeriod == 6) {
     		assignments = PowerSchool.assignmentNameByFin(courseID);
     		pointsPossible = PowerSchool.assignmentValuesByFin(courseID);
     	}
-    	System.out.println(pointsEarned + "bump");
     	for (int i = 0; i < assignments.size(); i++) {
 			System.out.print("[" + (i + 1) + "] " + assignments.get(i));
 			System.out.print(" / " + pointsEarned.get(i));

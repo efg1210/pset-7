@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
 
 public class Utils {
 
@@ -81,7 +83,7 @@ public class Utils {
      * @return the final grade
      */
 
-    public static Double getGrade(Double[] grades) {
+    public static Double getGrade(ArrayList<Double> grades) {
         int mps = 0;
         double mpSum = 0;
         double mpAvg = -1;
@@ -94,14 +96,14 @@ public class Utils {
         
         // compute sume of marking period and/or exam grades
         
-        for (int i = 0; i < grades.length; i++) {
-            if (grades[i] != null) {
+        for (int i = 0; i < grades.size(); i++) {
+            if (grades.get(i) != null) {
                 if (i < 2 || (i > 2 && i < 5)) {        // marking period grade
                     mps++;
-                    mpSum = mpSum + grades[i];
+                    mpSum = mpSum + grades.get(i);
                 } else {                                // midterm or final exam grade
                     exams++;
-                    examSum = examSum + grades[i];
+                    examSum = examSum + grades.get(i);
                 }
             }
         }

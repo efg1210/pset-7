@@ -207,14 +207,26 @@ public class QueryUtils {
     	         "INNER JOIN students ON students.student_id = course_grades.student_id " +
     	         "WHERE students.student_id = ?";
     
-    public static final String GET_ASSIGNMENT_ID_BY_COURSE_ID_AND_STUDENT_ID =
+    public static final String GET_ASSIGNMENT_ID_BY_COURSE_ID_AND_STUDENT_ID_AND_MARKING_PERIOD =
     		"SELECT * FROM courses " +
     			"INNER JOIN assignments ON assignments.course_id = courses.course_id " +
     			"INNER JOIN assignment_grades ON assignment_grades.course_id = courses.course_id " +
-    			"WHERE courses.course_id = ? AND assignment_grades.student_id = ?";
+    			"WHERE courses.course_id = ? AND assignment_grades.student_id = ? AND assignments.marking_period = ?";
     
     public static final String GET_COURSE_GRADES = 
     		"SELECT * FROM COURSE_GRADES " +
     			"WHERE COURSE_ID = ? " +
     			"AND STUDENT_ID = ?";
+    
+    public static final String UPDATE_COURSE_GRADES = 
+        	"UPDATE COURSE_GRADES " +
+    			"SET MP1 = ?, " +
+        		"MP2 = ?, " +
+    			"MIDTERM_EXAM = ?, " +
+        		"MP3 = ?, " +
+    			"MP4 = ?, " +
+        		"FINAL_EXAM = ?, " +
+    			"GRADE = ? " +
+        		"WHERE COURSE_ID = ? " +
+        		"AND STUDENT_ID = ? ";
 }
