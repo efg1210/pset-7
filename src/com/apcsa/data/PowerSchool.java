@@ -561,7 +561,7 @@ public class PowerSchool {
 	        int assignment_id = -1;
 	        
 	        try (ResultSet rs = stmt.executeQuery()) {            	   
-	     	   while (rs.next()) {
+	     	   if (rs.next()) {
 	     		  assignment_id = rs.getInt("assignment_id");
 	     		  System.out.println(assignment_id + " in getAssignmentIDByCourseIDAndStudentID");
 	           }
@@ -1187,11 +1187,14 @@ public class PowerSchool {
 				PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_GRADES)) {
 				
 				
-				for (int i = 1; i < grades.size() - 1; i++) {
+				for (int i = 0; i < grades.size(); i++) {
 					if (grades.get(i) == null) {
 						grades.add(i, 0.00);
 					}
-					stmt.setDouble(i, grades.get(i));
+					System.out.println("from ps");
+					System.out.println(i);
+					System.out.println(grades.size());
+					stmt.setDouble(i + 1, grades.get(i));
 				}
 				
 				stmt.setInt(grades.size() + 1, courseID);

@@ -619,7 +619,7 @@ public class Application {
     private void student() {
     	System.out.println("\nHello, again, " + activeUser.getFirstName() + "!");
     	
-    	//updateGrades();
+    	updateGrades();
     	/* Needs:
     	 * View course grades
     	 * View assignment grades by course
@@ -667,10 +667,16 @@ public class Application {
     	ArrayList<String> courses = PowerSchool.studentCourses(activeUser);
     	ArrayList<Integer> courseIDs = PowerSchool.getCourseIDsFromCourseNo(courses);
     	
+    	System.out.println(courses.size() + "" + courseIDs.size());
+    	
     	ArrayList<String> assignments = new ArrayList<String>();
     	ArrayList<Integer> pointsEarned = new ArrayList<Integer>();
     	ArrayList<Integer> pointsPossible = new ArrayList<Integer>();
     	ArrayList<Double> grades = new ArrayList<Double>();
+    	
+    	for (int i = 0; i < 7; i++) {
+    		grades.add(i, null);
+    	}
     	
     	int studentID = activeUser.getUserId() - 9;
     	int pointsPossibleSum = 0;
@@ -684,6 +690,8 @@ public class Application {
     	int assignmentID = 0;
     	
     	for (int i = 0; i < courses.size(); i++) { //iterates through all courses
+    		System.out.println("SIZE: " + courses.size());
+    		System.out.println("IDS: " + courseIDs.size());
     		for (int j = 1; j <= 4; j++) { //iterates through all marking periods
     			System.out.println("Marking period " + j);
         		assignments = PowerSchool.assignmentNameByMP(courseIDs.get(i), j);
@@ -691,9 +699,9 @@ public class Application {
             	pointsEarned = PowerSchool.pointsEarnedByStudent(courseIDs.get(i), PowerSchool.getAssignmentIDByCourseIDAndStudentIDAndMarkingPeriod(courseIDs.get(i), studentID, j), studentID);
             	if (assignments != null) {
 	            	for (int k = 0; k < assignments.size(); k++) { //iterates through all assignments
-	            		if (pointsEarned.get(k) != null) { //adds non-null pointsEarned + corresponding pointsPossible to total sum for calculation
-	            			pointsPossibleSum += pointsPossible.get(k);
-	            			pointsEarnedSum += pointsEarned.get(k);
+	            		if (pointsEarned != null) { //adds non-null pointsEarned + corresponding pointsPossible to total sum for calculation
+		            		pointsPossibleSum += pointsPossible.get(k);
+		            		pointsEarnedSum += pointsEarned.get(k);
 	            		}
 	            	}
             	}
@@ -701,15 +709,18 @@ public class Application {
             		tempMPGrade = Utils.round(pointsEarnedSum/pointsPossibleSum, 2);
             	}
             	if (j < 3) {
-            		grades.add(i, tempMPGrade);
+            		grades.set(i, tempMPGrade);
             		System.out.println("Grade added");
-            	} else { //makes space for midterm
-            		grades.add(i + 1, tempMPGrade);
+    			} else { //makes space for midterm
+            		grades.set(i + 1, tempMPGrade);
             		System.out.println("Grade added");
             	}
     		}
     		
-    		for (int l = 1; l <= 2; l++) { // midterm / final exam grade. in for loop for conveinence. 
+    		System.out.println(grades.size());
+    		System.out.println(grades);
+    		
+    		for (int l = 1; l <= 2; l++) { // midterm / final exam grade. in for loop for convienence. 
     			if (l == 1) {
     				assignmentID = PowerSchool.assignmentIDByMid(courseIDs.get(i));
     			} else if (l == 2) {
@@ -734,19 +745,20 @@ public class Application {
     		}
     		
     		if(midtermGrade != -1) {
-    			grades.add(2, midtermGrade);
+    			grades.set(2, midtermGrade);
     		} else {
-    			grades.add(2, null);
+    			grades.set(2, null);
     		}
     		
     		if(finalExamGrade != -1) {
-    			grades.add(5, finalExamGrade);
+    			grades.set(5, finalExamGrade);
     		} else {
-    			grades.add(5, null);
+    			grades.set(5, null);
     		}
     		
-    		grades.add(6, Utils.getGrade(grades));
+    		grades.set(6, Utils.getGrade(grades));
     		
+    		System.out.println("i before crash: " + i);
     		PowerSchool.updateCourseGrades(courseIDs.get(i), studentID, grades);
     	}
     }
