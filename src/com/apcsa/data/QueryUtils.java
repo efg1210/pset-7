@@ -130,9 +130,9 @@ public class QueryUtils {
 		"DELETE FROM ASSIGNMENTS " +
 			"WHERE ASSIGNMENT_ID = ?";
     
-    public static final String GET_ASSIGNMENT_BY_NAME =
-		"SELECT * FROM ASSIGNMENTS " +
-			"WHERE TITLE = ?";
+//    public static final String GET_ASSIGNMENT_BY_NAME =
+//		"SELECT * FROM ASSIGNMENTS " +
+//			"WHERE TITLE = ?";
     
     public static final String GET_ASSIGNMENT_BY_MID =
 		"SELECT * FROM ASSIGNMENTS " +
