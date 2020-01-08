@@ -233,18 +233,20 @@ public class Application {
 		}
 		
 		System.out.print("\n::: ");
-		int deptId = Utils.getInt(in, deptIDs.size() + 1);
-		while (deptId > deptIDs.size()) {
+		int deptIdIndex = Utils.getInt(in, deptIDs.size()) - 1;
+		while (deptIdIndex >= deptIDs.size()) {
     		System.out.print("::: ");
-    		deptId = Utils.getInt(in, deptIDs.size() + 1);
+    		deptIdIndex = Utils.getInt(in, deptIDs.size()) - 1;
     	}
 		
-		ArrayList<Integer> teacherIDs = PowerSchool.teachersByDept(deptId);
+		int deptID = deptIDs.get(deptIdIndex);
+		
+		ArrayList<Integer> teacherIDs = PowerSchool.teachersByDept(deptID);
 		for (int i = 0; i < teacherIDs.size(); i++) {
 			System.out.print("\n" + (i + 1) + ". ");
 			System.out.print(PowerSchool.teacherLastName(teacherIDs.get(i)) + ", ");
 			System.out.print(PowerSchool.teacherFirstName(teacherIDs.get(i)) + " / ");
-			System.out.println(PowerSchool.depByID(deptId));
+			System.out.println(PowerSchool.depByID(deptID));
 		}
 	}
 	
