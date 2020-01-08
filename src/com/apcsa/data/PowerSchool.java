@@ -296,7 +296,7 @@ public class PowerSchool {
     private static void reset() {
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
-             BufferedReader br = new BufferedReader(new FileReader(new File("pset-7/config/setup.sql")))) { // TODO FIX THIS
+             BufferedReader br = new BufferedReader(new FileReader(new File("config/setup.sql")))) { // TODO FIX THIS
 
             String line;
             StringBuffer sql = new StringBuffer();

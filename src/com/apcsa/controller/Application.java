@@ -299,8 +299,8 @@ public class Application {
         		case 6: 
         			if (logout(false)) {
                 		return false;
-					    }
-              break;
+					}
+        			break;
         		default: System.out.println("\nInvalid selection.");
         	}
     	}
@@ -622,7 +622,7 @@ public class Application {
     
     
     private void student() {
-    	System.out.println("\nHello, again, " + activeUser.getFirstName() + "!");
+    	System.out.println("Hello, again, " + activeUser.getFirstName() + "!");
     	
     	updateGrades();
     	/* Needs:
@@ -643,7 +643,11 @@ public class Application {
                 case VIEW_COURSE_GRADES: viewCourseGrades(); break;
                 case VIEW_ASSIGNMENT_GRADES: viewAssignmentGrades(); break;
                 case CHANGE_PASSWORD: changePassword(); break;
-                case LOGOUT: validLogin = false; break;
+                case LOGOUT: 
+                	if (logout(false)) {
+                		validLogin = false;
+					}
+                	break;
                 default: System.out.println("\nInvalid selection.\n"); break;
             }
         }
@@ -651,10 +655,10 @@ public class Application {
     }
     
     public int getSelectionStudent() {
-        System.out.println("[1] View course grades.");
+        System.out.println("\n[1] View course grades.");
         System.out.println("[2] View assignment grades by course.");
         System.out.println("[3] Change password.");
-        System.out.println("[4] Logout.");
+        System.out.print("[4] Logout.\n\n::: ");
         
         return in.nextInt();
     }
@@ -770,6 +774,7 @@ public class Application {
     	ArrayList<String> courseTitle = PowerSchool.getCourseTitlesFromCourseNo(courses);
     	ArrayList<Double> grade = PowerSchool.getCourseGrades(PowerSchool.getCourseIDsFromCourseNo(courses), activeUser.getUserId() - 9);
 
+    	System.out.println("");
     	for (int i = 0; i < courseTitle.size(); i++) {
     		if (grade.get(i) != null) {
         		System.out.println(i + 1 + ". " + courseTitle.get(i) + " / " + (grade.get(i) == -1 ? "--" : grade.get(i)));	
@@ -801,13 +806,18 @@ public class Application {
     		assignments = PowerSchool.assignmentNameByFin(courseID);
     		pointsPossible = PowerSchool.assignmentValuesByFin(courseID);
     	}
-    	for (int i = 0; i < assignments.size(); i++) {
-			System.out.print("[" + (i + 1) + "] " + assignments.get(i));
-			System.out.print(" / " + pointsEarned.get(i));
-			System.out.println(" (out of " + pointsPossible.get(i) + " pts)");
-		}
     	
     	System.out.println("");
+    	
+    	if (assignments.size() > 0) {
+    		for (int i = 0; i < assignments.size(); i++) {
+    			System.out.print("[" + (i + 1) + "] " + assignments.get(i));
+    			System.out.print(" / " + pointsEarned.get(i));
+    			System.out.println(" (out of " + pointsPossible.get(i) + " pts)");
+    		}
+    	} else {
+    		System.out.println("There are no assignments.");
+    	}
     }
     
     private void root() {
