@@ -667,21 +667,19 @@ public class Application {
     	ArrayList<String> courses = PowerSchool.studentCourses(activeUser);
     	ArrayList<Integer> courseIDs = PowerSchool.getCourseIDsFromCourseNo(courses);
     	
-    	System.out.println(courses.size() + "" + courseIDs.size());
-    	
     	ArrayList<String> assignments = new ArrayList<String>();
     	ArrayList<Integer> pointsEarned = new ArrayList<Integer>();
     	ArrayList<Integer> pointsPossible = new ArrayList<Integer>();
     	ArrayList<Double> grades = new ArrayList<Double>();
     	
-    	for (int i = 0; i < 7; i++) {
+    	for (int i = 0; i < 7; i++) { //fills grades correctly so it doesn't catch fire
     		grades.add(i, null);
     	}
     	
-    	int studentID = activeUser.getUserId() - 9;
-    	int pointsPossibleSum = 0;
-    	int pointsEarnedSum = 0;
-    	double tempMPGrade = 0;
+    	int studentID = PowerSchool.getStudentIDbyUserID(activeUser.getUserId()); //change. I know Emily
+    	double pointsPossibleSum = 0;
+    	double pointsEarnedSum = 0;
+    	double tempMPGrade = -1.00;
     	int examPointsEarned = 0;
     	int examPointsPossible = 0;
     	double examGrade = 0;
@@ -690,13 +688,11 @@ public class Application {
     	int assignmentID = 0;
     	
     	for (int i = 0; i < courses.size(); i++) { //iterates through all courses
-    		System.out.println("SIZE: " + courses.size());
-    		System.out.println("IDS: " + courseIDs.size());
     		for (int j = 1; j <= 4; j++) { //iterates through all marking periods
-    			System.out.println("Marking period " + j);
         		assignments = PowerSchool.assignmentNameByMP(courseIDs.get(i), j);
             	pointsPossible = PowerSchool.assignmentValuesByMP(courseIDs.get(i), j);
             	pointsEarned = PowerSchool.pointsEarnedByStudent(courseIDs.get(i), PowerSchool.getAssignmentIDByCourseIDAndStudentIDAndMarkingPeriod(courseIDs.get(i), studentID, j), studentID);
+            	
             	if (assignments != null) {
 	            	for (int k = 0; k < assignments.size(); k++) { //iterates through all assignments
 	            		if (pointsEarned != null) { //adds non-null pointsEarned + corresponding pointsPossible to total sum for calculation
@@ -705,20 +701,23 @@ public class Application {
 	            		}
 	            	}
             	}
-            	if (assignments != null) { //if anything was in assignments
-            		tempMPGrade = Utils.round(pointsEarnedSum/pointsPossibleSum, 2);
+            	
+            	if (assignments != null && pointsPossibleSum != 0) { //if anything was in assignments
+            		tempMPGrade = Utils.round((pointsEarnedSum/ pointsPossibleSum) * 100, 2);
             	}
-            	if (j < 3) {
-            		grades.set(i, tempMPGrade);
-            		System.out.println("Grade added");
-    			} else { //makes space for midterm
-            		grades.set(i + 1, tempMPGrade);
-            		System.out.println("Grade added");
+            	
+            	if (tempMPGrade != -1.00) { 
+			         if (j < 3) {
+			            grades.set(j - 1, tempMPGrade);
+			    	} else { //makes space for midterm
+			        	grades.set(j, tempMPGrade);
+			        }
             	}
+            	
+        		pointsPossibleSum = 0;
+        		pointsEarnedSum = 0;
+            	tempMPGrade = -1.00;
     		}
-    		
-    		System.out.println(grades.size());
-    		System.out.println(grades);
     		
     		for (int l = 1; l <= 2; l++) { // midterm / final exam grade. in for loop for convienence. 
     			if (l == 1) {
@@ -732,34 +731,32 @@ public class Application {
             	
             	if (assignmentID != -1) {
         			examGrade = Utils.round(examPointsEarned/examPointsPossible, 2);
+    	    		if (l == 1) {
+    	        		if(examGrade != -1) {
+    	        			grades.set(2, midtermGrade);
+    	        		} else {
+    	        			grades.set(2, null);
+    	        		}
+    	    			examGrade = -1;
+    	    		} else if (l == 2) {
+    	        		if(examGrade != -1) {
+    	        			grades.set(5, finalExamGrade);
+    	        		} else {
+    	        			grades.set(5, null);
+    	        		}
+    	    		} else { 
+    	    			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    	    		}
             	}
-            	
-	    		if (l == 1) {
-	    			midtermGrade = examGrade;
-	    			examGrade = -1;
-	    		} else if (l == 2) {
-	    			finalExamGrade = examGrade;
-	    		} else { 
-	    			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-	    		}
-    		}
-    		
-    		if(midtermGrade != -1) {
-    			grades.set(2, midtermGrade);
-    		} else {
-    			grades.set(2, null);
-    		}
-    		
-    		if(finalExamGrade != -1) {
-    			grades.set(5, finalExamGrade);
-    		} else {
-    			grades.set(5, null);
     		}
     		
     		grades.set(6, Utils.getGrade(grades));
     		
-    		System.out.println("i before crash: " + i);
     		PowerSchool.updateCourseGrades(courseIDs.get(i), studentID, grades);
+    		
+        	for (int a = 0; a < 7; a++) {
+        		grades.set(a, null);
+        	}
     	}
     }
     
@@ -767,10 +764,10 @@ public class Application {
     	ArrayList<String> courses = PowerSchool.studentCourses(activeUser);
     	ArrayList<String> courseTitle = PowerSchool.getCourseTitlesFromCourseNo(courses);
     	ArrayList<Double> grade = PowerSchool.getCourseGrades(PowerSchool.getCourseIDsFromCourseNo(courses), activeUser.getUserId() - 9);
-    	System.out.println(courseTitle);
-    	for (int i = 1; i <= courseTitle.size(); i++) {
+
+    	for (int i = 0; i < courseTitle.size(); i++) {
     		if (grade.get(i) != null) {
-        		System.out.println(i + 1 + ". " + courseTitle.get(i) + " / " + grade.get(i));	
+        		System.out.println(i + 1 + ". " + courseTitle.get(i) + " / " + (grade.get(i) == -1 ? "--" : grade.get(i)));	
     		}
     	}	
     }

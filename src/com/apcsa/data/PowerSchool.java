@@ -296,7 +296,7 @@ public class PowerSchool {
     private static void reset() {
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
-             BufferedReader br = new BufferedReader(new FileReader(new File("config/setup.sql")))) {
+             BufferedReader br = new BufferedReader(new FileReader(new File("pset-7/config/setup.sql")))) { // TODO FIX THIS
 
             String line;
             StringBuffer sql = new StringBuffer();
@@ -529,7 +529,6 @@ public class PowerSchool {
     	try (Connection conn = getConnection();
           PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_POINTS_EARNED_ON_ASSIGNMENT)) {
     		
-    		System.out.println(courseID + " " + assignmentID + " " + studentID + " in pointsEarnedByStudent");
     		
 	        stmt.setInt(1, courseID);
 	        stmt.setInt(2, assignmentID);
@@ -540,7 +539,6 @@ public class PowerSchool {
 	        try (ResultSet rs = stmt.executeQuery()) {
 	     	   while (rs.next()) {
 	     		  assignments.add(rs.getInt("points_earned"));
-	     		  System.out.print("Result set for pointsEarnedByStudent is populated/n");
 	           }
 	        }
 	        return assignments;
@@ -563,7 +561,6 @@ public class PowerSchool {
 	        try (ResultSet rs = stmt.executeQuery()) {            	   
 	     	   if (rs.next()) {
 	     		  assignment_id = rs.getInt("assignment_id");
-	     		  System.out.println(assignment_id + " in getAssignmentIDByCourseIDAndStudentID");
 	           }
 	        }
 	        return assignment_id;
@@ -648,8 +645,6 @@ public class PowerSchool {
     	try (Connection conn = getConnection();
           PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_POINTS_EARNED_ON_ASSIGNMENT)) {
     		
-    		System.out.println(courseID + " " + assignmentID + " " + studentID + " in examPointsEarned");
-    		
 	        stmt.setInt(1, courseID);
 	        stmt.setInt(2, assignmentID);
 	        stmt.setInt(3, studentID);
@@ -668,11 +663,29 @@ public class PowerSchool {
     	return -1;
     }
     
+    public static int getStudentIDbyUserID(int userID) {
+    	try (Connection conn = getConnection();
+    	          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_SQL)) {
+    	    		
+    		        stmt.setInt(1, userID);
+    		        
+    		        int studentID = -1;
+    		        
+    		        try (ResultSet rs = stmt.executeQuery()) {            	   
+    			     	   if (rs.next()) {
+    			     		  studentID = rs.getInt("student_ID");
+    			           }
+    			        }
+    		        return studentID;
+    	        } catch (SQLException e) {
+    	            e.printStackTrace();
+    	        }
+    	    	return -1;
+    }
+    
     public static int getExamPointsPossible(int courseID, int assignmentID, int studentID) {
     	try (Connection conn = getConnection();
           PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_POINTS_EARNED_ON_ASSIGNMENT)) {
-    		
-    		System.out.println(courseID + " " + assignmentID + " " + studentID + " in examPointsPossible");
     		
 	        stmt.setInt(1, courseID);
 	        stmt.setInt(2, assignmentID);
@@ -1186,19 +1199,16 @@ public class PowerSchool {
 		try (Connection conn = getConnection();
 				PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_GRADES)) {
 				
-				
 				for (int i = 0; i < grades.size(); i++) {
 					if (grades.get(i) == null) {
-						grades.add(i, 0.00);
+						grades.set(i, -1.00);
 					}
-					System.out.println("from ps");
-					System.out.println(i);
-					System.out.println(grades.size());
 					stmt.setDouble(i + 1, grades.get(i));
 				}
 				
 				stmt.setInt(grades.size() + 1, courseID);
 				stmt.setInt(grades.size() + 2, studentID);
+				stmt.executeUpdate();
 				
 	    } catch (SQLException e) {
 	   		e.printStackTrace();
