@@ -51,7 +51,7 @@ public class Application {
             // if login is successful, update generic user to administrator, teacher, or student
 
             if (login(username, password)) {
-            	calcRanking();
+            	//calcRanking();
                 activeUser = activeUser.isAdministrator()
                     ? PowerSchool.getAdministrator(activeUser) : activeUser.isTeacher()
                     ? PowerSchool.getTeacher(activeUser) : activeUser.isStudent()
@@ -312,9 +312,10 @@ public class Application {
         	System.out.println("[3] Delete assignment.");
         	System.out.println("[4] Enter grade.");
         	System.out.println("[5] Change password.");
-        	System.out.print("[6] Logout.\n\n::: ");
+        	System.out.println("[6] Easter egg.");
+        	System.out.print("[7] Logout.\n\n::: ");
         
-        	int selection = Utils.getInt(in, 7);
+        	int selection = Utils.getInt(in, 8);
         	
         	switch (selection) {
         		case 1: enrollmentByCourse(); break;
@@ -322,7 +323,8 @@ public class Application {
         		case 3: deleteAssignment(); break;
         		case 4: enterGrade(); break;
         		case 5: changePassword(); break;
-        		case 6: 
+        		case 6: easterEgg(((Teacher) activeUser).getTeacherId()); break;
+        		case 7:
         			if (logout(false)) {
                 		return false;
 					}
@@ -415,10 +417,12 @@ public class Application {
 				PowerSchool.addAssignmentGrade(courseID, chosenAssignmentID, studentIDs.get(studentIndex), 
 				newGrade, chosenAssignmentValue, 1);
 				System.out.println("\nSuccessfully entered grade.");
+				calcRanking();
 			} else if (confirm && grade != -1) {
 				PowerSchool.updateAssignmentGrade(courseID, chosenAssignmentID, studentIDs.get(studentIndex), 
 				  newGrade, 1);
 				System.out.println("\nSuccessfully entered grade.");
+				calcRanking();
 			} else {
 				System.out.println("\nGrade not entered.");
 			}
@@ -555,6 +559,128 @@ public class Application {
 		} else {
 			System.out.println("\nAssignment not created.");
 		}
+    }
+    
+    private void easterEgg(int teacherID) {
+    	if (teacherID == 1) {
+    		System.out.println("");
+    		
+    		System.out.println("   +--------------+");
+    		System.out.println("   |.------------.|");
+    		System.out.println("   ||            ||");
+    		System.out.println("   ||            ||");
+    		System.out.println("   ||            ||");
+    		System.out.println("   ||            ||");
+    		System.out.println("   |+------------+|");
+    		System.out.println("   +-..--------..-+");
+    		System.out.println("   .--------------.");
+    		System.out.println("  / /============\\ \\");
+    		System.out.println(" / /==============\\ \\");
+    		System.out.println("/____________________\\");
+    		System.out.println("\\____________________/");
+    		
+    		System.out.println("\nThis easter egg has been inspired by Nicole.");
+    	} else if (teacherID == 2) {
+    		System.out.println("");
+    		
+    		System.out.println("    __________________   __________________");
+    		System.out.println(".-/|                  \\ /                  |\\-.");
+    		System.out.println("||||                   |                   ||||");
+    		System.out.println("||||                   |       ~~*~~       ||||");
+    		System.out.println("||||    --==*==--      |                   ||||");
+    		System.out.println("||||                   |                   ||||");
+    		System.out.println("||||                   |                   ||||");
+    		System.out.println("||||                   |     --==*==--     ||||");
+    		System.out.println("||||                   |                   ||||");
+    		System.out.println("||||                   |                   ||||");
+    		System.out.println("||||                   |                   ||||");
+    		System.out.println("||||                   |                   ||||");
+    		System.out.println("||||__________________ | __________________||||");
+    		System.out.println("||/===================\\|/===================\\||");
+    		System.out.println("`--------------------~___~-------------------''");
+    		
+    		System.out.println("\nThis easter egg has been inspired by Nicole.");
+    	} else if (teacherID == 3) {
+    		System.out.println("");
+
+    		System.out.println(" (");
+    		System.out.println("(_)");
+    		System.out.println("###       .");
+    		System.out.println("(#c    __\\|/__");
+    		System.out.println(" #\\     wWWWw");
+    		System.out.println(" \\ \\-. (/. .\\)");
+    		System.out.println(" /\\ /`\\/\\   /\\");
+    		System.out.println(" |\\/   \\_) (_|");
+    		System.out.println(" `\\.' ; ; `' ;`\\");
+    		System.out.println("   `\\;  ;    .  ;/\\");
+    		System.out.println("     `\\;    ;  ;|  \\");
+    		System.out.println("      ;   .'  ' ;  /");
+    		System.out.println("      |_.'   ;  | /)");
+    		System.out.println("      (     ''._;/`");
+    		System.out.println("      |    ' . ;");
+    		System.out.println("      |.-'   .:)");
+    		System.out.println("      |        |");
+    		System.out.println("      (  .'  : |");
+    		System.out.println("      |,-  .:: |");
+    		System.out.println("      | ,-'  .;|");
+    		System.out.println("     _/___,_.:_\\_");
+    		System.out.println("    [I_I_I_I_I_I_]");
+    		System.out.println("    | __________ |");
+    		System.out.println("    | || |  | || |");
+    		System.out.println("   _| ||_|__|_|| |_");
+    		System.out.println("  /=--------------=\\");
+    		System.out.println(" /                  \\");
+    		System.out.println("|                    |");
+    		
+    		System.out.println("\nThis easter egg has been inspired by Nicole.");
+     	} else if (teacherID == 6) {
+     		System.out.println("");
+     		
+     		System.out.println("(==(     )==)");
+     		System.out.println(" `-.`. ,',-'");
+     		System.out.println("    _,-'\"");
+     		System.out.println(" ,-',' `.`-.");
+     		System.out.println("(==(     )==)");
+     		System.out.println(" `-.`. ,',-'");
+     		System.out.println("    _,-'\"");
+     		System.out.println(" ,-',' `.`-.");
+     		System.out.println("(==(     )==)");
+     		System.out.println(" `-.`. ,',-'");
+     		System.out.println("    _,-'\"");
+     		System.out.println(" ,-',' `.`-.");
+     		System.out.println("(==(     )==)");
+     		
+     		System.out.println("\nThis easter egg has been inspired by Nicole.");
+     	} else if (teacherID == 4) {
+     		System.out.println("");
+     		
+            System.out.println("   +------+.");
+            System.out.println("   |`.    | `.");
+            System.out.println("   |  `+--+---+");
+            System.out.println("   |   |  |   |");
+            System.out.println("   +---+--+   |");
+            System.out.println("    `. |   `. |");
+            System.out.println("      `+------+");
+     		
+     		System.out.println("\nThis easter egg has been inspired by Nicole.");
+     	} else if (teacherID == 5) {
+     		System.out.println("");
+     		
+     		System.out.println("          ___");
+     		System.out.println("      .:::---:::.");
+     		System.out.println("    .'--:     :--'.");
+     		System.out.println("   /.'   \\   /   `.\\");
+     		System.out.println("  | /'._ /:::\\ _.'\\ |");
+     		System.out.println("  |/    |:::::|    \\|");
+     		System.out.println("  |:\\ .''-:::-''. /:|");
+     		System.out.println("   \\:|    `|`    |:/");
+     		System.out.println("    '.'._.:::._.'.'");
+     		System.out.println("      '-:::::::-'");
+     		
+     		System.out.println("\nThis easter egg has been inspired by Nicole.");
+     	} else {
+    		System.out.println("\nNo easter egg for you. :( Sorry.");
+    	}
     }
     
     private boolean isValidCourseNo(String courseNo) {
