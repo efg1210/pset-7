@@ -229,4 +229,13 @@ public class QueryUtils {
     			"GRADE = ? " +
         		"WHERE COURSE_ID = ? " +
         		"AND STUDENT_ID = ? ";
+    
+    public static final String UPDATE_GPA =
+    		"UPDATE STUDENTS " +
+    			"SET GPA = ? " +
+    			"WHERE STUDENT_ID = ?";
+    
+    public static final String GET_FINAL_GRADES = 
+    		"SELECT * FROM COURSE_GRADES " +
+    			"WHERE STUDENT_ID = ?";
 }
