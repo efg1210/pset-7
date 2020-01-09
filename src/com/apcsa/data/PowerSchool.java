@@ -1248,4 +1248,117 @@ public class PowerSchool {
 	   		e.printStackTrace();
 	    }
 	}
+	public static String assignmentNameByID(int assignment_id) {
+    	try (Connection conn = getConnection();
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_ID)) {
+
+	        stmt.setInt(1, assignment_id);
+	        
+	        String name = null;
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {            	   
+	     	   if (rs.next()) {
+	     		  name = rs.getString("title");
+	           }
+	        }
+	        return name;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return null;
+    }
+	
+	public static int assignmentValueByID(int assignment_id) {
+    	try (Connection conn = getConnection();
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_ID)) {
+
+	        stmt.setInt(1, assignment_id);
+	        
+	        int value = -1;
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {            	   
+	     	   if (rs.next()) {
+	     		  value = rs.getInt("point_value");
+	           }
+	        }
+	        return value;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return -1;
+    }
+	
+	public static ArrayList<Integer> assignmentIDByMP(int courseID, int mp) {
+    	try (Connection conn = getConnection();
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_MP)) {
+
+		        stmt.setInt(1, courseID);
+		        stmt.setInt(2, mp);
+		        
+		        ArrayList<Integer> assignments = new ArrayList<Integer>();
+		        
+		        try (ResultSet rs = stmt.executeQuery()) {            	   
+		     	   while (rs.next()) {
+		     		  assignments.add(rs.getInt("assignment_id"));
+		            }
+		        }
+		        return assignments;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+	
+	public static ArrayList<Integer> assignmentIDsByMid(int courseID) {
+    	try (Connection conn = getConnection();
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_MID)) {
+
+	        stmt.setInt(1, courseID);
+	        
+	        ArrayList<Integer> assignments = new ArrayList<Integer>();
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {            	   
+	     	   while (rs.next()) {
+	     		  assignments.add(rs.getInt("assignment_id"));
+	           }
+	        }
+	        return assignments;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return null;
+    }
+    
+    public static ArrayList<Integer> assignmentIDsByFin(int courseID) {
+    	try (Connection conn = getConnection();
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_FIN)) {
+
+	        stmt.setInt(1, courseID);
+	        
+	        ArrayList<Integer> assignments = new ArrayList<Integer>();
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {            	   
+	     	   while (rs.next()) {
+	     		  assignments.add(rs.getInt("assignment_id"));
+	           }
+	        }
+	        return assignments;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return null;
+    }
+    
+    public static void updateClassRank(int studentID, int rank) {
+    			try (Connection conn = getConnection();
+    		      PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_ASSIGNMENT_GRADE)) {
+    		
+    				stmt.setDouble(1, studentID);
+    		 		stmt.setInt(2, rank);
+    		
+    		 		stmt.executeUpdate();
+    		     } catch (SQLException e) {
+    		         e.printStackTrace();
+    		     }
+    }
 }
