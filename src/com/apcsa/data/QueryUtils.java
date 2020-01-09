@@ -241,6 +241,6 @@ public class QueryUtils {
   
     public static final String UPDATE_RANKING = 
         	"UPDATE STUDENTS " +
-    			"SET CLASS_RANK = ?, " +
-        		"WHERE STUDENT_ID = ? ";
+    			"SET CLASS_RANK = ? " +
+        		"WHERE STUDENT_ID = ?";
 }

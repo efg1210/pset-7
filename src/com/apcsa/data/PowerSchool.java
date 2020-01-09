@@ -1351,10 +1351,10 @@ public class PowerSchool {
     
     public static void updateClassRank(int studentID, int rank) {
     			try (Connection conn = getConnection();
-    		      PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_ASSIGNMENT_GRADE)) {
+    		      PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_RANKING)) {
     		
-    				stmt.setDouble(1, studentID);
-    		 		stmt.setInt(2, rank);
+    				stmt.setDouble(1, rank);
+    		 		stmt.setInt(2, studentID);
     		
     		 		stmt.executeUpdate();
     		     } catch (SQLException e) {
