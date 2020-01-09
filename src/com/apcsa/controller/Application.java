@@ -688,7 +688,8 @@ public class Application {
     	ArrayList<String> courses = PowerSchool.studentCourses(activeUser);
     	ArrayList<Integer> courseIDs = PowerSchool.getCourseIDsFromCourseNo(courses);
     	
-    	ArrayList<String> assignments = new ArrayList<String>();
+    	//ArrayList<String> assignments = new ArrayList<String>();
+    	ArrayList<Integer> assignmentIDs = new ArrayList<Integer>();
     	ArrayList<Integer> pointsEarned = new ArrayList<Integer>();
     	ArrayList<Integer> pointsPossible = new ArrayList<Integer>();
     	ArrayList<Double> grades = new ArrayList<Double>();
@@ -711,26 +712,29 @@ public class Application {
     	//TODO: what is with all of these loops, oh my, the issue is here somewhere
     	for (int i = 0; i < courses.size(); i++) { //iterates through all courses
     		for (int j = 1; j <= 4; j++) { //iterates through all marking periods
-        		assignments = PowerSchool.assignmentNameByMP(courseIDs.get(i), j);
+    			assignmentIDs = PowerSchool.assignmentIDByMP(courseIDs.get(i), j);
             	
         		pointsPossible = PowerSchool.assignmentValuesByMP(courseIDs.get(i), j);
             	pointsEarned = PowerSchool.pointsEarnedByStudent(courseIDs.get(i), PowerSchool.getAssignmentIDByCourseIDAndStudentIDAndMarkingPeriod(courseIDs.get(i), studentID, j), studentID);
-            	System.out.println("\npoints possible" + pointsPossible);
-            	System.out.println("points earned" + pointsEarned);
-            	System.out.println("assignments:  " + assignments);
+//            	System.out.println("\npoints possible" + pointsPossible);
+//            	System.out.println("points earned" + pointsEarned);
+            	//System.out.println("assignments:  " + assignments);
             	
-            	if (assignments != null) {
-	            	for (int k = 0; k < assignments.size() - 1; k++) { //iterates through all assignments
+            	if (assignmentIDs != null) {
+            		//System.out.println("outer if statement");
+	            	for (int k = 0; k < assignmentIDs.size(); k++) { //iterates through all assignments
+	            		//System.out.println("inner loop");
 	            		if (pointsEarned.get(k) != null) { //adds non-null pointsEarned + corresponding pointsPossible to total sum for calculation
 		            		pointsPossibleSum += pointsPossible.get(k);
 		            		pointsEarnedSum += pointsEarned.get(k);
+		            		//System.out.println("inner if statement");
 	            		}
 	            	}
             	}
             	
-            	System.out.println("points earned sum: " + pointsEarnedSum);
+            	//System.out.println("points earned sum: " + pointsEarnedSum);
             	
-            	if (assignments != null && pointsPossibleSum != 0) { //if anything was in assignments
+            	if (assignmentIDs != null && pointsPossibleSum != 0) { //if anything was in assignments
             		tempMPGrade = Utils.round((pointsEarnedSum/ pointsPossibleSum) * 100, 2);
             	}
             	
