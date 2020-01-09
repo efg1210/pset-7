@@ -772,9 +772,11 @@ public class Application {
     }
     
     public void viewCourseGrades() {
+    	int studentID = PowerSchool.getStudentIDbyUserID(activeUser.getUserId());
+    	
     	ArrayList<String> courses = PowerSchool.studentCourses(activeUser);
     	ArrayList<String> courseTitle = PowerSchool.getCourseTitlesFromCourseNo(courses);
-    	ArrayList<Double> grade = PowerSchool.getCourseGrades(PowerSchool.getCourseIDsFromCourseNo(courses), activeUser.getUserId() - 9);
+    	ArrayList<Double> grade = PowerSchool.getCourseGrades(PowerSchool.getCourseIDsFromCourseNo(courses), studentID);
 
     	System.out.println("");
     	for (int i = 0; i < courseTitle.size(); i++) {
@@ -785,9 +787,9 @@ public class Application {
     }
     
     public void viewAssignmentGrades() {
+    	int studentID = PowerSchool.getStudentIDbyUserID(activeUser.getUserId());
     	int courseID = assignments();
     	int markingPeriod = Utils.getInt(in, 7);
-    	int studentID = (activeUser.getUserId() - 9); //userIDs 1-9 are root, admin, & teacher
     	
     	while (markingPeriod > 6) {
     		System.out.print("::: ");
