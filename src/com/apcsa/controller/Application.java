@@ -804,7 +804,34 @@ public class Application {
         	for (int a = 0; a < 7; a++) {
         		grades.set(a, null);
         	}
+    	} 	
+		updateGPA(studentID);
+    }
+    
+    public void updateGPA(int studentID) {
+    	
+    	ArrayList<Double> courseGrades = PowerSchool.getFinalCourseGrades(studentID);
+    	
+    	double courseGradesSum = -1.0;
+    	int count = 0;
+    	double GPA = -1;
+    	
+    	for (int i = 0; i < courseGrades.size(); i++) {
+    		if (courseGrades.get(i) != -1.0) {
+    			courseGradesSum += courseGrades.get(i);
+    			count++;
+    		}
     	}
+    	
+    	if (count > 0) {
+    		courseGradesSum += 1.0;
+    	}
+    	
+    	if (courseGradesSum > -1.0) {
+    		GPA = Utils.round(((courseGradesSum/count)/25), 2);
+    	}
+    	
+    	PowerSchool.updateGPA(GPA, studentID);
     }
     
     public void viewCourseGrades() {

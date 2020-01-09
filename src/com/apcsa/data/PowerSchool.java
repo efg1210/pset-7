@@ -1215,6 +1215,39 @@ public class PowerSchool {
 	    }
 	}
 	
+	public static ArrayList<Double> getFinalCourseGrades(int studentID) {
+		try (Connection conn = getConnection();
+				PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_FINAL_GRADES)) {
+			
+			ArrayList<Double> finalGrades = new ArrayList<Double>();
+			
+			stmt.setInt(1, studentID);
+			
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {	
+					finalGrades.add(rs.getDouble("grade"));
+				}
+				return finalGrades;
+			}
+			
+	    } catch (SQLException e) {
+	   		e.printStackTrace();
+	    }
+		return null;
+	}
+	
+	public static void updateGPA(double GPA, int studentID) {
+		try (Connection conn = getConnection();
+				PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_GPA)) {
+				
+				stmt.setDouble(1, GPA);
+				stmt.setInt(2, studentID);
+				stmt.executeUpdate();
+				
+	    } catch (SQLException e) {
+	   		e.printStackTrace();
+	    }
+	}
 	public static String assignmentNameByID(int assignment_id) {
     	try (Connection conn = getConnection();
           PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_ID)) {
@@ -1327,5 +1360,5 @@ public class PowerSchool {
     		     } catch (SQLException e) {
     		         e.printStackTrace();
     		     }
-    		}
+    }
 }
