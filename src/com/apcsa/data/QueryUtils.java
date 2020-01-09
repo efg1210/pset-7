@@ -229,4 +229,9 @@ public class QueryUtils {
     			"GRADE = ? " +
         		"WHERE COURSE_ID = ? " +
         		"AND STUDENT_ID = ? ";
+    
+    public static final String UPDATE_RANKING = 
+        	"UPDATE STUDENTS " +
+    			"SET CLASS_RANK = ?, " +
+        		"WHERE STUDENT_ID = ? ";
 }

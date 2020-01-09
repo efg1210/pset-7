@@ -1315,4 +1315,17 @@ public class PowerSchool {
         }
     	return null;
     }
+    
+    public static void updateClassRank(int studentID, int rank) {
+    			try (Connection conn = getConnection();
+    		      PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_ASSIGNMENT_GRADE)) {
+    		
+    				stmt.setDouble(1, studentID);
+    		 		stmt.setInt(2, rank);
+    		
+    		 		stmt.executeUpdate();
+    		     } catch (SQLException e) {
+    		         e.printStackTrace();
+    		     }
+    		}
 }

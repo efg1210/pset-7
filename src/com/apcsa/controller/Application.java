@@ -51,6 +51,7 @@ public class Application {
             // if login is successful, update generic user to administrator, teacher, or student
 
             if (login(username, password)) {
+            	calcRanking();
                 activeUser = activeUser.isAdministrator()
                     ? PowerSchool.getAdministrator(activeUser) : activeUser.isTeacher()
                     ? PowerSchool.getTeacher(activeUser) : activeUser.isStudent()
@@ -93,6 +94,29 @@ public class Application {
                 System.out.println("\nInvalid username and/or password.");
             }
         }
+    }
+    
+    private void calcRanking() {
+    	for (int gradeLevel = 9; gradeLevel < 13; gradeLevel++) {
+    		ArrayList<Integer> studentIDs = PowerSchool.studentsByGrade(gradeLevel);
+    		
+    		for (int i = 0; i < studentIDs.size(); i++) {
+    			int counter = 1;
+    			double currentGPA = PowerSchool.studentGPA(studentIDs.get(i));
+    			
+    			for (int j = 0; j < studentIDs.size(); j++) {
+    				double compareGPA = PowerSchool.studentGPA(studentIDs.get(j));
+    				
+    				if (studentIDs.get(i) != studentIDs.get(j)) {
+    					
+    					if (compareGPA > currentGPA) {
+    						counter++;
+    					}
+    				}
+    			}
+    			PowerSchool.updateClassRank(studentIDs.get(i), counter);
+    		}
+    	}
     }
     
     private boolean logout(boolean factoryReset) {
