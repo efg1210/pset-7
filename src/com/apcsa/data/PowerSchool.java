@@ -792,7 +792,7 @@ public class PowerSchool {
 			stmt.setInt(1, assignmentID);   
 			stmt.setInt(2, studentID);
 			
-			double grade = 0;
+			double grade = -1;
 			   
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {

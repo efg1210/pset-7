@@ -405,10 +405,10 @@ public class Application {
 			System.out.println("Current Grade: " + grade);
 			System.out.print("\nNew Grade: ");
 			
-			int newGrade = Utils.getInt(in, chosenAssignmentValue);
+			int newGrade = Utils.getInt(in, chosenAssignmentValue + 1);
 			while (newGrade > chosenAssignmentValue) {
 				System.out.print("New Grade: ");
-				newGrade = Utils.getInt(in, chosenAssignmentValue);
+				newGrade = Utils.getInt(in, chosenAssignmentValue + 1);
 			}
 			
 			boolean confirm = Utils.confirm(in, "\nAre you sure you want to enter this grade? (y/n) ");
