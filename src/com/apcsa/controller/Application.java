@@ -766,6 +766,10 @@ public class Application {
     		
     		PowerSchool.updateCourseGrades(courseIDs.get(i), studentID, grades);
     		
+    		PowerSchool.updateGPA() {
+    			
+    		}
+    		
         	for (int a = 0; a < 7; a++) {
         		grades.set(a, null);
         	}
