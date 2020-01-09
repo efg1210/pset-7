@@ -337,7 +337,7 @@ public class Application {
 			System.out.println("\nChoose an assignment.\n");
 			for (int i = 0; i < assignments.size(); i++) {
 				System.out.print("[" + (i + 1) + "] " + assignments.get(i));
-				System.out.println(" (" + values.get(i) + ")");
+				System.out.println(" (" + values.get(i) + " pts)");
 			}
 			
 			System.out.print("\n::: ");
@@ -456,7 +456,7 @@ public class Application {
     	for (int i = 0; i < assignments.size(); i++) {
 			System.out.print("[" + (i + 1) + "] " + assignments.get(i));
 			
-			System.out.println(" (" + values.get(i) + ")");
+			System.out.println(" (" + values.get(i) + " pts)");
 		}
     	
 		System.out.print("\n::: ");
@@ -915,6 +915,7 @@ public class Application {
 	            System.out.println("\nInvalid username.\n");
 	            return;
 	    	}
+	    	System.out.println("");
     	} else {
     		System.out.println("");
     	}
@@ -922,7 +923,7 @@ public class Application {
     
     public boolean resetDatabase() {
     	in.nextLine();
-    	if (Utils.confirm(in, "\nAre you sure you want to factory reset the database? This will wipe out all of the data. (y/n) ")) {
+    	if (Utils.confirm(in, "\nAre you sure you want to reset all settings and data? (y/n) ")) {
 	    	try {
 	    		PowerSchool.initialize(true);
     			System.out.println("\nSuccessfully reset database. Please log in again to continue.");
