@@ -66,7 +66,7 @@ public class Application {
                     String oldPassword = activeUser.getPassword();
                     
                     if (!newPassword.equals(oldPassword)) {
-                    	System.out.println("\nPassword updated.");
+                    	System.out.println("\nSuccessfully changed password.");
                         activeUser.setPassword(newPassword);
                         PowerSchool.updatePassword(username, activeUser.getPassword());
                     } else {
@@ -402,7 +402,11 @@ public class Application {
 			System.out.print("Student: " + studentLastName.get(studentIndex));
 			System.out.println(", " + studentFirstName.get(studentIndex));
 			double grade = PowerSchool.assignmentGrade(chosenAssignmentID, studentIDs.get(studentIndex));
-			System.out.println("Current Grade: " + grade);
+			if (grade == -1) {
+				System.out.println("Current Grade: --");
+			} else {
+				System.out.println("Current Grade: " + grade);
+			}
 			System.out.print("\nNew Grade: ");
 			
 			int newGrade = Utils.getInt(in, chosenAssignmentValue + 1);
@@ -1130,7 +1134,7 @@ public class Application {
     public void shutdown() {
     	in.nextLine();
         
-    	if (Utils.confirm(in, "\nAre you sure you want to shut down the system? (y/n) ")) {
+    	if (Utils.confirm(in, "\nAre you sure? (y/n) ")) {
 	    	try {
 	        	if (in != null) {
 	                in.close();
