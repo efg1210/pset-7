@@ -1125,6 +1125,27 @@ public class PowerSchool {
 	    return null;
 	}
 	
+	public static ArrayList<String> studentCoursesByStudentID(int studentID) {
+		try (Connection conn = getConnection();
+	      PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSES_FOR_STUDENT)) {
+
+			stmt.setInt(1, studentID);
+			
+			ArrayList<String> courses = new ArrayList<String>();
+			   
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					courses.add(rs.getString("course_no"));
+				}
+			}
+			return courses;
+	    } catch (SQLException e) {
+	    	e.printStackTrace();
+	    }
+
+	    return null;
+	}
+	
 	public static ArrayList<String> getCourseTitlesFromCourseNo(ArrayList<String> courseNo) {
 	    try (Connection conn = getConnection();
 	        PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_ID)) {

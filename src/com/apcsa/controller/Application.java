@@ -417,11 +417,13 @@ public class Application {
 				PowerSchool.addAssignmentGrade(courseID, chosenAssignmentID, studentIDs.get(studentIndex), 
 				newGrade, chosenAssignmentValue, 1);
 				System.out.println("\nSuccessfully entered grade.");
+				updateGrades(studentIDs.get(studentIndex));
 				calcRanking();
 			} else if (confirm && grade != -1) {
 				PowerSchool.updateAssignmentGrade(courseID, chosenAssignmentID, studentIDs.get(studentIndex), 
 				  newGrade, 1);
 				System.out.println("\nSuccessfully entered grade.");
+				updateGrades(studentIDs.get(studentIndex));
 				calcRanking();
 			} else {
 				System.out.println("\nGrade not entered.");
@@ -786,7 +788,7 @@ public class Application {
     private void student() {
     	System.out.println("Hello, again, " + activeUser.getFirstName() + "!");
     	
-    	updateGrades();
+    	//updateGrades();
     	/* Needs:
     	 * View course grades
     	 * View assignment grades by course
@@ -825,7 +827,7 @@ public class Application {
         return in.nextInt();
     }
     
-    public void updateGrades() {
+    public void updateGrades(int studentID) {
     	/* Get MP Grades
     	 * 	1. Find all assignments attributed to student. If none, mark as -1.
     	 *	2. Take points earned. Add.
@@ -835,10 +837,9 @@ public class Application {
     	 * Get Course Grade: Utils.getGrade(grades[]);
     	 */
     	    	
-    	ArrayList<String> courses = PowerSchool.studentCourses(activeUser);
+    	ArrayList<String> courses = PowerSchool.studentCoursesByStudentID(studentID);
     	ArrayList<Integer> courseIDs = PowerSchool.getCourseIDsFromCourseNo(courses);
     	
-    	//ArrayList<String> assignments = new ArrayList<String>();
     	ArrayList<Integer> assignmentIDs = new ArrayList<Integer>();
     	ArrayList<Integer> pointsEarned = new ArrayList<Integer>();
     	ArrayList<Integer> pointsPossible = new ArrayList<Integer>();
@@ -848,7 +849,6 @@ public class Application {
     		grades.add(i, null);
     	}
     	
-    	int studentID = PowerSchool.getStudentIDbyUserID(activeUser.getUserId()); //change. I know Emily
     	double pointsPossibleSum = 0;
     	double pointsEarnedSum = 0;
     	double tempMPGrade = -1.00;
