@@ -792,7 +792,7 @@ public class Application {
     private void student() {
     	System.out.println("Hello, again, " + activeUser.getFirstName() + "!");
     	
-    	//updateGrades();
+    	//updateGrades(activeUser.getUserId() - 9);
     	/* Needs:
     	 * View course grades
     	 * View assignment grades by course
@@ -865,14 +865,25 @@ public class Application {
     	
     	for (int i = 0; i < courses.size(); i++) { //iterates through all courses
     		for (int j = 1; j <= 4; j++) { //iterates through all marking periods
+    			
+    			//you want to return the IDs of every assignment per marking period
     			assignmentIDs = PowerSchool.assignmentIDByMP(courseIDs.get(i), j);
             	
-        		pointsPossible = PowerSchool.assignmentValuesByMP(courseIDs.get(i), j);
-            	pointsEarned = PowerSchool.pointsEarnedByStudent(courseIDs.get(i), PowerSchool.getAssignmentIDByCourseIDAndStudentIDAndMarkingPeriod(courseIDs.get(i), studentID, j), studentID);
+    			//with that, go to assignment_grades and return the values of pointsEarned and pointsPossible
+    			//using assignmentID & studentID
+    			for (int k = 0; k < assignmentIDs.size(); k++) {
+    				pointsPossible.add(PowerSchool.getPointsPossible(assignmentIDs.get(k), studentID));
+    				pointsEarned.add(PowerSchool.getPointsEarned(assignmentIDs.get(k), studentID));
+    			}
+    			
+        		//pointsPossible = PowerSchool.assignmentValuesByMP(courseIDs.get(i), j);
+            	//pointsEarned = PowerSchool.pointsEarnedByStudent(courseIDs.get(i), PowerSchool.getAssignmentIDByCourseIDAndStudentIDAndMarkingPeriod(courseIDs.get(i), studentID, j), studentID);
+            	
+           
             	
             	if (assignmentIDs != null) {
 	            	for (int k = 0; k < assignmentIDs.size(); k++) { //iterates through all assignments
-	            		if (pointsEarned.get(k) != null) { //adds non-null pointsEarned + corresponding pointsPossible to total sum for calculation
+	            		if (pointsEarned.get(k) != -1) { //adds non-null pointsEarned + corresponding pointsPossible to total sum for calculation
 		            		pointsPossibleSum += pointsPossible.get(k);
 		            		pointsEarnedSum += pointsEarned.get(k);
 	            		}
@@ -995,8 +1006,10 @@ public class Application {
     	
     	if (markingPeriod <= 4) {
     		assignments = PowerSchool.assignmentNameByMP(courseID, markingPeriod);
-        	pointsPossible = PowerSchool.assignmentValuesByMP(courseID, markingPeriod);
-        	pointsEarned = PowerSchool.pointsEarnedByStudent(courseID, PowerSchool.getAssignmentIDByCourseIDAndStudentIDAndMarkingPeriod(courseID, studentID, markingPeriod), studentID);
+			for (int k = 0; k < assignments.size(); k++) {
+				pointsPossible.add(PowerSchool.getPointsPossible(PowerSchool.assignmentIDByName(assignments.get(k)), studentID));
+				pointsEarned.add(PowerSchool.getPointsEarned(PowerSchool.assignmentIDByName(assignments.get(k)), studentID));
+			}
     	} else if (markingPeriod == 5) {
     		assignments = PowerSchool.assignmentNameByMid(courseID);
     	} else if (markingPeriod == 6) {

@@ -548,6 +548,50 @@ public class PowerSchool {
     	return null;
     }
     
+    public static int getPointsPossible(int assignmentID, int studentID) {
+    	try (Connection conn = getConnection();
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_POINTS)) {
+    		
+	        stmt.setInt(1, assignmentID);
+	        stmt.setInt(2, studentID);
+	        
+	        int pointsPossible = -1;
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {
+		     	   if (rs.next()) {
+		     		  pointsPossible = rs.getInt("points_possible");
+		     	   }
+		        }
+	        
+	        return pointsPossible;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return -1;
+    }
+    
+    public static int getPointsEarned(int assignmentID, int studentID) {
+    	try (Connection conn = getConnection();
+          PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_POINTS)) {
+    		
+	        stmt.setInt(1, assignmentID);
+	        stmt.setInt(2, studentID);
+	        
+	        int pointsPossible = -1;
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {
+	     	   if (rs.next()) {
+	     		  pointsPossible = rs.getInt("points_earned");
+	     	   }
+	        }
+	        
+	        return pointsPossible;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return -1;
+    }
+    
     public static int getAssignmentIDByCourseIDAndStudentIDAndMarkingPeriod(int courseID, int studentID, int markingPeriod) {
     	try (Connection conn = getConnection();
           PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_ID_BY_COURSE_ID_AND_STUDENT_ID_AND_MARKING_PERIOD)) {

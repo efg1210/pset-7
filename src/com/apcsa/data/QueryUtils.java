@@ -243,4 +243,9 @@ public class QueryUtils {
         	"UPDATE STUDENTS " +
     			"SET CLASS_RANK = ? " +
         		"WHERE STUDENT_ID = ?";
+    
+    public static final String GET_ASSIGNMENT_POINTS = 
+    		"SELECT * FROM ASSIGNMENT_GRADES " +
+    			"WHERE ASSIGNMENT_ID = ? " +
+    			"AND STUDENT_ID = ?";
 }
